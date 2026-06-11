@@ -160,6 +160,7 @@ Approved
 - Cell Occupancy System
 - Shape System
 - Wall Generation System
+- Pathfinding System
 
 ## Runtime Flow Systems
 
@@ -172,7 +173,6 @@ Approved
 - Input System
 - Drag Movement System
 - Grid Snap System
-- Pathfinding System
 
 ## Resource Processing Systems
 
@@ -197,36 +197,36 @@ Approved
 
 ## Game Design
 
-- Drop Away ✓
-- Color Block Jam ✓
-- Sky Rush ✓
-- Hole People ✓
-- Bus Jam ✓
+- Drop Away [done]
+- Color Block Jam [done]
+- Sky Rush [done]
+- Hole People [done]
+- Bus Jam [done]
 
 ## Technical Design
 
 ### Shared Systems Analysis
 
-- Complete ✓
+- Complete [done]
 
 ### Core Board Systems
 
-- Grid System ✓
-- Cell Occupancy System ✓
-- Shape System ✓
-- Wall Generation System ✓
+- Grid System [done]
+- Cell Occupancy System [done]
+- Shape System [done]
+- Wall Generation System [done]
+- Pathfinding System [done]
 
 ### Runtime Flow Systems
 
-- Game State System ✓
-- Timer System ✓
+- Game State System [done]
+- Timer System [done]
 
 ### Interaction Systems
 
-- Input System ✓
-- Drag Movement System ✓
-- Grid Snap System ✓
-- Pathfinding System ✓
+- Input System [done]
+- Drag Movement System [done]
+- Grid Snap System [done]
 
 ---
 

@@ -1,0 +1,3 @@
+# Cell Occupancy System
+
+Placeholder.

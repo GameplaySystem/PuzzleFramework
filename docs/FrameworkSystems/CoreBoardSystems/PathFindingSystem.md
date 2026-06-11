@@ -20,13 +20,13 @@ It returns a path result.
 
 The caller decides what to do with that result.
 
-```
+```text
 Game System
-    ↓
+    ->
 Pathfinding System
-    ↓
+    ->
 Path Result
-    ↓
+    ->
 Movement / Animation / Game Rules
 ```
 
@@ -193,11 +193,11 @@ Required board information:
 - Cell blocked state
 - Cell occupancy state
 
-```
+```text
 Board System
-    ↓
+    ->
 Cell Data
-    ↓
+    ->
 Pathfinding System
 ```
 
@@ -225,7 +225,7 @@ Future requests may support custom ignored objects.
 
 For 4-directional grid movement, the default heuristic should be Manhattan Distance.
 
-```
+```text
 Distance = Abs(current.x - target.x) + Abs(current.y - target.y)
 ```
 
@@ -243,13 +243,13 @@ The returned path should include the ordered cell list from start to target.
 
 Example:
 
-```
+```text
 Start
-    ↓
+    ->
 Cell A
-    ↓
+    ->
 Cell B
-    ↓
+    ->
 Target
 ```
 
