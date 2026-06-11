@@ -64,6 +64,23 @@ Game-specific nouns such as `Hole`, `Bus`, `Door`, `Stickman`, and `Brick` must 
 - Keep category references and architectural ownership consistent across docs when reorganizing documentation.
 - Do not silently reinterpret an approved spec during coding.
 
+### Documentation Metadata Rule
+
+Every framework system document must contain a `Document Metadata` section immediately after the title.
+
+Required fields:
+
+- Category
+- Status
+- Parent
+- Related Documents
+- Depends On
+- Used By
+
+When creating new documentation, maintain metadata consistency.
+
+When moving a document, update related metadata references.
+
 ## 5. Unity Project Rules
 
 - Do not modify Unity assets or scripts unless the user asks for code or content changes.
