@@ -1,3 +1,31 @@
+# Input System
+
+## Document Metadata
+
+Category:
+- Interaction Systems
+
+Status:
+- Approved
+
+Parent:
+- Overview.md
+
+Related Documents:
+- Overview.md
+- DragMovementSystem.md
+- GridSnapSystem.md
+
+Depends On:
+- None
+
+Used By:
+- Drop Away
+- Color Block Jam
+- Sky Rush
+- Hole People
+- Bus Jam
+
 ## Purpose
 
 The Input System detects player input and translates it into high-level interaction calls for gameplay objects.

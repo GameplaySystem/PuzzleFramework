@@ -1,3 +1,31 @@
+# Drag Movement System
+
+## Document Metadata
+
+Category:
+- Interaction Systems
+
+Status:
+- Approved
+
+Parent:
+- Overview.md
+
+Related Documents:
+- Overview.md
+- InputSystem.md
+- GridSnapSystem.md
+- ../CoreBoardSystems/GridSystem.md
+
+Depends On:
+- InputSystem.md
+- ../CoreBoardSystems/GridSystem.md
+
+Used By:
+- Drop Away
+- Color Block Jam
+- Sky Rush
+
 ## Purpose
 
 The Drag Movement System controls how draggable objects move while the player is dragging them.

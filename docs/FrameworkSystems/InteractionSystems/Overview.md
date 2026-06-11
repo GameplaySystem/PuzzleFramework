@@ -1,5 +1,31 @@
 # Interaction Systems
 
+## Document Metadata
+
+Category:
+- Interaction Systems
+
+Status:
+- Approved
+
+Parent:
+- None
+
+Related Documents:
+- InputSystem.md
+- DragMovementSystem.md
+- GridSnapSystem.md
+
+Depends On:
+- None
+
+Used By:
+- Drop Away
+- Color Block Jam
+- Sky Rush
+- Hole People
+- Bus Jam
+
 Interaction Systems define how the player communicates with puzzle objects during gameplay.
 
 These systems should be reusable across multiple puzzle games and should not contain game-specific rules.

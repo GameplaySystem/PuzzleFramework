@@ -1,3 +1,30 @@
+# Pathfinding System
+
+## Document Metadata
+
+Category:
+- Core Board Systems
+
+Status:
+- Approved
+
+Parent:
+- Overview.md
+
+Related Documents:
+- Overview.md
+- GridSystem.md
+- CellOccupancySystem.md
+
+Depends On:
+- GridSystem.md
+- CellOccupancySystem.md
+
+Used By:
+- Hole People
+- Bus Jam
+- Sky Rush
+
 ## Purpose
 
 The Pathfinding System finds valid paths across the board.

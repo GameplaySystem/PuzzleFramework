@@ -1,3 +1,33 @@
+# Grid Snap System
+
+## Document Metadata
+
+Category:
+- Interaction Systems
+
+Status:
+- Approved
+
+Parent:
+- Overview.md
+
+Related Documents:
+- Overview.md
+- DragMovementSystem.md
+- ../CoreBoardSystems/GridSystem.md
+- ../CoreBoardSystems/ShapeSystem.md
+- ../CoreBoardSystems/CellOccupancySystem.md
+
+Depends On:
+- ../CoreBoardSystems/GridSystem.md
+- ../CoreBoardSystems/ShapeSystem.md
+- ../CoreBoardSystems/CellOccupancySystem.md
+
+Used By:
+- Drop Away
+- Color Block Jam
+- Level Editor
+
 ## Purpose
 
 The Grid Snap System converts world positions into clean grid positions.
