@@ -81,6 +81,28 @@ When creating new documentation, maintain metadata consistency.
 
 When moving a document, update related metadata references.
 
+### Documentation Relationship Rule
+
+Every framework system document must maintain relationship metadata.
+
+Required fields:
+
+- Category
+- Status
+- Parent
+- Related Documents
+- Depends On
+- Used By
+
+When creating a new system:
+
+1. Identify what the system depends on.
+2. Identify what depends on the system.
+3. Update related documents if relationships change.
+4. Prefer explicit relationships over implicit assumptions.
+
+Documentation should form a navigable dependency graph.
+
 ## 5. Unity Project Rules
 
 - Do not modify Unity assets or scripts unless the user asks for code or content changes.
