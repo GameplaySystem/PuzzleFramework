@@ -228,6 +228,12 @@ Approved
 - Drag Movement System [done]
 - Grid Snap System [done]
 
+### Resource Processing Systems
+
+- Queue System [done]
+- Buffer System [done]
+- Capacity System [done]
+
 ---
 
 # Current Focus
@@ -236,21 +242,20 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Resource Processing Systems
+Content Systems
 
 ---
 
 # Next Steps
 
-1. Resource Processing Systems
-2. Content Systems
-3. Presentation Systems
-4. Framework Architecture Diagram
-5. Implementation Roadmap
-6. GitHub Repository Setup
-7. Framework Implementation
-8. Drop Away Prototype
-9. Remaining Prototypes
+1. Content Systems
+2. Presentation Systems
+3. Framework Architecture Diagram
+4. Implementation Roadmap
+5. GitHub Repository Setup
+6. Framework Implementation
+7. Drop Away Prototype
+8. Remaining Prototypes
 
 ---
 
