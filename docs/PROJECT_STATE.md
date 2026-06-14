@@ -284,11 +284,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Runtime Construction Systems
+Core Board Systems
 
 Current system:
 
-Review and analysis
+Placeholder cleanup
 
 Runtime Construction Systems remain future implementation scope.
 
@@ -296,7 +296,7 @@ Runtime Construction Systems remain future implementation scope.
 
 # Next Steps
 
-1. Runtime Construction Systems review/analysis
+1. Core Board Systems placeholder cleanup
 2. Framework Architecture Diagram
 3. Implementation Roadmap
 4. Framework Implementation

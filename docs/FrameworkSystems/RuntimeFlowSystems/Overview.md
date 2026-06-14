@@ -59,6 +59,7 @@ If those concerns are handled ad hoc inside unrelated systems, the framework bec
 
 Typical failure modes:
 
+* lifecycle state owned by unrelated systems
 * timers deciding puzzle rules directly
 * UI and audio coupled tightly to gameplay systems
 * unrelated systems discovering each other through scene searches
@@ -95,6 +96,7 @@ It answers questions like:
 ```text
 Is the level idle?
 Is gameplay active?
+Is gameplay paused?
 Is the level completed?
 Is the level failed?
 ```
@@ -132,12 +134,14 @@ Game State System:
 
 * owns lifecycle state
 * represents runtime phase or outcome
+* may notify other systems when state changes
 * should not become a generic notification bus
 
 Timer System:
 
 * owns time tracking
 * reports warnings and expiration
+* may notify other systems when time facts occur
 * should not become a rule engine
 
 Event System:
@@ -183,6 +187,11 @@ Examples:
 
 * `TimerExpired`
 * `TimerWarning`
+* `GameStarted`
+* `GamePaused`
+* `GameResumed`
+* `GameWon`
+* `GameLost`
 * `ResourceCollected`
 * `DragStarted`
 * `DragEnded`
@@ -234,9 +243,11 @@ Do not use:
 A common high-level relationship is:
 
 ```text
-Game State changes
+Gameplay owner requests state change
     ->
-Timer may start, stop, warn, or expire
+Game State System updates runtime phase
+    ->
+Timer may start, stop, pause, resume, warn, or expire
     ->
 Completed facts are announced through Event System
     ->
@@ -248,7 +259,7 @@ A more concrete flow may look like:
 ```text
 Gameplay system decides fact
     ->
-Game State or Timer updates owned state if relevant
+Game State System or Timer System updates owned state if relevant
     ->
 Event System publishes completed fact
     ->
@@ -258,6 +269,12 @@ UI, audio, presentation, analytics, or game-module listeners react
 The Event System should sit after the fact was already decided.
 
 It should not be the place where the fact becomes true.
+
+This means:
+
+* Game State owns phase
+* Timer owns time
+* Event System announces completed cross-system facts
 
 ---
 
@@ -269,6 +286,7 @@ Runtime Flow Systems may provide:
 
 * level state transitions
 * timer countdown where applicable
+* game started or game won notifications
 * notifications such as `ResourceCollected` or `LevelCompleted`
 
 The framework provides runtime flow mechanics.
@@ -288,12 +306,15 @@ The Timer System does not decide boarding rules.
 
 The Event System does not decide failure logic.
 
+The Game State System does not decide whether timer expiration should mean failure.
+
 ## Bus Jam
 
 Runtime Flow Systems may provide:
 
 * drag-related notifications
 * snap result notifications
+* pause and resume state transitions
 * state transitions for success or failure
 
 The framework provides lifecycle and notification mechanics.
@@ -319,6 +340,8 @@ More specifically:
 * Game State should not absorb unrelated gameplay rules.
 * Timer should not decide win or lose meaning by itself.
 * Event System should not execute commands.
+
+Do not use Runtime Flow Systems as a replacement for explicit service ownership.
 
 ---
 
