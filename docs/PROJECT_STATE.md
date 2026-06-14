@@ -259,6 +259,11 @@ Runtime Construction Systems are future scope and are not current focus.
 - Level Save Load System [done]
 - Level Editor Foundation [done]
 
+### Presentation Systems
+
+- Color System [done]
+- Visual Feedback System [done]
+
 ### Runtime Construction Systems (Future Scope / Not Started)
 
 - Level Runtime Builder System
@@ -278,7 +283,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Presentation Systems
+Runtime Flow Systems
+
+Current system:
+
+Event System
 
 Runtime Construction Systems are future scope and do not change current focus.
 
@@ -286,7 +295,7 @@ Runtime Construction Systems are future scope and do not change current focus.
 
 # Next Steps
 
-1. Presentation Systems
+1. Event System
 2. Framework Architecture Diagram
 3. Implementation Roadmap
 4. Framework Implementation
