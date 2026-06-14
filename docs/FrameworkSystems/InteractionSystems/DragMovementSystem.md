@@ -48,13 +48,13 @@ The Grid Snap System resolves final placement.
 
 Game-specific systems decide what the movement means.
 
-```
+```text
 Input System
-    ↓
+    ->
 Drag Movement System
-    ↓
+    ->
 Grid Snap System
-    ↓
+    ->
 Game Rules
 ```
 
@@ -64,15 +64,15 @@ Game Rules
 
 The Drag Movement System is responsible for:
 
-- Moving draggable objects during drag
-- Receiving world position from the Input System
-- Converting drag position into movement position
-- Supporting different drag movement modes
-- Restricting drag movement when needed
-- Supporting grid-aware movement
-- Supporting shape-aware movement
-- Providing valid/invalid movement preview data
-- Preserving original position if movement fails
+* moving draggable objects during drag
+* receiving world position from the Input System
+* converting drag position into movement position
+* supporting different drag movement modes
+* restricting drag movement when needed
+* supporting grid-aware movement
+* supporting shape-aware movement
+* providing valid or invalid movement preview data
+* preserving original position if movement fails
 
 ---
 
@@ -80,15 +80,15 @@ The Drag Movement System is responsible for:
 
 The Drag Movement System should not handle:
 
-- Raw input detection
-- Raycasting selection
-- Final snap placement
-- Win conditions
-- Lose conditions
-- Object collection logic
-- Pathfinding
-- Game-specific puzzle rules
-- Permanent occupancy changes
+* raw input detection
+* raycasting selection
+* final snap placement
+* win conditions
+* lose conditions
+* object collection logic
+* pathfinding
+* game-specific puzzle rules
+* permanent occupancy changes
 
 ---
 
@@ -102,9 +102,9 @@ The object follows the pointer freely in world space.
 
 Useful for:
 
-- Simple drag prototypes
-- UI-like dragging
-- Non-grid objects
+* simple drag prototypes
+* UI-like dragging
+* non-grid objects
 
 ## Grid-Constrained Drag
 
@@ -112,9 +112,9 @@ The object follows the pointer but movement is interpreted through grid cells.
 
 Useful for:
 
-- Drop Away holes
-- Color Block Jam bricks
-- Level editor objects
+* Drop Away holes
+* Color Block Jam bricks
+* level editor objects
 
 ## Axis-Constrained Drag
 
@@ -122,9 +122,9 @@ The object can only move on a specific axis.
 
 Useful for:
 
-- Sliding block puzzles
-- Rush Hour-style movement
-- Objects locked to rows or columns
+* sliding block puzzles
+* Rush Hour-style movement
+* objects locked to rows or columns
 
 ## Cell-By-Cell Drag
 
@@ -132,8 +132,8 @@ The object moves from cell to cell instead of freely following the pointer.
 
 Useful for:
 
-- Grid puzzle objects
-- Games where movement should feel discrete
+* grid puzzle objects
+* games where movement should feel discrete
 
 ## Shape-Based Drag
 
@@ -141,54 +141,42 @@ The object moves while considering all cells occupied by its shape.
 
 Useful for:
 
-- Multi-cell bricks
-- Tetris-like objects
-- Large puzzle pieces
+* multi-cell bricks
+* Tetris-like objects
+* large puzzle pieces
 
 ---
 
 # Drag Movement Data
 
-The Drag Movement System should work with drag data instead of directly depending on a specific object type.
+The Drag Movement System should work with drag-query data instead of directly depending on a specific object type.
 
-Example:
+Conceptually, a drag query should include:
 
-```csharp
-public struct DragMoveRequest
-{
-    public Vector3 PointerWorldPosition;
-    public Vector2Int CurrentGridPosition;
-    public Vector2Int OriginalGridPosition;
-}
-```
+* current pointer world position
+* current grid position if grid-aware movement is active
+* original drag origin position
+* shape or footprint information when multi-cell movement matters
 
-Example result:
+A drag result should include:
 
-```csharp
-public struct DragMoveResult
-{
-    public bool CanMove;
-    public Vector3 TargetWorldPosition;
-    public Vector2Int TargetGridPosition;
-}
-```
+* whether the requested movement is valid
+* the target preview world position
+* the target preview grid position where applicable
+
+This keeps the system reusable without tying it to puzzle-specific classes.
 
 ---
 
 # Draggable Object Requirements
 
-A draggable object should expose enough data for the movement system to work with it.
+A draggable object should expose enough framework-safe information for the movement system to work with it.
 
-Possible interface:
+That usually means access to:
 
-```csharp
-public interface IGridDraggable : IDraggable
-{
-    Vector2Int CurrentCell { get; }
-    Vector2Int OriginalCell { get; }
-    ShapeData Shape { get; }
-}
-```
+* current position or cell
+* original drag origin
+* footprint data if shape-aware movement is required
 
 This allows the Drag Movement System to move different object types without knowing whether they are holes, bricks, buses, or editor pieces.
 
@@ -200,20 +188,20 @@ The Drag Movement System can check framework-level movement restrictions.
 
 Examples:
 
-- Is the target cell inside the board?
-- Is the target cell active?
-- Is the target cell blocked?
-- Does the shape fit inside the board?
-- Would the shape overlap blocked cells?
+* is the target cell inside the board
+* is the target cell active
+* is the target cell blocked
+* does the shape fit inside the board
+* would the shape overlap blocked cells
 
 The Drag Movement System should not check game-specific rules.
 
 Examples of game-specific rules:
 
-- Can this hole collect this stickman?
-- Can this brick exit through this door?
-- Can this bus pick up these passengers?
-- Does this object color match another object?
+* can this hole collect this stickman
+* can this brick exit through this door
+* can this bus pick up these passengers
+* does this object color match another object
 
 Those rules belong to game modules.
 
@@ -229,7 +217,7 @@ Example:
 
 A 2x2 brick starts on cells:
 
-```
+```text
 (2,2), (2,3), (3,2), (3,3)
 ```
 
@@ -249,7 +237,7 @@ The Drag Movement System can move the object visually, but it should not permane
 
 Final occupancy should be updated after release by the Grid Snap System or placement system.
 
-```
+```text
 During Drag:
 Visual position changes
 Temporary movement checks happen
@@ -271,9 +259,9 @@ The object stops at the last valid position.
 
 Best for:
 
-- Grid-based puzzle pieces
-- Physical-feeling movement
-- Drop Away-style holes
+* grid-based puzzle pieces
+* physical-feeling movement
+* Drop Away-style holes
 
 ## Option 2: Allow Preview, Reject On Release
 
@@ -281,8 +269,8 @@ The object visually follows the pointer, but returns if released on an invalid c
 
 Best for:
 
-- Level editor placement
-- Casual drag-and-drop systems
+* level editor placement
+* casual drag-and-drop systems
 
 ## Approved Default
 
@@ -292,10 +280,6 @@ The default movement behavior should be:
 
 This feels better for puzzle gameplay because the object immediately communicates that movement is not allowed.
 
-Status:
-
-Approved for gameplay MVP
-
 ---
 
 # Original Position Tracking
@@ -304,43 +288,63 @@ When dragging starts, the system should remember the object's original position.
 
 This allows the object to return if needed.
 
-Tracked values:
+Typical tracked state includes:
 
-```csharp
-private Vector3 originalWorldPosition;
-private Vector2Int originalGridPosition;
-private Vector2Int lastValidGridPosition;
-private Vector3 lastValidWorldPosition;
-```
+* original world position
+* original grid position where applicable
+* last valid grid position
+* last valid world position
 
 ---
 
 # Example Flow
 
-```
+```text
 OnDragStart
-    ↓
+    ->
 Store original position
-    ↓
+    ->
 Store last valid position
-    ↓
+    ->
 OnDrag
-    ↓
+    ->
 Convert pointer world position to grid position
-    ↓
+    ->
 Check framework movement validity
-    ↓
+    ->
 If valid:
         Move object to target position
         Update last valid position
-    ↓
+    ->
 If invalid:
         Keep object at last valid position
-    ↓
+    ->
 OnDragEnd
-    ↓
+    ->
 Send final position to Grid Snap System
 ```
+
+---
+
+# Framework vs Game Module Ownership
+
+Framework ownership:
+
+* movement preview
+* reusable drag constraints
+* board-boundary checks
+* shape-aware movement checks
+* last-valid-position behavior
+
+Game module ownership:
+
+* whether the dragged object is allowed to satisfy a puzzle rule
+* whether drag should trigger collection, exit, boarding, or completion meaning
+* any puzzle-specific consequences after placement
+
+Framework owns preview and generic constraints.
+
+Game modules own meaning.
 
 ---
 
@@ -352,19 +356,17 @@ A hole is dragged across the board.
 
 The Drag Movement System handles:
 
-- Moving the hole
-- Keeping it inside the board
-- Preventing movement into blocked cells
-- Preventing movement through invalid framework cells
+* moving the hole
+* keeping it inside the board
+* preventing movement into blocked cells
+* preventing movement through invalid framework cells
 
 Game-specific Drop Away logic handles:
 
-- Matching stickman collection
-- Wrong-color blocking
-- Hole capacity
-- Win/loss rules
-
----
+* matching stickman collection
+* wrong-color blocking
+* hole capacity
+* win or loss rules
 
 ## Color Block Jam
 
@@ -372,19 +374,17 @@ A brick is dragged across grid cells.
 
 The Drag Movement System handles:
 
-- Shape-based movement
-- Board boundary checks
-- Blocked cell checks
-- Last valid position tracking
+* shape-based movement
+* board boundary checks
+* blocked cell checks
+* last valid position tracking
 
 Game-specific Color Block Jam logic handles:
 
-- Door matching
-- Exit behavior
-- Brick completion
-- Level success rules
-
----
+* door matching
+* exit behavior
+* brick completion
+* level success rules
 
 ## Level Editor
 
@@ -392,64 +392,30 @@ A shape is dragged around the board.
 
 The Drag Movement System handles:
 
-- Grid preview movement
-- Shape placement preview
-- Valid/invalid placement feedback
+* grid preview movement
+* shape placement preview
+* valid or invalid placement feedback
 
 The editor module handles:
 
-- Saving level data
-- Creating objects
-- Deleting objects
-- Rotating shapes
+* saving level data
+* creating objects
+* deleting objects
+* rotating shapes
 
 ---
 
-# Design Decisions
+# Approved Defaults
 
-## Drag Starts Immediately
+The current approved defaults are:
 
-Dragging begins immediately after selecting a draggable object.
+* dragging begins immediately after selecting a draggable object
+* no drag threshold is required for the first version
+* the first implementation should prioritize grid-constrained movement
+* invalid movement should block the object at the last valid position
+* final placement belongs to the Grid Snap System
 
-No drag threshold is required for the first version.
-
-Status:
-
-Approved
-
----
-
-## Default Movement Style
-
-The first implementation should prioritize grid-constrained movement.
-
-Free drag can exist, but most target puzzle games are grid-based.
-
-Status:
-
-Approved
-
----
-
-## Invalid Movement Default
-
-Invalid movement should block the object at the last valid position.
-
-Status:
-
-Approved
-
----
-
-## Final Placement
-
-The Drag Movement System does not finalize placement.
-
-Final placement belongs to the Grid Snap System.
-
-Status:
-
-Approved
+These defaults fit the current target games without pushing unnecessary abstraction into the MVP.
 
 ---
 
@@ -457,15 +423,15 @@ Approved
 
 The first version of the Drag Movement System should support:
 
-- Single selected draggable object
-- Grid-constrained dragging
-- Shape-aware movement
-- Last valid position tracking
-- Board boundary checks
-- Blocked cell checks
-- Ignoring the dragged object's own occupied cells
-- Invalid movement blocking
-- Final position handoff to Grid Snap System
+* single selected draggable object
+* grid-constrained dragging
+* shape-aware movement
+* last valid position tracking
+* board boundary checks
+* blocked cell checks
+* ignoring the dragged object's own occupied cells
+* invalid movement blocking
+* final position handoff to the Grid Snap System
 
 ---
 
@@ -473,17 +439,17 @@ The first version of the Drag Movement System should support:
 
 The following features can be added later:
 
-- Free drag mode
-- Axis-locked drag mode
-- Drag threshold
-- Smooth interpolation
-- Drag ghost preview
-- Invalid cell highlight
-- Custom movement constraints
-- Physics-based dragging
-- Multi-touch dragging
-- Editor-only drag modes
-- Tutorial-controlled drag locks
+* free drag mode
+* axis-locked drag mode
+* drag threshold
+* smooth interpolation
+* drag ghost preview
+* invalid cell highlight
+* custom movement constraints
+* physics-based dragging
+* multi-touch dragging
+* editor-only drag modes
+* tutorial-controlled drag locks
 
 ---
 

@@ -46,13 +46,13 @@ The Grid Snap System resolves final placement.
 
 The Occupancy System commits the final occupied cells.
 
-```
+```text
 Drag Movement System
-    ↓
+    ->
 Grid Snap System
-    ↓
+    ->
 Occupancy System
-    ↓
+    ->
 Game Rules
 ```
 
@@ -62,16 +62,16 @@ Game Rules
 
 The Grid Snap System is responsible for:
 
-- Converting world position to grid position
-- Converting grid position to world position
-- Finding the nearest valid cell
-- Snapping objects to board-aligned positions
-- Supporting single-cell objects
-- Supporting multi-cell shapes
-- Checking board boundaries
-- Checking active/blocked cells
-- Returning snap results
-- Supporting runtime and level editor placement
+* converting world position to grid position
+* converting grid position to world position
+* finding the nearest valid cell
+* snapping objects to board-aligned positions
+* supporting single-cell objects
+* supporting multi-cell shapes
+* checking board boundaries
+* checking active and blocked cells
+* returning snap results
+* supporting runtime and level editor placement
 
 ---
 
@@ -79,16 +79,16 @@ The Grid Snap System is responsible for:
 
 The Grid Snap System should not handle:
 
-- Raw input detection
-- Drag movement preview
-- Pathfinding
-- Win conditions
-- Lose conditions
-- Object collection logic
-- Door matching logic
-- Color matching logic
-- Game-specific puzzle rules
-- Visual animation logic
+* raw input detection
+* drag movement preview
+* pathfinding
+* win conditions
+* lose conditions
+* object collection logic
+* door matching logic
+* color matching logic
+* game-specific puzzle rules
+* visual animation logic
 
 ---
 
@@ -96,16 +96,12 @@ The Grid Snap System should not handle:
 
 The Grid Snap System should receive a request describing what needs to be snapped.
 
-Example:
+A snap request should conceptually contain:
 
-```csharp
-public struct SnapRequest
-{
-    public Vector3 WorldPosition;
-    public ShapeData Shape;
-    public Vector2Int CurrentOriginCell;
-}
-```
+* world position to evaluate
+* shape or footprint data if multi-cell snapping is required
+* current origin cell where relevant
+* any framework-safe validation context needed for placement checks
 
 ---
 
@@ -113,26 +109,21 @@ public struct SnapRequest
 
 The Grid Snap System should return a result instead of directly deciding final behavior.
 
-Example:
+A snap result should conceptually contain:
 
-```csharp
-public struct SnapResult
-{
-    public bool IsValid;
-    public Vector2Int OriginCell;
-    public Vector3 WorldPosition;
-}
-```
+* whether the snap is valid
+* the resolved origin cell
+* the resolved snapped world position
 
 This allows the caller to decide what to do next.
 
-Example:
+Examples:
 
-- Place object
-- Reject placement
-- Return object to previous cell
-- Play feedback
-- Trigger game-specific logic
+* place object
+* reject placement
+* return object to previous cell
+* play feedback
+* trigger game-specific logic
 
 ---
 
@@ -140,24 +131,24 @@ Example:
 
 The system should convert a world position into the nearest grid cell.
 
-Example:
+Conceptually:
 
-```
+```text
 World Position
-    ↓
+    ->
 Board Origin Offset
-    ↓
+    ->
 Cell Size Conversion
-    ↓
+    ->
 Rounded Grid Position
 ```
 
 The board should own grid layout values such as:
 
-- Board origin
-- Cell size
-- Grid width
-- Grid height
+* board origin
+* cell size
+* grid width
+* grid height
 
 The Grid Snap System should use this board data rather than hardcoded values.
 
@@ -167,15 +158,15 @@ The Grid Snap System should use this board data rather than hardcoded values.
 
 The system should convert a grid cell into the correct world position.
 
-Example:
+Conceptually:
 
-```
+```text
 Grid Cell
-    ↓
+    ->
 Cell Size Conversion
-    ↓
+    ->
 Board Origin Offset
-    ↓
+    ->
 World Position
 ```
 
@@ -193,7 +184,7 @@ The shape defines which additional cells are occupied relative to the origin.
 
 Example 2x2 shape:
 
-```
+```text
 Origin + (0,0)
 Origin + (1,0)
 Origin + (0,1)
@@ -210,20 +201,20 @@ The Grid Snap System can check framework-level placement rules.
 
 Examples:
 
-- Is the origin cell inside the board?
-- Are all shape cells inside the board?
-- Are all required cells active?
-- Are any required cells blocked?
-- Are any required cells occupied by another object?
+* is the origin cell inside the board
+* are all shape cells inside the board
+* are all required cells active
+* are any required cells blocked
+* are any required cells occupied by another object
 
 The Grid Snap System should not check game-specific rules.
 
 Examples of game-specific rules:
 
-- Does the brick match the door color?
-- Can this hole collect this stickman?
-- Can this bus pick up this passenger?
-- Is the selected object allowed to complete the level?
+* does the brick match the door color
+* can this hole collect this stickman
+* can this bus pick up this passenger
+* is the selected object allowed to complete the level
 
 ---
 
@@ -237,13 +228,13 @@ The result should tell the caller whether snapping is valid.
 
 Then another system can decide whether to commit the placement.
 
-```
+```text
 Snap Check
-    ↓
+    ->
 Snap Result
-    ↓
+    ->
 Caller Decides
-    ↓
+    ->
 Occupancy Commit
 ```
 
@@ -255,19 +246,19 @@ During gameplay, the Grid Snap System is commonly used after dragging ends.
 
 Example:
 
-```
+```text
 Player releases object
-    ↓
-Input System calls OnDragEnd
-    ↓
+    ->
+Input System calls drag end
+    ->
 Drag Movement System provides final position
-    ↓
+    ->
 Grid Snap System calculates nearest valid snap
-    ↓
+    ->
 Valid:
         Object moves to snapped position
         Occupancy updates
-    ↓
+    ->
 Invalid:
         Object returns to previous position
 ```
@@ -280,19 +271,19 @@ In the level editor, the Grid Snap System is used while placing and moving objec
 
 Example:
 
-```
+```text
 Designer drags shape
-    ↓
+    ->
 Grid Snap System previews target cell
-    ↓
+    ->
 Valid placement:
         Show valid preview
-    ↓
+    ->
 Invalid placement:
         Show invalid preview
-    ↓
+    ->
 Designer releases
-    ↓
+    ->
 Object is placed or rejected
 ```
 
@@ -330,59 +321,39 @@ Approved default for editor:
 
 ---
 
-# Design Decisions
+# Approved Defaults
 
-## Grid-Based Snapping
+The current approved defaults are:
 
-The framework will prioritize grid-based snapping.
+* the framework prioritizes grid-based snapping
+* the system must support multi-cell shapes
+* board or grid data should be the source of layout truth
+* the system should not directly commit occupancy by default
+* the same system should support both runtime gameplay and level editor placement
 
-Status:
-
-Approved
-
----
-
-## Shape-Aware Validation
-
-The Grid Snap System must support multi-cell shapes.
-
-Status:
-
-Approved
+These defaults preserve reuse while keeping placement ownership explicit.
 
 ---
 
-## Board Data Source
+# Framework vs Game Module Ownership
 
-The Grid Snap System should use board/grid data instead of hardcoded cell sizes or positions.
+Framework ownership:
 
-Status:
+* grid alignment
+* placement conversion between world and board space
+* framework-level placement validation
+* shape-aware snap checks
+* occupancy-aware validation queries
 
-Approved
+Game module ownership:
 
----
+* whether a valid snap satisfies puzzle rules
+* whether a snapped object exits, collects, boards, or completes something
+* any puzzle-specific consequences after snap resolution
 
-## Occupancy Commit
+Framework owns alignment and validation.
 
-The Grid Snap System should not directly commit occupancy by default.
-
-It returns snap data.
-
-The caller or placement system commits occupancy afterward.
-
-Status:
-
-Approved
-
----
-
-## Runtime And Editor Support
-
-The same Grid Snap System should be usable by both runtime gameplay and the level editor.
-
-Status:
-
-Approved
+Game modules own meaning.
 
 ---
 
@@ -390,17 +361,17 @@ Approved
 
 The first version of the Grid Snap System should support:
 
-- World position to grid cell conversion
-- Grid cell to world position conversion
-- Single-cell snapping
-- Multi-cell shape snapping
-- Board boundary checks
-- Active cell checks
-- Blocked cell checks
-- Occupancy checks
-- Snap result return data
-- Runtime usage
-- Level editor usage
+* world position to grid cell conversion
+* grid cell to world position conversion
+* single-cell snapping
+* multi-cell shape snapping
+* board boundary checks
+* active cell checks
+* blocked cell checks
+* occupancy checks
+* snap result return data
+* runtime usage
+* level editor usage
 
 ---
 
@@ -408,17 +379,17 @@ The first version of the Grid Snap System should support:
 
 The following features can be added later:
 
-- Snap preview ghost
-- Invalid cell highlighting
-- Custom snap anchors
-- Partial shape snapping
-- Rotation-aware snapping
-- Door-adjacent snapping
-- Path-based snapping
-- Magnetic snap assist
-- Editor-only snap modes
-- Custom validation rules
-- Smooth snap animation
+* snap preview ghost
+* invalid cell highlighting
+* custom snap anchors
+* partial shape snapping
+* rotation-aware snapping
+* door-adjacent snapping
+* path-based snapping
+* magnetic snap assist
+* editor-only snap modes
+* custom validation rules
+* smooth snap animation
 
 ---
 

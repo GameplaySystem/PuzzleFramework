@@ -30,7 +30,7 @@ Used By:
 
 The Input System detects player input and translates it into high-level interaction calls for gameplay objects.
 
-It acts as the bridge between raw player input and framework interaction interfaces.
+It acts as the bridge between raw player input and framework interaction capabilities.
 
 The Input System should detect player intent only.
 
@@ -38,187 +38,28 @@ It should not contain puzzle-specific rules.
 
 ---
 
-# Design Decisions
+# Core Design Idea
 
-## Selection Method
+The Input System owns intent detection.
 
-Objects are selected through pointer input.
+It determines what the player is trying to interact with and forwards that intent through framework-safe interaction contracts.
 
-On desktop, this means mouse click.
+Conceptually:
 
-On mobile, this means screen touch.
-
-Status:
-
-Approved
-
----
-
-## Raycasting
-
-The Input System will use camera-based raycasting to detect interactable world objects.
-
-The raycast should only check valid interaction layers.
-
-This prevents the Input System from accidentally selecting background objects, visual-only objects, UI elements, or non-interactable gameplay objects.
-
-Status:
-
-Approved
-
----
-
-## Platform Support
-
-The Input System must support both:
-
-- Mouse input for editor/testing
-- Touch input for mobile builds
-
-The same interaction flow should work for both input types.
-
-Status:
-
-Approved
-
----
-
-## Unity Input System
-
-The framework will use Unity's New Input System.
-
-The old input approach uses methods such as:
-
-```csharp
-Input.GetKeyDown(KeyCode.A)
-Input.GetMouseButtonDown(0)
+```text
+Pointer Input
+    ->
+Input System detects target and interaction type
+    ->
+Framework interaction capability is called
+    ->
+Other systems decide movement, placement, or gameplay meaning
 ```
 
-The New Input System uses Input Actions instead.
+The important boundary is:
 
-Example actions:
-
-- Pointer Press
-- Pointer Position
-- Pointer Delta
-- Pointer Release
-
-This allows mouse and touch input to be handled through the same action-based flow.
-
-Status:
-
-Approved
-
----
-
-## Selection Limit
-
-Only one object can be selected at a time.
-
-The framework does not support multi-selection by default.
-
-Status:
-
-Approved
-
----
-
-## Drag Start
-
-Dragging can begin immediately after pressing/selecting a draggable object.
-
-No drag threshold is required for the first version.
-
-A drag threshold may be added later if accidental drags become a problem.
-
-Status:
-
-Approved
-
----
-
-## Deselection
-
-For draggable objects, deselection happens when the player releases input.
-
-Example:
-
-- Player presses object.
-- Object becomes selected.
-- Player drags object.
-- Player releases input.
-- Object is deselected.
-
-For click-only objects, selection may be temporary and does not require a separate deselection step.
-
-Status:
-
-Approved
-
----
-
-## Cancellation
-
-Explicit cancellation is not required for the first version.
-
-The main interaction flow is:
-
-- Press
-- Optional drag
-- Release
-
-Cancellation can be added later if needed for special cases such as pause menus, invalid states, or tutorial interruptions.
-
-Status:
-
-Approved for MVP
-
----
-
-## Communication Style
-
-The Input System will directly call interaction interfaces on selected objects.
-
-Example:
-
-```csharp
-selectable.OnSelected();
-draggable.OnDragStart();
-draggable.OnDrag(worldPosition);
-draggable.OnDragEnd();
-```
-
-This is simpler and easier to debug than an event-heavy architecture.
-
-Events can be added later for secondary systems such as:
-
-- Sound effects
-- Haptics
-- Analytics
-- Tutorial steps
-- Visual feedback
-
-Status:
-
-Approved
-
----
-
-## UI Blocking
-
-The Input System should not select or drag world objects when the pointer is over UI.
-
-Before raycasting into the game world, the Input System should check whether the pointer is currently over a UI element.
-
-This prevents problems such as:
-
-- Pressing a UI button and accidentally selecting a board object
-- Dragging gameplay objects while interacting with menus
-- Touching popup UI and triggering world interaction behind it
-
-Status:
-
-Approved
+* Input detects intent
+* other systems interpret what that intent means
 
 ---
 
@@ -226,15 +67,14 @@ Approved
 
 The Input System is responsible for:
 
-- Reading pointer press
-- Reading pointer release
-- Reading pointer position
-- Detecting selected object
-- Raycasting from the camera into the world
-- Checking interaction interfaces
-- Calling selection interfaces
-- Calling drag interfaces
-- Ignoring world input when UI is being touched
+* reading pointer press
+* reading pointer release
+* reading pointer position
+* raycasting into the world
+* identifying interactable targets
+* calling framework interaction capabilities
+* tracking the current selected interaction target
+* ignoring world interaction when the pointer is over UI
 
 ---
 
@@ -242,162 +82,247 @@ The Input System is responsible for:
 
 The Input System should not handle:
 
-- Object movement rules
-- Grid validation
-- Snap logic
-- Pathfinding
-- Win conditions
-- Lose conditions
-- Game-specific rules
-- Object-specific gameplay behavior
-- Visual animation logic
-- Sound effects
-- Haptic feedback
+* object movement rules
+* grid validation
+* snap logic
+* pathfinding
+* win conditions
+* lose conditions
+* game-specific rules
+* object-specific gameplay behavior
+* visual animation logic
+* sound effects
+* haptic feedback
+
+The Input System should not decide whether an interaction is good, valid, or useful in puzzle terms.
+
+It should only detect and forward intent.
 
 ---
 
-# Required Interfaces
+# Interaction Contract Model
 
-## ISelectable
+The Input System should communicate through framework-safe interaction capabilities rather than concrete object types.
 
-Used by objects that can be selected.
+Typical capabilities include:
 
-```csharp
-public interface ISelectable
-{
-    void OnSelected();
-    void OnDeselected();
-}
-```
+* selectable
+* draggable
+* clickable
 
----
+Additional capabilities such as hoverable behavior can be added later if reuse pressure appears.
 
-## IDraggable
+This keeps the framework decoupled from puzzle-specific nouns.
 
-Used by objects that can be dragged.
-
-```csharp
-public interface IDraggable
-{
-    void OnDragStart();
-    void OnDrag(Vector3 worldPosition);
-    void OnDragEnd();
-}
-```
+The Input System must not know whether the selected object is a hole, bus, brick, door, or any other game-specific entity.
 
 ---
 
-## IClickable
+# Approved Interaction Defaults
 
-Used by objects that react to a simple click/tap.
+The current approved defaults are:
 
-```csharp
-public interface IClickable
-{
-    void OnClicked();
-}
-```
+* selection happens through pointer input
+* desktop uses mouse input
+* mobile uses touch input
+* only one object can be selected at a time
+* dragging can begin immediately after selecting a draggable object
+* release ends the default interaction flow
+* explicit cancellation is not required for the MVP
+
+These defaults keep the first framework version simple and consistent across target games.
 
 ---
 
-# Input Flow
+# Platform Input Direction
 
-## Click Flow
+The framework should support both:
 
-```
+* mouse input for editor and testing
+* touch input for mobile builds
+
+The intended design direction is a shared action-based input flow rather than separate gameplay logic per platform.
+
+This keeps platform support aligned while preserving one interaction model.
+
+---
+
+# Raycasting And UI Blocking
+
+The Input System should use camera-based raycasting to detect interactable world objects.
+
+The raycast should only check valid interaction layers.
+
+This prevents accidental selection of:
+
+* background objects
+* visual-only objects
+* non-interactable gameplay objects
+
+Before raycasting into the world, the Input System should also check whether the pointer is currently over UI.
+
+This prevents problems such as:
+
+* pressing a UI button and accidentally selecting a board object
+* dragging gameplay objects while interacting with menus
+* touching popup UI and triggering world interaction behind it
+
+---
+
+# Direct Calls vs Event Reactions
+
+The Input System should directly call interaction capabilities on the active target.
+
+That keeps the ownership chain explicit and easier to debug.
+
+Secondary presentation or analytics reactions can listen through the Event System later if needed.
+
+The Input System itself should not become an event-heavy ownership layer.
+
+---
+
+# Interaction Flow
+
+## Click-Oriented Flow
+
+A simple click-oriented interaction may look like:
+
+```text
 Pointer Press
-    ↓
-Check UI Blocking
-    ↓
-Raycast World
-    ↓
-Find IClickable / ISelectable
-    ↓
-Call OnSelected
-    ↓
+    ->
+Check UI blocking
+    ->
+Raycast world
+    ->
+Find selectable or clickable capability
+    ->
+Notify selected state
+    ->
 Pointer Release
-    ↓
-Call OnClicked if no drag happened
-    ↓
-Call OnDeselected
+    ->
+Notify click if appropriate
+    ->
+Notify deselection if appropriate
 ```
 
----
+## Drag-Oriented Flow
 
-## Drag Flow
+A drag-oriented interaction may look like:
 
-```
+```text
 Pointer Press
-    ↓
-Check UI Blocking
-    ↓
-Raycast World
-    ↓
-Find IDraggable
-    ↓
-Call OnSelected
-    ↓
-Call OnDragStart
-    ↓
+    ->
+Check UI blocking
+    ->
+Raycast world
+    ->
+Find draggable capability
+    ->
+Notify selected state
+    ->
+Notify drag start
+    ->
 Pointer Move
-    ↓
-Call OnDrag(worldPosition)
-    ↓
+    ->
+Notify drag update with world position
+    ->
 Pointer Release
-    ↓
-Call OnDragEnd
-    ↓
-Call OnDeselected
+    ->
+Notify drag end
+    ->
+Notify deselection
 ```
 
 ---
 
-# Data Tracked By Input System
+# Data The Input System Tracks
 
-The Input System should track:
+The Input System will likely need to track interaction state such as:
 
-```csharp
-private ISelectable currentSelectable;
-private IDraggable currentDraggable;
-private IClickable currentClickable;
+* the current selected target
+* whether the pointer is currently pressed
+* whether a drag is currently active
+* the current pointer position
 
-private bool isPointerDown;
-private bool isDragging;
-private Vector2 pointerScreenPosition;
-```
+That tracked state belongs to the Input System because it owns interaction intent flow.
 
 ---
 
-# Raycasting Rule
+# Framework vs Game Module Ownership
 
-The Input System should raycast from the main gameplay camera using the current pointer screen position.
+Framework ownership:
 
-Only objects on valid interaction layers should be checked.
+* intent detection
+* raycasting rules
+* UI blocking behavior
+* interaction capability calling
+* single-selection default behavior
 
-Example interaction layer:
+Game module ownership:
 
-```
-Interactable
-```
+* what selection means
+* what dragging means
+* what clicking means
+* whether an interacted object can satisfy puzzle rules
+* what consequences happen after interaction
 
-This keeps interaction detection clean and prevents accidental selection.
+Framework owns detection.
+
+Game modules own meaning.
 
 ---
 
-# UI Blocking Rule
+# Example Usage
 
-If the pointer is over UI, the Input System should ignore world selection.
+## Drop Away
 
-Example:
+The Input System can detect:
 
-```
-Pointer Press
-    ↓
-Is pointer over UI?
-    ↓
-Yes → Stop
-No  → Continue world raycast
-```
+* which hole the player touched
+* whether dragging began
+* when drag ended
+
+Drop Away game logic still decides:
+
+* whether a movement is useful
+* whether stickmen are collected
+* whether the level is won or lost
+
+## Color Block Jam
+
+The Input System can detect:
+
+* which brick is selected
+* whether the player is dragging
+* when to hand off to movement and snapping systems
+
+Color Block Jam logic still decides exit and completion meaning.
+
+## Bus Jam And Hole People
+
+The Input System can detect selection or click intent for movers, targets, or interactive board objects.
+
+Game modules still decide what those interactions mean.
+
+---
+
+# Edge Cases
+
+## Pointer Over UI
+
+If the pointer is over UI, the Input System should not start world interaction.
+
+## Temporary Interaction Interruptions
+
+The MVP does not require a full cancellation system.
+
+If interruption handling becomes necessary later, it should be added explicitly rather than assumed.
+
+## Multiple Pointer Support
+
+The MVP assumes single-pointer interaction.
+
+Multi-touch can be added later if a game truly requires it.
 
 ---
 
@@ -405,15 +330,15 @@ No  → Continue world raycast
 
 The first version of the Input System will support:
 
-- Single pointer input
-- Mouse testing
-- Mobile touch input
-- Single object selection
-- Immediate drag start
-- Release-based deselection
-- Camera raycasting
-- UI blocking
-- Direct interface calls
+* single pointer input
+* mouse testing
+* mobile touch input
+* single object selection
+* immediate drag start
+* release-based deselection
+* camera raycasting
+* UI blocking
+* direct interaction capability calls
 
 ---
 
@@ -421,17 +346,17 @@ The first version of the Input System will support:
 
 The following features are not required for the first version but may be added later:
 
-- Drag threshold
-- Multi-touch support
-- Multi-selection support
-- Input cancellation
-- Input lock/unlock states
-- Tutorial-controlled input
-- Event-based interaction broadcasting
-- Custom interaction priority
-- Long press detection
-- Hover support for desktop
-- Gesture support
+* drag threshold
+* multi-touch support
+* multi-selection support
+* input cancellation
+* input lock or unlock states
+* tutorial-controlled input
+* event-based secondary broadcasting
+* custom interaction priority
+* long press detection
+* hover support for desktop
+* gesture support
 
 ---
 
@@ -441,6 +366,6 @@ The Input System detects intent.
 
 It does not decide meaning.
 
-Game objects expose what they can do through interfaces.
+Game objects expose what they can do through framework-safe interaction capabilities.
 
 Game-specific systems decide what should happen after interaction.
