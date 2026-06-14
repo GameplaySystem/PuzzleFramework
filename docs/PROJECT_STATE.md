@@ -284,11 +284,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Core Board Systems
+Documentation normalization
 
 Current system:
 
-Placeholder cleanup
+Older docs and templates
 
 Runtime Construction Systems remain future implementation scope.
 
@@ -296,12 +296,14 @@ Runtime Construction Systems remain future implementation scope.
 
 # Next Steps
 
-1. Core Board Systems placeholder cleanup
-2. Framework Architecture Diagram
-3. Implementation Roadmap
-4. Framework Implementation
-5. Drop Away Prototype
-6. Remaining Prototypes
+1. Normalize older docs/templates
+2. Runtime Construction Systems review/analysis
+3. Progression Systems review/analysis
+4. Framework Architecture Diagram
+5. Implementation Roadmap
+6. Framework Implementation
+7. Drop Away Prototype
+8. Remaining Prototypes
 
 Progression Systems are future scope and are not part of the current focus.
 

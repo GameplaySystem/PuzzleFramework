@@ -101,7 +101,7 @@ The Pathfinding System should not handle:
 - Lose conditions
 - Sound effects
 - Visual effects
-- Game-specific success/failure rules
+- Game-specific success or failure rules
 
 ---
 
@@ -130,29 +130,11 @@ Approved
 
 The Pathfinding System should receive a request describing the path query.
 
-Example:
+A path request should contain:
 
-```csharp
-public struct PathRequest
-{
-    public Vector2Int StartCell;
-    public Vector2Int TargetCell;
-}
-```
-
-Future versions may include additional options.
-
-Example:
-
-```csharp
-public struct PathRequest
-{
-    public Vector2Int StartCell;
-    public Vector2Int TargetCell;
-    public bool CanPassThroughOccupiedCells;
-    public bool CanPassThroughBlockedCells;
-}
-```
+- start cell
+- target cell
+- optional traversal constraints
 
 ---
 
@@ -160,32 +142,52 @@ public struct PathRequest
 
 The Pathfinding System should return path data instead of moving an object.
 
-Example:
+A path result should contain:
 
-```csharp
-public struct PathResult
-{
-    public bool PathFound;
-    public List<Vector2Int> Cells;
-}
-```
+- success or failure state
+- ordered route data
 
 The result allows the caller to decide what happens next.
 
 Examples:
 
 - Move object along path
-- Animate stickman walking
+- Animate movement
 - Reject interaction
-- Trigger collection
+- Trigger a gameplay follow-up
 - Show feedback
 - Retry another target
 
 ---
 
+# Framework vs Game Module Ownership
+
+Framework ownership:
+
+- grids
+- cells
+- occupancy-aware traversability checks
+- path query infrastructure
+- A* path calculation
+
+Game module ownership:
+
+- what a moving object represents
+- whether reaching a target is desirable
+- what path success or failure means
+- puzzle-specific movement rules layered on top of path data
+
+Framework owns route calculation.
+
+Game modules own meaning.
+
+---
+
 # Traversability Rules
 
-The Pathfinding System can check framework-level traversability.
+The Pathfinding System evaluates traversal information provided by framework-safe board data and query constraints.
+
+It does not decide why a cell is blocked or traversable.
 
 A cell is traversable if:
 
@@ -198,11 +200,11 @@ The system should not check game-specific rules.
 
 Examples of game-specific rules:
 
-- Does this stickman match the bus color?
-- Does this hole have capacity?
-- Is this brick allowed to exit?
+- Does this mover match the target rule?
+- Does this destination have capacity?
+- Is this object allowed to exit?
 - Should this unit be collected?
-- Should this door accept this object?
+- Should this target accept this object?
 
 ---
 
@@ -216,7 +218,7 @@ Required board information:
 
 - Grid width
 - Grid height
-- Cell active/inactive state
+- Cell active or inactive state
 - Cell blocked state
 - Cell occupancy state
 
@@ -240,7 +242,7 @@ Some objects may be ignored depending on the request.
 
 Example:
 
-A stickman path should not pass through blocked cells.
+A path query should not pass through blocked cells.
 
 A path check may optionally ignore the moving object's own current cell.
 
@@ -284,7 +286,29 @@ The caller can decide whether to include or skip the start cell during movement 
 
 ---
 
-# Runtime Use Cases
+# Data Flow
+
+Conceptually:
+
+```text
+Caller provides start and target cells
+    ->
+Grid System resolves structural board data
+    ->
+Cell Occupancy System provides usage constraints
+    ->
+Pathfinding System calculates route
+    ->
+Caller interprets result
+```
+
+The Pathfinding System should return route data.
+
+It should not decide what the route means in gameplay.
+
+---
+
+# Example Usage
 
 ## Hole People
 
@@ -299,7 +323,7 @@ Game-specific systems still decide:
 - Hole capacity
 - Queue order
 - Collection rules
-- Win/loss state
+- Win or loss state
 
 ---
 
@@ -307,13 +331,13 @@ Game-specific systems still decide:
 
 The system can check whether:
 
-- A stickman can reach a bus
+- A mover can reach a bus
 - A bus can leave the board
 - A path is blocked by other objects
 
 Game-specific systems still decide:
 
-- Passenger color matching
+- Passenger matching
 - Bus capacity
 - Boarding order
 - Completion rules
@@ -324,14 +348,14 @@ Game-specific systems still decide:
 
 The system can check whether:
 
-- Stickmen can move from door queues to buses
-- A bus route is clear
+- Movers can move from door queues to buses
+- A route is clear
 - A target pickup cell is reachable
 
 Game-specific systems still decide:
 
-- Which stickman should move first
-- Which bus accepts which passenger
+- Which mover should go first
+- Which target accepts which mover
 - Queue behavior
 - Level completion
 
@@ -369,7 +393,7 @@ Possible future optimizations:
 - Path cache
 - Early exit conditions
 - Limiting search area
-- Burst/ECS version for large boards
+- Burst or ECS version for large boards
 
 ---
 
@@ -463,7 +487,7 @@ The following features can be added later:
 - Editor path preview
 - Debug path visualization
 - Async pathfinding
-- Burst/ECS optimization
+- Burst or ECS optimization
 
 ---
 
