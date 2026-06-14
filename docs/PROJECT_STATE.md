@@ -183,8 +183,27 @@ Approved
 ## Content Systems
 
 - Level Data System
-- Save Load System
+- Level Save Load System
 - Level Editor Foundation
+
+Content Systems handle level content data, level content save/load, and level editor foundation.
+
+Content Systems do not instantiate runtime objects.
+
+## Runtime Construction Systems
+
+- Level Runtime Builder System
+- Runtime Object Factory System
+- Runtime Construction Validation System
+
+Runtime Construction Systems are responsible for turning loaded level data into runtime objects.
+
+Runtime Construction Systems are future scope and are not current focus.
+
+## Progression Systems
+
+- Player Progress Data System
+- Progress Save Load System
 
 ## Presentation Systems
 
@@ -234,6 +253,23 @@ Approved
 - Buffer System [done]
 - Capacity System [done]
 
+### Content Systems
+
+- Level Data System [done]
+- Level Save Load System [done]
+- Level Editor Foundation [done]
+
+### Runtime Construction Systems (Future Scope / Not Started)
+
+- Level Runtime Builder System
+- Runtime Object Factory System
+- Runtime Construction Validation System
+
+### Progression Systems (Future Scope / Not Started)
+
+- Player Progress Data System
+- Progress Save Load System
+
 ---
 
 # Current Focus
@@ -242,20 +278,22 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Content Systems
+Presentation Systems
+
+Runtime Construction Systems are future scope and do not change current focus.
 
 ---
 
 # Next Steps
 
-1. Content Systems
-2. Presentation Systems
-3. Framework Architecture Diagram
-4. Implementation Roadmap
-5. GitHub Repository Setup
-6. Framework Implementation
-7. Drop Away Prototype
-8. Remaining Prototypes
+1. Presentation Systems
+2. Framework Architecture Diagram
+3. Implementation Roadmap
+4. Framework Implementation
+5. Drop Away Prototype
+6. Remaining Prototypes
+
+Progression Systems are future scope and are not part of the current focus.
 
 ---
 
