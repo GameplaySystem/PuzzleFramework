@@ -198,7 +198,7 @@ Content Systems do not instantiate runtime objects.
 
 Runtime Construction Systems are responsible for turning loaded level data into runtime objects.
 
-Runtime Construction Systems are future scope and are not current focus.
+Runtime Construction Systems remain future implementation scope even though their architecture is now documented.
 
 ## Progression Systems
 
@@ -265,11 +265,11 @@ Runtime Construction Systems are future scope and are not current focus.
 - Color System [done]
 - Visual Feedback System [done]
 
-### Runtime Construction Systems (Future Scope / Not Started)
+### Runtime Construction Systems
 
-- Level Runtime Builder System
-- Runtime Object Factory System
-- Runtime Construction Validation System
+- Level Runtime Builder System [done]
+- Runtime Object Factory System [done]
+- Runtime Construction Validation System [done]
 
 ### Progression Systems (Future Scope / Not Started)
 
@@ -284,11 +284,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Documentation normalization
+Progression Systems review and analysis
 
 Current system:
 
-Older docs and templates
+Player Progress Data System and Progress Save Load System
 
 Runtime Construction Systems remain future implementation scope.
 
@@ -296,16 +296,14 @@ Runtime Construction Systems remain future implementation scope.
 
 # Next Steps
 
-1. Normalize older docs/templates
-2. Runtime Construction Systems review/analysis
-3. Progression Systems review/analysis
-4. Framework Architecture Diagram
-5. Implementation Roadmap
-6. Framework Implementation
-7. Drop Away Prototype
-8. Remaining Prototypes
+1. Progression Systems review/analysis
+2. Framework Architecture Diagram
+3. Implementation Roadmap
+4. Framework Implementation
+5. Drop Away Prototype
+6. Remaining Prototypes
 
-Progression Systems are future scope and are not part of the current focus.
+Progression Systems remain future implementation scope, but they are the current documentation focus.
 
 ---
 
