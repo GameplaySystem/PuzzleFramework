@@ -240,6 +240,7 @@ Runtime Construction Systems are future scope and are not current focus.
 
 - Game State System [done]
 - Timer System [done]
+- Event System [done]
 
 ### Interaction Systems
 
@@ -283,19 +284,19 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Runtime Flow Systems
+Runtime Construction Systems
 
 Current system:
 
-Event System
+Review and analysis
 
-Runtime Construction Systems are future scope and do not change current focus.
+Runtime Construction Systems remain future implementation scope.
 
 ---
 
 # Next Steps
 
-1. Event System
+1. Runtime Construction Systems review/analysis
 2. Framework Architecture Diagram
 3. Implementation Roadmap
 4. Framework Implementation
