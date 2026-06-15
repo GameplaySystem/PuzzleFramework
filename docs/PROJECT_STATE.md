@@ -234,6 +234,10 @@ Progression Systems handle player-owned progression state and persistence of tha
 
 - Complete [done]
 
+### Implementation Roadmap
+
+- Complete [done]
+
 ### Core Board Systems
 
 - Grid System [done]
@@ -290,11 +294,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Implementation Roadmap
+Framework Implementation
 
 Current system:
 
-Implementation phase planning
+Framework MVP Slice preparation
 
 Runtime Construction Systems remain future implementation scope.
 
@@ -302,10 +306,14 @@ Runtime Construction Systems remain future implementation scope.
 
 # Next Steps
 
-1. Implementation Roadmap
-2. Framework Implementation
-3. Drop Away Prototype
-4. Remaining Prototypes
+1. Framework MVP Slice
+2. Drop Away Prototype
+3. Color Block Jam
+4. Shared System Generalization
+5. Sky Rush
+6. Hole People
+7. Bus Jam
+8. Polish and Portfolio Cleanup
 
 Progression Systems are documented, but implementation remains future scope.
 
