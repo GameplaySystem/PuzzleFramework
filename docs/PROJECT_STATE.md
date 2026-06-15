@@ -196,7 +196,7 @@ Content Systems do not instantiate runtime objects.
 - Runtime Object Factory System
 - Runtime Construction Validation System
 
-Runtime Construction Systems are responsible for turning loaded level data into runtime objects.
+Runtime Construction Systems are responsible for converting loaded authored level data into runtime objects and runtime state.
 
 Runtime Construction Systems remain future implementation scope even though their architecture is now documented.
 
@@ -204,6 +204,8 @@ Runtime Construction Systems remain future implementation scope even though thei
 
 - Player Progress Data System
 - Progress Save Load System
+
+Progression Systems handle player-owned progression state and persistence of that state.
 
 ## Presentation Systems
 

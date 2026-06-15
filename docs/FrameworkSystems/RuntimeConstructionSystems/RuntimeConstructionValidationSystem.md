@@ -36,7 +36,7 @@ Used By:
 
 ## Purpose
 
-The Runtime Construction Validation System validates whether authored level data can be safely built into runtime state.
+The Runtime Construction Validation System validates whether loaded authored level data can be safely built into runtime state.
 
 Its role is narrow and important:
 

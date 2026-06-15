@@ -32,7 +32,7 @@ Used By:
 
 ## Purpose
 
-Runtime Construction Systems convert authored level data into a playable runtime level.
+Runtime Construction Systems convert loaded authored level data into a playable runtime level.
 
 They sit between authored content and live gameplay state.
 
@@ -85,7 +85,7 @@ Each system owns a different part of runtime construction.
 
 ## Runtime Construction Validation System
 
-The Runtime Construction Validation System validates whether authored level data can be safely built into runtime state.
+The Runtime Construction Validation System validates whether loaded authored level data can be safely built into runtime state.
 
 It owns:
 

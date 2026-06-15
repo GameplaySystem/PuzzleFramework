@@ -32,7 +32,7 @@ Used By:
 
 ## Purpose
 
-The Level Runtime Builder System coordinates conversion of loaded level data into a playable runtime level.
+The Level Runtime Builder System coordinates conversion of loaded authored level data into a playable runtime level.
 
 It owns runtime construction flow.
 
