@@ -238,6 +238,10 @@ Progression Systems handle player-owned progression state and persistence of tha
 
 - Complete [done]
 
+### Framework MVP Plan
+
+- Complete [done]
+
 ### Core Board Systems
 
 - Grid System [done]
@@ -294,11 +298,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Framework Implementation
+Framework MVP Planning
 
 Current system:
 
-Framework MVP Slice preparation
+Drop Away minimum implementation slice and separate project structure planning
 
 Runtime Construction Systems remain future implementation scope.
 
