@@ -61,6 +61,62 @@ Each project can then be inspected, opened, built, and presented independently.
 
 ---
 
+# Repository Strategy
+
+Repository ownership should be explicit.
+
+Approved direction:
+
+```text
+PuzzleFramework
+-> separate repository
+
+DropAwayPrototype
+-> separate repository
+
+ColorBlockJamPrototype
+-> separate repository
+
+SkyRushPrototype
+-> separate repository
+
+HolePeoplePrototype
+-> separate repository
+
+BusJamPrototype
+-> separate repository
+```
+
+This means:
+
+* each prototype is both a separate Unity project and a separate repository
+* `PuzzleFramework` is its own repository
+* a local parent workspace folder may contain all repositories during development
+* the workspace folder is not the repository structure
+* repository separation exists to make framework reuse obvious
+
+Example local development workspace:
+
+```text
+PuzzlePortfolioWorkspace/
+├── PuzzleFramework/
+├── DropAwayPrototype/
+├── ColorBlockJamPrototype/
+├── SkyRushPrototype/
+├── HolePeoplePrototype/
+└── BusJamPrototype/
+```
+
+Where each folder is its own repository.
+
+This distinction matters because a local workspace convenience folder is not the same thing as one combined repository.
+
+The framework should remain independently inspectable and independently versioned.
+
+Each prototype should also remain independently inspectable and independently versioned.
+
+---
+
 # PuzzleFramework Repository Role
 
 `PuzzleFramework` should contain reusable framework code only.
@@ -228,6 +284,32 @@ Recommended workflow:
 This workflow is preferred because it proves the real consumption model early.
 
 It avoids the false confidence that comes from developing framework code only inside one giant local Unity project.
+
+---
+
+# Reuse Validation Rule
+
+DropAwayPrototype proves playability.
+
+A second prototype is required to prove framework reuse.
+
+The framework is not considered validated merely because Drop Away works.
+
+The second prototype exists to pressure-test framework abstractions.
+
+Reuse is considered proven only when another prototype can consume the framework without architectural redesign.
+
+Practical rule:
+
+```text
+Drop Away proves that the framework can support one real game.
+
+Color Block Jam (or another second prototype) proves that the framework abstractions are genuinely reusable rather than accidentally tailored to Drop Away.
+```
+
+This is one of the main reasons separate prototype repositories are preferred.
+
+They make reuse visible instead of implied.
 
 ---
 
