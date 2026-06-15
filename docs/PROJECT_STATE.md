@@ -230,6 +230,10 @@ Progression Systems handle player-owned progression state and persistence of tha
 
 - Complete [done]
 
+### Framework Architecture Diagram
+
+- Complete [done]
+
 ### Core Board Systems
 
 - Grid System [done]
@@ -286,11 +290,11 @@ Designing and documenting framework systems before implementation.
 
 Current category:
 
-Framework Architecture Diagram
+Implementation Roadmap
 
 Current system:
 
-High-level system relationship mapping
+Implementation phase planning
 
 Runtime Construction Systems remain future implementation scope.
 
@@ -298,11 +302,10 @@ Runtime Construction Systems remain future implementation scope.
 
 # Next Steps
 
-1. Framework Architecture Diagram
-2. Implementation Roadmap
-3. Framework Implementation
-4. Drop Away Prototype
-5. Remaining Prototypes
+1. Implementation Roadmap
+2. Framework Implementation
+3. Drop Away Prototype
+4. Remaining Prototypes
 
 Progression Systems are documented, but implementation remains future scope.
 
