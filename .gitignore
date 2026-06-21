@@ -17,12 +17,16 @@ ExportedObj/
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
 *.userprefs
 *.pidb
 *.booproj
+*-compile.log
+*-create.log
+*-ide-fix.log
 
 .DS_Store
 Thumbs.db
