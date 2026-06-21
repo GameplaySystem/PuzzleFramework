@@ -249,6 +249,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Content Foundation [done]
 - Grid System MVP foundation [done]
 - Cell Occupancy System MVP foundation [done]
+- Runtime Construction Validation foundation [done]
 
 ### Core Board Systems
 
@@ -310,9 +311,7 @@ Runtime Construction Systems
 
 Current system:
 
-Runtime Construction Foundation after Content and Core Board foundations
-
-Runtime Construction Systems remain future implementation scope.
+Minimal shared construction contracts after validation foundation
 
 ---
 
