@@ -201,7 +201,81 @@ Documentation should form a navigable dependency graph.
 - Comments should explain purpose, boundaries, assumptions, or invariants, not restate obvious line-by-line behavior.
 - Documentation inside scripts must remain consistent with the approved markdown architecture docs and must not silently redefine system responsibilities.
 
-## 9. Git And Commit Expectations
+## 9. Implementation Handoff Requirement
+
+After every implementation task, provide a maintainer-focused handoff.
+
+The handoff must explain the implementation clearly enough that the project owner can maintain and defend the code later.
+
+Documentation-only tasks may keep the simpler changed-files summary.
+
+Implementation tasks must include the full maintainer handoff.
+
+Every implementation handoff must include:
+
+### 1. What changed
+
+List changed files and summarize what each file now owns.
+
+### 2. Public contracts introduced
+
+List new public types, interfaces, methods, enums, or data structures.
+
+For each public contract explain:
+
+- why it exists
+- who is expected to use it
+- what should not use it
+
+### 3. Ownership boundaries preserved
+
+Explain how the implementation respects framework boundaries.
+
+Explicitly mention if the task avoided:
+
+- game-specific nouns
+- gameplay rules
+- presentation logic
+- persistence drift
+- runtime construction drift
+- service locator or singleton shortcuts
+
+### 4. Key implementation decisions
+
+Explain important code decisions and tradeoffs.
+
+Include:
+
+- why this structure was chosen
+- alternatives that were intentionally avoided
+- assumptions made
+
+### 5. Dependency impact
+
+Explain what other systems can now depend on this slice.
+
+Also explain what would break or become blocked if this slice were removed.
+
+### 6. What is intentionally not implemented
+
+List deferred items and why they were not included.
+
+### 7. Verification
+
+Report:
+
+- compile status
+- test status if any
+- manual verification performed
+- known limitations
+
+### 8. Suggested next step
+
+Recommend the next smallest implementation step.
+
+Do not jump ahead beyond the approved roadmap.
+
+## 10. Git And Commit Expectations
 
 - Do not commit changes automatically.
 - Show a summary or diff before any commit.
@@ -209,8 +283,11 @@ Documentation should form a navigable dependency graph.
 - Avoid mixing documentation restructuring, architecture changes, and implementation work in the same commit unless the user asked for that grouping.
 - Do not rewrite history, force-push, or clean unrelated changes without explicit permission.
 - Assume the worktree may contain user changes; do not revert unrelated work.
+- After the user explicitly approves or requests commit/push work, Codex should handle the remaining git workflow without repeated prompting.
+- Codex should choose the correct commit order, commit batches, and commit messages based on architectural boundaries and change scope.
+- Codex should push the approved commits when requested, while still excluding unrelated local changes from staging.
 
-## 10. What Codex Must Ask Approval For
+## 11. What Codex Must Ask Approval For
 
 Codex must ask approval before:
 
@@ -224,7 +301,7 @@ Codex must ask approval before:
 - creating branches, pushing, opening PRs, or performing remote git operations
 - deleting files or making destructive repository changes
 
-## 11. What Codex Must Never Do Without Explicit Permission
+## 12. What Codex Must Never Do Without Explicit Permission
 
 - Never make Framework depend on GameModules.
 - Never place game-specific nouns such as `Hole`, `Bus`, `Door`, `Stickman`, or `Brick` inside Framework code.
