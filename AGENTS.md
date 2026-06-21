@@ -53,7 +53,79 @@ Dependency direction:
 
 Game-specific nouns such as `Hole`, `Bus`, `Door`, `Stickman`, and `Brick` must not appear inside Framework code.
 
-## 4. Documentation Workflow
+## 4. Implementation Validation Rules
+
+When implementing framework systems, validation must remain inside the ownership boundary of the system being implemented unless a documented architecture decision explicitly overrides that rule.
+
+Examples:
+
+- Content Systems perform schema and persistence validation.
+- Runtime Construction Validation System performs build-safety validation.
+- Gameplay systems perform gameplay-rule validation.
+
+Do not move validation responsibilities between categories without an approved architecture change.
+
+### Validation Ownership Rule
+
+Allowed:
+
+- `LevelSaveLoad` validates JSON shape, required fields, serialization integrity, and basic schema correctness.
+
+Not allowed:
+
+- `LevelSaveLoad` validates runtime construction readiness.
+- `LevelSaveLoad` validates puzzle solvability.
+- `LevelSaveLoad` validates gameplay outcomes.
+
+### Duplicate Data Validation Rule
+
+Whenever authored data contains coordinate-based, identifier-based, or key-based collections, implementation should consider duplicate-entry validation.
+
+Examples:
+
+- duplicate board coordinates
+- duplicate ids
+- duplicate registration keys
+
+If duplicates are invalid for the owning system, validation should reject them explicitly rather than relying on downstream behavior.
+
+### Opaque Payload Rule
+
+Framework-owned systems must not inspect or interpret game-module payload content unless the architecture explicitly documents that responsibility.
+
+Allowed:
+
+- storing payload json
+- loading payload json
+- transporting payload data
+
+Not allowed:
+
+- interpreting `Hole` data
+- interpreting `Stickman` data
+- interpreting `Bus` data
+- interpreting `Door` data
+- interpreting puzzle-specific rules
+
+Framework transports payloads.
+
+Game modules interpret payloads.
+
+### Minimal Validation Principle
+
+Implement only the validation required by the ownership boundary.
+
+Do not expand validation into neighboring architectural categories simply because the data is available.
+
+Examples:
+
+- persistence validation should not become construction validation
+- construction validation should not become gameplay validation
+- gameplay validation should not become progression validation
+
+Each system validates only what it owns.
+
+## 5. Documentation Workflow
 
 - Read the relevant markdown specs before proposing or implementing a system.
 - Treat `docs/PROJECT_STATE.md` as the project status reference.
@@ -103,7 +175,7 @@ When creating a new system:
 
 Documentation should form a navigable dependency graph.
 
-## 5. Unity Project Rules
+## 6. Unity Project Rules
 
 - Do not modify Unity assets or scripts unless the user asks for code or content changes.
 - Do not modify Unity-generated folders such as `Library`, `Temp`, `Obj`, `Logs`, or `UserSettings`.
@@ -112,7 +184,7 @@ Documentation should form a navigable dependency graph.
 - Do not change project-wide Unity settings, package manifests, render pipeline settings, or input actions without approval unless the user explicitly requested that exact change.
 - Prefer changes inside intentional source locations, not generated or cached directories.
 
-## 6. Naming Conventions
+## 7. Naming Conventions
 
 - Use clear, literal names that match the docs.
 - Framework system names should stay generic: `GridSystem`, `CellOccupancySystem`, `ShapeSystem`, `InputSystem`, `DragMovementSystem`, `GridSnapSystem`, `PathfindingSystem`.
@@ -121,7 +193,15 @@ Documentation should form a navigable dependency graph.
 - Interfaces should use `I` prefixes, such as `ISelectable`, `IDraggable`, and `IClickable`.
 - Avoid introducing puzzle-specific nouns into framework namespaces, folders, classes, or interfaces.
 
-## 7. Git And Commit Expectations
+## 8. Code Documentation Rules
+
+- Code should be documented inside scripts well enough that a reviewer can understand ownership, intent, and data flow without reconstructing everything from scratch.
+- Public framework contracts should prefer XML documentation comments where useful, especially for interfaces, services, requests, results, and shared data models.
+- Non-obvious implementation logic should include concise intent-focused comments explaining why the code exists or what invariant it protects.
+- Comments should explain purpose, boundaries, assumptions, or invariants, not restate obvious line-by-line behavior.
+- Documentation inside scripts must remain consistent with the approved markdown architecture docs and must not silently redefine system responsibilities.
+
+## 9. Git And Commit Expectations
 
 - Do not commit changes automatically.
 - Show a summary or diff before any commit.
@@ -130,7 +210,7 @@ Documentation should form a navigable dependency graph.
 - Do not rewrite history, force-push, or clean unrelated changes without explicit permission.
 - Assume the worktree may contain user changes; do not revert unrelated work.
 
-## 8. What Codex Must Ask Approval For
+## 10. What Codex Must Ask Approval For
 
 Codex must ask approval before:
 
@@ -144,7 +224,7 @@ Codex must ask approval before:
 - creating branches, pushing, opening PRs, or performing remote git operations
 - deleting files or making destructive repository changes
 
-## 9. What Codex Must Never Do Without Explicit Permission
+## 11. What Codex Must Never Do Without Explicit Permission
 
 - Never make Framework depend on GameModules.
 - Never place game-specific nouns such as `Hole`, `Bus`, `Door`, `Stickman`, or `Brick` inside Framework code.
