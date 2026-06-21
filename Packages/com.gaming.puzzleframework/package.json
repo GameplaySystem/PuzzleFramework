@@ -1,0 +1,10 @@
+{
+  "name": "com.gaming.puzzleframework",
+  "version": "0.1.0",
+  "displayName": "Puzzle Framework",
+  "description": "Reusable game-agnostic framework package for grid-based puzzle prototypes.",
+  "unity": "6000.3",
+  "author": {
+    "name": "Gaming"
+  }
+}
