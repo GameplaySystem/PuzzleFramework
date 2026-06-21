@@ -242,6 +242,14 @@ Progression Systems handle player-owned progression state and persistence of tha
 
 - Complete [done]
 
+### Implementation
+
+- Framework package foundation [done]
+- Separate Drop The Man prototype setup [done]
+- Content Foundation [done]
+- Grid System MVP foundation [done]
+- Cell Occupancy System MVP foundation [done]
+
 ### Core Board Systems
 
 - Grid System [done]
@@ -294,15 +302,15 @@ Progression Systems handle player-owned progression state and persistence of tha
 
 # Current Focus
 
-Designing and documenting framework systems before implementation.
+Implementing the approved Framework MVP slice.
 
 Current category:
 
-Framework MVP Planning
+Runtime Construction Systems
 
 Current system:
 
-Drop Away minimum implementation slice and separate project structure planning
+Runtime Construction Foundation after Content and Core Board foundations
 
 Runtime Construction Systems remain future implementation scope.
 
@@ -329,7 +337,6 @@ Progression Systems are documented, but implementation remains future scope.
 - Should Door System be framework-level?
 - Should Visual Feedback remain framework-level or game-specific?
 - How should wall generation interact with doors?
-- Should occupancy be stored centrally or inside cells?
 
 ---
 
