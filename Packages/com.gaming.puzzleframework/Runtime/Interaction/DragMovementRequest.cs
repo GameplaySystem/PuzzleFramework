@@ -18,7 +18,9 @@ namespace PuzzleFramework.Interaction
             GridCoordinate? originalGridPosition,
             GridCoordinate? currentGridPosition,
             IReadOnlyList<GridCoordinate> footprintOffsets,
-            GridWorldLayout worldLayout)
+            GridWorldLayout worldLayout,
+            GridBoard gridBoard,
+            CellOccupancySystem cellOccupancySystem)
         {
             PointerWorldPosition = pointerWorldPosition;
             OriginalWorldPosition = originalWorldPosition;
@@ -27,6 +29,9 @@ namespace PuzzleFramework.Interaction
             CurrentGridPosition = currentGridPosition;
             FootprintOffsets = footprintOffsets ?? Array.Empty<GridCoordinate>();
             WorldLayout = worldLayout;
+            GridBoard = gridBoard ?? throw new ArgumentNullException(nameof(gridBoard));
+            CellOccupancySystem = cellOccupancySystem ??
+                                  throw new ArgumentNullException(nameof(cellOccupancySystem));
         }
 
         /// <summary>
@@ -64,5 +69,15 @@ namespace PuzzleFramework.Interaction
         /// Shared board world-layout values used for grid-aware drag conversion.
         /// </summary>
         public GridWorldLayout WorldLayout { get; }
+
+        /// <summary>
+        /// Structural board context used for framework-level drag checks.
+        /// </summary>
+        public GridBoard GridBoard { get; }
+
+        /// <summary>
+        /// Occupancy context used for framework-level drag validation.
+        /// </summary>
+        public CellOccupancySystem CellOccupancySystem { get; }
     }
 }
