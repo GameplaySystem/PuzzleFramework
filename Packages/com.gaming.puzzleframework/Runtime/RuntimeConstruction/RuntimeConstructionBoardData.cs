@@ -46,6 +46,7 @@ namespace PuzzleFramework.RuntimeConstruction
         /// <summary>
         /// Structural coordinates authored as blocked.
         /// Blocked remains board-state information only and does not become occupancy automatically.
+        /// A future builder should project this into runtime board metadata rather than occupancy state.
         /// </summary>
         public IReadOnlyList<GridCoordinate> BlockedCoordinates { get; }
     }

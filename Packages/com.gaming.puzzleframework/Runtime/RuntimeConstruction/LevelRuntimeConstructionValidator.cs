@@ -121,15 +121,15 @@ namespace PuzzleFramework.RuntimeConstruction
                 return false;
             }
 
-            GridBoard gridBoard;
             try
             {
                 // Grid construction is used here strictly as a build-safety probe so runtime
                 // construction can fail early before any builder or factory work begins.
-                gridBoard = new GridBoard(
+                _ = new GridBoard(
                     boardDefinition.Width,
                     boardDefinition.Height,
-                    structuralCoordinates);
+                    structuralCoordinates,
+                    blockedCoordinates);
             }
             catch (Exception exception)
             {
@@ -137,24 +137,6 @@ namespace PuzzleFramework.RuntimeConstruction
                     "InvalidStructuralBoard",
                     $"Board data cannot be constructed into a runtime grid: {exception.Message}",
                     null));
-                boardData = null;
-                return false;
-            }
-
-            for (int i = 0; i < blockedCoordinates.Count; i++)
-            {
-                GridCoordinate blockedCoordinate = blockedCoordinates[i];
-                if (!gridBoard.ContainsCell(blockedCoordinate))
-                {
-                    issues.Add(new RuntimeConstructionValidationIssue(
-                        "InvalidBlockedCell",
-                        $"Blocked coordinate {blockedCoordinate} does not map to a structural grid cell.",
-                        blockedCoordinate));
-                }
-            }
-
-            if (issues.Count > 0)
-            {
                 boardData = null;
                 return false;
             }

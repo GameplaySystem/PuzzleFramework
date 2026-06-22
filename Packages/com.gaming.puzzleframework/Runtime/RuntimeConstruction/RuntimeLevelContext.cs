@@ -27,6 +27,7 @@ namespace PuzzleFramework.RuntimeConstruction
 
         /// <summary>
         /// Runtime structural grid for the loaded level.
+        /// Blocked structural cells are exposed through the grid's cell metadata.
         /// </summary>
         public GridBoard GridBoard { get; }
 

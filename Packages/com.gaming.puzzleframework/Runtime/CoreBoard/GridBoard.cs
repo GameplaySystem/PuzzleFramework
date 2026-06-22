@@ -6,7 +6,7 @@ namespace PuzzleFramework.CoreBoard
 {
     /// <summary>
     /// Minimal runtime grid foundation for board dimensions, coordinate validation,
-    /// cell lookup, and orthogonal neighbor queries.
+    /// cell lookup, blocked-cell board metadata, and orthogonal neighbor queries.
     /// </summary>
     public sealed class GridBoard
     {
@@ -21,6 +21,15 @@ namespace PuzzleFramework.CoreBoard
         private readonly Dictionary<GridCoordinate, GridCell> _cellsByCoordinate;
 
         public GridBoard(int width, int height, IEnumerable<GridCoordinate> cellCoordinates)
+            : this(width, height, cellCoordinates, Array.Empty<GridCoordinate>())
+        {
+        }
+
+        public GridBoard(
+            int width,
+            int height,
+            IEnumerable<GridCoordinate> cellCoordinates,
+            IEnumerable<GridCoordinate> blockedCoordinates)
         {
             if (width <= 0)
             {
@@ -37,10 +46,17 @@ namespace PuzzleFramework.CoreBoard
                 throw new ArgumentNullException(nameof(cellCoordinates));
             }
 
+            if (blockedCoordinates == null)
+            {
+                throw new ArgumentNullException(nameof(blockedCoordinates));
+            }
+
             Width = width;
             Height = height;
-            _cellsByCoordinate = BuildCellLookup(cellCoordinates);
+            HashSet<GridCoordinate> blockedCoordinateSet = BuildBlockedCoordinateSet(blockedCoordinates);
+            _cellsByCoordinate = BuildCellLookup(cellCoordinates, blockedCoordinateSet);
             Cells = new ReadOnlyCollection<GridCell>(new List<GridCell>(_cellsByCoordinate.Values));
+            ValidateBlockedCoordinates(blockedCoordinateSet);
         }
 
         public int Width { get; }
@@ -80,6 +96,15 @@ namespace PuzzleFramework.CoreBoard
         }
 
         /// <summary>
+        /// Returns true when the structural cell exists and is authored as blocked.
+        /// Missing or inactive cells return false rather than throwing.
+        /// </summary>
+        public bool IsBlocked(GridCoordinate coordinate)
+        {
+            return _cellsByCoordinate.TryGetValue(coordinate, out GridCell cell) && cell.IsBlocked;
+        }
+
+        /// <summary>
         /// Returns orthogonally adjacent registered cells.
         /// This stays at structural adjacency only and does not decide traversability.
         /// </summary>
@@ -107,8 +132,35 @@ namespace PuzzleFramework.CoreBoard
             return neighbors;
         }
 
+        private HashSet<GridCoordinate> BuildBlockedCoordinateSet(
+            IEnumerable<GridCoordinate> blockedCoordinates)
+        {
+            HashSet<GridCoordinate> blockedCoordinateSet = new();
+
+            foreach (GridCoordinate coordinate in blockedCoordinates)
+            {
+                if (!IsWithinBounds(coordinate))
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(blockedCoordinates),
+                        $"Blocked cell coordinate {coordinate} is outside the declared board dimensions.");
+                }
+
+                // Duplicate blocked coordinates are rejected as grid-owned board metadata validation.
+                if (!blockedCoordinateSet.Add(coordinate))
+                {
+                    throw new ArgumentException(
+                        $"Grid contains duplicate blocked cell coordinate {coordinate}.",
+                        nameof(blockedCoordinates));
+                }
+            }
+
+            return blockedCoordinateSet;
+        }
+
         private Dictionary<GridCoordinate, GridCell> BuildCellLookup(
-            IEnumerable<GridCoordinate> cellCoordinates)
+            IEnumerable<GridCoordinate> cellCoordinates,
+            HashSet<GridCoordinate> blockedCoordinateSet)
         {
             Dictionary<GridCoordinate, GridCell> cellsByCoordinate = new();
 
@@ -123,7 +175,9 @@ namespace PuzzleFramework.CoreBoard
 
                 // Duplicate structural coordinates are rejected here because this is grid-owned
                 // board-shape validation, not occupancy or gameplay validation.
-                if (!cellsByCoordinate.TryAdd(coordinate, new GridCell(coordinate)))
+                if (!cellsByCoordinate.TryAdd(
+                        coordinate,
+                        new GridCell(coordinate, blockedCoordinateSet.Contains(coordinate))))
                 {
                     throw new ArgumentException(
                         $"Grid contains duplicate cell coordinate {coordinate}.",
@@ -132,6 +186,21 @@ namespace PuzzleFramework.CoreBoard
             }
 
             return cellsByCoordinate;
+        }
+
+        private void ValidateBlockedCoordinates(HashSet<GridCoordinate> blockedCoordinateSet)
+        {
+            foreach (GridCoordinate coordinate in blockedCoordinateSet)
+            {
+                if (_cellsByCoordinate.ContainsKey(coordinate))
+                {
+                    continue;
+                }
+
+                throw new ArgumentException(
+                    $"Blocked cell coordinate {coordinate} does not map to a registered structural cell.",
+                    "blockedCoordinates");
+            }
         }
     }
 }
