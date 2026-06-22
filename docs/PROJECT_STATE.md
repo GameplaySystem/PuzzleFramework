@@ -265,6 +265,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Timer runtime foundation [done]
 - Color runtime foundation [done]
 - Drop The Man MVP game-module requirements definition [done]
+- Drop The Man MVP rules definition [done]
 
 ### Core Board Systems
 
@@ -326,7 +327,7 @@ Drop The Man Prototype
 
 Current system:
 
-Prototype game-module rule-definition before runtime implementation
+Prototype runtime contracts after MVP rules definition
 
 ---
 
