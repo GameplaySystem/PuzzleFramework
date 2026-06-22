@@ -261,6 +261,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Board world-layout contract foundation [done]
 - Grid Snap runtime foundation [done]
 - Drag Movement runtime foundation [done]
+- Game State runtime foundation [done]
 
 ### Core Board Systems
 
@@ -318,11 +319,11 @@ Implementing the approved Framework MVP slice.
 
 Current category:
 
-Interaction Systems
+Runtime Flow Systems
 
 Current system:
 
-Interaction foundation review after concrete drag and snap slices
+Game State foundation review before timer slice
 
 ---
 
