@@ -262,6 +262,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Grid Snap runtime foundation [done]
 - Drag Movement runtime foundation [done]
 - Game State runtime foundation [done]
+- Timer runtime foundation [done]
 
 ### Core Board Systems
 
@@ -323,7 +324,7 @@ Runtime Flow Systems
 
 Current system:
 
-Game State foundation review before timer slice
+Timer foundation review before prototype game-module slice
 
 ---
 
