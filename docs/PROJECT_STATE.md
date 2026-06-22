@@ -256,6 +256,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Interaction capability contract foundation [done]
 - Input System intent-flow foundation [done]
 - Input target resolution and UI blocking contract foundation [done]
+- Drag Movement contract foundation [done]
 
 ### Core Board Systems
 
@@ -317,7 +318,7 @@ Interaction Systems
 
 Current system:
 
-Input System review after target-resolution and UI-blocking contract slice
+Drag Movement review after contract foundation slice
 
 ---
 
