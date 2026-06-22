@@ -15,12 +15,14 @@ namespace PuzzleFramework.Interaction
             Vector3 worldPosition,
             GridCoordinate? currentOriginCell,
             IReadOnlyList<GridCoordinate> footprintOffsets,
+            GridWorldLayout worldLayout,
             GridBoard gridBoard,
             CellOccupancySystem cellOccupancySystem)
         {
             WorldPosition = worldPosition;
             CurrentOriginCell = currentOriginCell;
             FootprintOffsets = footprintOffsets ?? Array.Empty<GridCoordinate>();
+            WorldLayout = worldLayout;
             GridBoard = gridBoard ?? throw new ArgumentNullException(nameof(gridBoard));
             CellOccupancySystem = cellOccupancySystem ??
                                   throw new ArgumentNullException(nameof(cellOccupancySystem));
@@ -41,6 +43,11 @@ namespace PuzzleFramework.Interaction
         /// Empty for single-cell snap.
         /// </summary>
         public IReadOnlyList<GridCoordinate> FootprintOffsets { get; }
+
+        /// <summary>
+        /// Shared board world-layout values used for world/grid conversion.
+        /// </summary>
+        public GridWorldLayout WorldLayout { get; }
 
         /// <summary>
         /// Structural board context used for framework-level snap checks.

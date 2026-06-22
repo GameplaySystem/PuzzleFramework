@@ -17,7 +17,8 @@ namespace PuzzleFramework.Interaction
             Vector3 currentWorldPosition,
             GridCoordinate? originalGridPosition,
             GridCoordinate? currentGridPosition,
-            IReadOnlyList<GridCoordinate> footprintOffsets)
+            IReadOnlyList<GridCoordinate> footprintOffsets,
+            GridWorldLayout worldLayout)
         {
             PointerWorldPosition = pointerWorldPosition;
             OriginalWorldPosition = originalWorldPosition;
@@ -25,6 +26,7 @@ namespace PuzzleFramework.Interaction
             OriginalGridPosition = originalGridPosition;
             CurrentGridPosition = currentGridPosition;
             FootprintOffsets = footprintOffsets ?? Array.Empty<GridCoordinate>();
+            WorldLayout = worldLayout;
         }
 
         /// <summary>
@@ -57,5 +59,10 @@ namespace PuzzleFramework.Interaction
         /// Empty for single-cell drag.
         /// </summary>
         public IReadOnlyList<GridCoordinate> FootprintOffsets { get; }
+
+        /// <summary>
+        /// Shared board world-layout values used for grid-aware drag conversion.
+        /// </summary>
+        public GridWorldLayout WorldLayout { get; }
     }
 }
