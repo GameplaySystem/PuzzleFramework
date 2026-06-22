@@ -263,6 +263,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drag Movement runtime foundation [done]
 - Game State runtime foundation [done]
 - Timer runtime foundation [done]
+- Color runtime foundation [done]
 
 ### Core Board Systems
 
@@ -320,11 +321,11 @@ Implementing the approved Framework MVP slice.
 
 Current category:
 
-Runtime Flow Systems
+Presentation Systems
 
 Current system:
 
-Timer foundation review before prototype game-module slice
+Color foundation review before prototype game-module slice
 
 ---
 
