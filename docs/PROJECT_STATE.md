@@ -253,6 +253,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Runtime Construction contract foundation [done]
 - Blocked cell runtime board metadata foundation [done]
 - Minimal concrete runtime builder foundation [done]
+- Interaction capability contract foundation [done]
 
 ### Core Board Systems
 
@@ -310,11 +311,11 @@ Implementing the approved Framework MVP slice.
 
 Current category:
 
-Runtime Construction Systems
+Interaction Systems
 
 Current system:
 
-Runtime Construction foundation review after minimal concrete builder slice
+Input capability foundation review after interaction contract slice
 
 ---
 
