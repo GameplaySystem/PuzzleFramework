@@ -259,6 +259,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drag Movement contract foundation [done]
 - Grid Snap contract foundation [done]
 - Board world-layout contract foundation [done]
+- Grid Snap runtime foundation [done]
 
 ### Core Board Systems
 
@@ -320,7 +321,7 @@ Interaction Systems
 
 Current system:
 
-World-layout review after shared board layout contract slice
+Drag Movement concrete foundation after grid snap runtime slice
 
 ---
 
