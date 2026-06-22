@@ -130,6 +130,7 @@ Each system validates only what it owns.
 - Read the relevant markdown specs before proposing or implementing a system.
 - Treat `docs/PROJECT_STATE.md` as the project status reference.
 - Treat each system markdown file under `docs/FrameworkSystems/**` as the design spec for that system.
+- After each meaningful implementation step, update `docs/PROJECT_STATE.md` so current progress, current focus, and next implementation context stay accurate for future handoff.
 - If a system is missing documentation, draft or request the missing spec before implementation.
 - If implementation pressure reveals a design gap, update or propose the docs first, then code after approval.
 - When implementation changes reveal that documentation is outdated, propose a documentation update in the same task summary.
