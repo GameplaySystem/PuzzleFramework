@@ -216,6 +216,12 @@ Examples of game-specific rules:
 * can this bus pick up this passenger
 * is the selected object allowed to complete the level
 
+Game modules may still provide additional pass or fail placement constraints through a separate coordinator or query layer.
+
+In that setup, the Grid Snap System consumes only the validity outcome needed for placement flow.
+
+It still does not interpret puzzle-specific meaning itself.
+
 ---
 
 # Occupancy Rule
@@ -348,6 +354,7 @@ Framework ownership:
 Game module ownership:
 
 * whether a valid snap satisfies puzzle rules
+* whether a puzzle-specific target cell is enterable for a specific object
 * whether a snapped object exits, collects, boards, or completes something
 * any puzzle-specific consequences after snap resolution
 

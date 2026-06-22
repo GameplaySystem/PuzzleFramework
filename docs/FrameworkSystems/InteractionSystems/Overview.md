@@ -177,6 +177,7 @@ Game module ownership:
 
 * puzzle-specific object meaning
 * whether an interaction is desirable in puzzle terms
+* puzzle-specific enterability rules layered on top of framework placement checks
 * collection rules
 * win or lose meaning
 * puzzle-specific consequences after interaction

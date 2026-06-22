@@ -369,6 +369,11 @@ Examples:
 * Resource Processing Systems answer queue, buffer, and capacity mechanics
 * Runtime Flow Systems answer lifecycle and time facts
 * game modules decide what those facts mean for the puzzle
+* game modules may add puzzle-specific enterability checks on top of structural board truth without moving that meaning into framework systems
+
+Physics, interpolation, and other feel-oriented presentation layers may visualize or smooth gameplay.
+
+They should not become the authoritative source of puzzle truth.
 
 Presentation reacts to truth.
 

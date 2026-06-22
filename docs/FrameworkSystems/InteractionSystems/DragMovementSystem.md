@@ -205,6 +205,12 @@ Examples of game-specific rules:
 
 Those rules belong to game modules.
 
+Game modules may still provide additional pass or fail movement constraints through a separate coordinator or query layer.
+
+In that setup, the Drag Movement System consumes only a framework-safe validity answer.
+
+It still does not interpret puzzle-specific meaning itself.
+
 ---
 
 # Occupancy Rule
@@ -364,7 +370,7 @@ The Drag Movement System handles:
 Game-specific Drop Away logic handles:
 
 * matching stickman collection
-* wrong-color blocking
+* color-based entry blocking for non-matching targets
 * hole capacity
 * win or loss rules
 
@@ -446,7 +452,7 @@ The following features can be added later:
 * drag ghost preview
 * invalid cell highlight
 * custom movement constraints
-* physics-based dragging
+* physics-based dragging or smoothing for feel without changing gameplay authority
 * multi-touch dragging
 * editor-only drag modes
 * tutorial-controlled drag locks

@@ -207,7 +207,9 @@ Required for board structure.
 `Cell Occupancy System`
 
 Reason:
-Required for placement checks, movement validity, and collection-space truth.
+Required for placement checks and movement validity.
+
+For the first `Drop The Man` slice, collectible targets may still be tracked separately from structural occupancy when puzzle rules require a cell to stay structurally enterable.
 
 ### Deferred
 
@@ -447,7 +449,7 @@ This is the first player-facing interaction layer needed to move holes around th
 Implement:
 
 * matching collection
-* wrong interaction rejection where needed
+* wrong-color entry blocking where needed
 * hole-specific gameplay logic
 * win or lose evaluation
 
