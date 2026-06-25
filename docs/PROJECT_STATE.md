@@ -275,6 +275,8 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man movement and collection rules spec [done]
 - Drop The Man movement coordinator design spec [done]
 - Drop The Man swept footprint helper foundation [done]
+- Shape footprint runtime foundation [done]
+- Drop The Man movement coordinator foundation [done]
 
 ### Core Board Systems
 
@@ -336,7 +338,7 @@ Drop The Man Prototype
 
 Current system:
 
-Prototype rule coordinator planning after swept footprint helper foundation
+Prototype release snap and completion-flow planning after movement coordinator foundation
 
 ---
 

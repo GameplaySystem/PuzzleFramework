@@ -332,28 +332,23 @@ These are worth remembering but do not require action before the next prototype 
 
 * no reusable visual feedback layer exists yet
 * timer start and stop hookup to actual gameplay state is not implemented yet
-* the swept footprint helper foundation now exists, but it is not wired into a gameplay rule coordinator yet
-* wrong-color entry blocking is documented but not yet wired into a prototype rule coordinator
-* drag-time matching collection is documented but not yet wired into a prototype rule coordinator
-* shape-based capacity completion is documented but not yet wired into a prototype rule coordinator
-* the dedicated movement and collection rules spec now exists, but implementation has not been reconciled against it yet
+* the prototype movement coordinator now applies swept-footprint blocking and drag-time collection, but it is not yet connected to a live drag-session owner
+* shape-based fill and immediate `Full` interruption are now wired, but full-hole closing and completed removal sequencing are not yet connected
+* release-time snap and multi-cell occupancy commit for moved holes are not yet wired on top of the new footprint model
 * win and lose evaluation are not yet wired into `GameStateSystem`
+* timer-vs-final-completion terminal guarding is designed but not yet implemented in prototype runtime flow
 
 ---
 
 ## Recommended Next Checkpoint
 
-Before implementing scene objects or presentation reactions, complete the smallest prototype rule coordinator that:
+Before implementing scene objects or presentation reactions, complete the smallest runtime orchestration slice that:
 
-* follows `DropAwayPrototype/docs/DropTheManMovementAndCollectionRules.md` as the detailed gameplay source of truth
-* consumes the swept footprint helper instead of final-position-only validation
-* applies prototype-owned entry blocking for wrong-color target cells during interaction validation
-* evaluates drag-time cell entry or overlap against target color identity
-* evaluates multi-cell footprint behavior against shape-based capacity assumptions
-* applies matching collection during drag
-* stops and locks a hole immediately when it reaches full capacity
-* coordinates hole completion sequencing before requesting win when appropriate
+* drives the new movement coordinator from an actual drag-session owner
+* updates release-time snap and committed occupancy for moved multi-cell holes
+* coordinates full-hole closing and completed removal sequencing after drag-time capacity fill
 * requests `Won` or `Lost` through `GameStateSystem`
 * connects timer expiry to the prototype lose rule
+* applies the designed first-terminal-wins guard once outcome routing is added
 
 After that slice, run another context check and update this watchlist.
