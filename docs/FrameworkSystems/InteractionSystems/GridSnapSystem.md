@@ -355,7 +355,8 @@ Game module ownership:
 
 * whether a valid snap satisfies puzzle rules
 * whether a puzzle-specific target cell is enterable for a specific object
-* whether a snapped object exits, collects, boards, or completes something
+* whether a moved object collects or triggers another puzzle event during interaction
+* whether a snapped object completes something after release
 * any puzzle-specific consequences after snap resolution
 
 Framework owns alignment and validation.

@@ -352,6 +352,10 @@ Framework owns preview and generic constraints.
 
 Game modules own meaning.
 
+For some games, collection or other puzzle outcomes may happen during drag rather than on release.
+
+That timing is still prototype-owned rule meaning, not framework drag ownership.
+
 ---
 
 # Example Use Cases
@@ -369,6 +373,7 @@ The Drag Movement System handles:
 
 Game-specific Drop Away logic handles:
 
+* color-based cell enterability during drag
 * matching stickman collection
 * color-based entry blocking for non-matching targets
 * hole capacity

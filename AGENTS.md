@@ -133,6 +133,7 @@ Each system validates only what it owns.
 - After each meaningful implementation step, update `docs/PROJECT_STATE.md` so current progress, current focus, and next implementation context stay accurate for future handoff.
 - After each implementation step, update `docs/IMPLEMENTATION_WATCHLIST.md` with any newly discovered caveats, open questions, risks, or follow-up checks that should survive into later handoffs.
 - When a watchlist item is resolved by owner feedback or documentation updates, update that item directly so the watchlist does not keep stale open concerns.
+- When a critical gameplay or interaction rule assumption is corrected, disputed, or discovered to be misunderstood, record it in `docs/CRITICAL_RULE_CLARIFICATIONS.md` and update the affected design documents in the same task.
 - If a system is missing documentation, draft or request the missing spec before implementation.
 - If implementation pressure reveals a design gap, update or propose the docs first, then code after approval.
 - When implementation changes reveal that documentation is outdated, propose a documentation update in the same task summary.

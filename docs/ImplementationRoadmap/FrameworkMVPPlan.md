@@ -211,20 +211,10 @@ Required for placement checks and movement validity.
 
 For the first `Drop The Man` slice, collectible targets may still be tracked separately from structural occupancy when puzzle rules require a cell to stay structurally enterable.
 
-### Deferred
-
 `Shape System`
 
-Status:
-Conditional
-
-Planning decision:
-
-* If the first playable Drop Away slice uses only single-cell holes, `ShapeSystem` remains deferred.
-* If the first playable Drop Away slice includes multi-cell holes, `ShapeSystem` becomes required for MVP.
-
 Reason:
-Multi-cell holes are part of the approved long-term Drop Away design and may require `ShapeSystem` earlier than other deferred systems.
+Required because the first playable `Drop The Man` slice includes multi-cell holes with footprint-driven behavior.
 
 `Wall Generation System`
 
@@ -269,11 +259,9 @@ Not required for playable Drop Away.
 `Capacity System`
 
 Reason:
-The first playable Drop Away slice can function without hole capacity limits.
+Prototype-level hole capacity behavior is required for the first playable `Drop The Man` slice.
 
-For MVP, drag, snap, matching collection, and win or lose flow can be proven without introducing count-limit mechanics.
-
-If the chosen MVP ruleset later depends on hole capacity to make the slice function correctly, this decision can be revisited.
+However, reusable framework `CapacitySystem` generalization is still deferred because current capacity meaning is tightly coupled to prototype hole shapes and close or disappear behavior.
 
 `Queue System`
 
@@ -448,8 +436,9 @@ This is the first player-facing interaction layer needed to move holes around th
 
 Implement:
 
-* matching collection
+* drag-time matching collection
 * wrong-color entry blocking where needed
+* shape-based capacity completion
 * hole-specific gameplay logic
 * win or lose evaluation
 
@@ -507,9 +496,9 @@ Load level
     ->
 Drag hole
     ->
-Snap hole
+Collect matching stickmen during drag
     ->
-Collect matching stickmen
+Release and snap hole for alignment
     ->
 Win or Lose
 ```
@@ -563,9 +552,10 @@ Framework MVP is complete when all of the following are true:
 * `DropAwayPrototype` references `PuzzleFramework` locally
 * runtime state can be built from authored level data
 * a hole can be dragged
-* a hole can be snapped to valid board positions
+* same-color targets can be collected during drag
 * occupancy validation prevents invalid placement
-* matching stickmen can be collected
+* wrong-color targets block drag-time entry
+* a hole can be snapped to valid board positions on release
 * timer-driven lose flow works if the level uses a timer
 * win flow works
 * lose flow works

@@ -229,35 +229,38 @@ Recommended follow-up:
 
 ---
 
-### 6. Hole capacity is still unresolved as a gameplay pressure point
+### 6. Hole capacity is now a confirmed MVP prototype rule
 
 Status:
 
-* Monitor
+* Accepted Decision
 
 Why it matters:
 
-* the MVP plan explicitly defers capacity unless the first playable ruleset proves it necessary
-* current prototype rules assume no capacity limits
+* the first playable `Drop The Man` slice depends on holes filling up, closing, and disappearing
+* old planning assumptions that deferred capacity for MVP are no longer safe
 
-Risk:
+Resolved decision:
 
-* playability may turn out too trivial or level design may become constrained without a limit mechanic
+* prototype-level capacity behavior is required for `DropTheMan` MVP
+* hole capacity is shape-based for MVP
+* holes of the same color are interchangeable collectors for that color
+* per-color authored collectible counts are expected to match provided hole capacity totals
+* broad framework `CapacitySystem` generalization still remains deferred until later cross-game pressure proves it
 
 Owner decision:
 
-* capacity pressure is likely to matter across several target games
-* before deciding whether more capacity behavior belongs in the framework, perform a cross-game capacity audit
+* accepted
 
 Current interpretation:
 
-* still defer capacity for `DropTheMan` MVP
-* evaluate future capacity needs across the target games to determine whether the abstraction is truly shared or remains puzzle-specific
+* require prototype capacity behavior now
+* keep reusable framework capacity generalization deferred for now
 
 Recommended follow-up:
 
-* do not implement `CapacitySystem` for `DropTheMan` yet
-* add a future checkpoint to compare capacity requirements across the target games before promoting more of that behavior into framework code
+* treat `ShapeSystem` as required for the first playable `DropTheMan` slice
+* keep hole-capacity meaning in prototype code until later reuse pressure is proven
 
 ---
 
@@ -307,8 +310,8 @@ Resolved decision:
 
 * a wrong-color stickman cell is not enterable for that hole
 * during drag, movement should stop at the last valid position instead of allowing the hole to overlap the wrong-color cell
-* during snap evaluation, that target coordinate should remain invalid for that hole
-* matching collection still happens only after a successful snap to a color-compatible target
+* matching collection happens during drag when the hole enters or overlaps a same-color target cell
+* snap remains a release-time alignment concern rather than the owner of collection timing
 * gameplay truth should come from prototype-owned rule or query logic, not from physics-authoritative collider resolution
 
 Owner decision:
@@ -319,7 +322,7 @@ Owner decision:
 Recommended follow-up:
 
 * keep prototype rule docs aligned with entry-blocking behavior
-* when implementing prototype rule coordination, keep the rule in prototype-owned interaction or rule coordination rather than moving color meaning into framework drag or snap systems
+* keep drag-time collection and drag-time enterability in prototype-owned rule coordination rather than moving color meaning into framework drag or snap systems
 
 ---
 
@@ -329,7 +332,11 @@ These are worth remembering but do not require action before the next prototype 
 
 * no reusable visual feedback layer exists yet
 * timer start and stop hookup to actual gameplay state is not implemented yet
+* the swept footprint helper foundation now exists, but it is not wired into a gameplay rule coordinator yet
 * wrong-color entry blocking is documented but not yet wired into a prototype rule coordinator
+* drag-time matching collection is documented but not yet wired into a prototype rule coordinator
+* shape-based capacity completion is documented but not yet wired into a prototype rule coordinator
+* the dedicated movement and collection rules spec now exists, but implementation has not been reconciled against it yet
 * win and lose evaluation are not yet wired into `GameStateSystem`
 
 ---
@@ -338,10 +345,14 @@ These are worth remembering but do not require action before the next prototype 
 
 Before implementing scene objects or presentation reactions, complete the smallest prototype rule coordinator that:
 
-* consumes snap outcomes
+* follows `DropAwayPrototype/docs/DropTheManMovementAndCollectionRules.md` as the detailed gameplay source of truth
+* consumes the swept footprint helper instead of final-position-only validation
 * applies prototype-owned entry blocking for wrong-color target cells during interaction validation
-* checks stickman coordinate overlap after successful snap
-* applies matching collection
+* evaluates drag-time cell entry or overlap against target color identity
+* evaluates multi-cell footprint behavior against shape-based capacity assumptions
+* applies matching collection during drag
+* stops and locks a hole immediately when it reaches full capacity
+* coordinates hole completion sequencing before requesting win when appropriate
 * requests `Won` or `Lost` through `GameStateSystem`
 * connects timer expiry to the prototype lose rule
 

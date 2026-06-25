@@ -370,6 +370,7 @@ Examples:
 * Runtime Flow Systems answer lifecycle and time facts
 * game modules decide what those facts mean for the puzzle
 * game modules may add puzzle-specific enterability checks on top of structural board truth without moving that meaning into framework systems
+* game modules may trigger collection or state changes during drag before release-time snap alignment
 
 Physics, interpolation, and other feel-oriented presentation layers may visualize or smooth gameplay.
 
