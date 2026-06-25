@@ -334,7 +334,7 @@ These are worth remembering but do not require action before the next prototype 
 * timer start and stop hookup to actual gameplay state is not implemented yet
 * the prototype movement coordinator is now connected through a narrow drag-session owner, but duplicate pointer-sample prevention is still a caller contract until scene/input integration can provide a stable update token or equivalent guard
 * shape-based fill and immediate `Full` interruption are now wired, but full-hole closing and completed removal sequencing are not yet connected
-* release-time snap and multi-cell occupancy commit for moved holes are not yet wired on top of the new footprint model
+* release-time snap and multi-cell occupancy commit are now wired for non-full holes, but full-hole release bypass, closing, completion, and outcome routing are still separate follow-up work
 * win and lose evaluation are not yet wired into `GameStateSystem`
 * timer-vs-final-completion terminal guarding is designed but not yet implemented in prototype runtime flow
 

@@ -278,6 +278,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Shape footprint runtime foundation [done]
 - Drop The Man movement coordinator foundation [done]
 - Drop The Man drag-session owner foundation [done]
+- Drop The Man release snap and occupancy commit foundation [done]
 
 ### Core Board Systems
 
@@ -339,7 +340,7 @@ Drop The Man Prototype
 
 Current system:
 
-Prototype release snap and occupancy-commit planning after drag-session owner foundation
+Prototype full-hole completion-flow planning after release snap and occupancy-commit foundation
 
 ---
 
