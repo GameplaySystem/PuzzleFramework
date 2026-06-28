@@ -335,9 +335,9 @@ These are worth remembering but do not require action before the next prototype 
 * the prototype movement coordinator is now connected through a narrow drag-session owner, but duplicate pointer-sample prevention is still a caller contract until scene/input integration can provide a stable update token or equivalent guard
 * shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
 * release-time snap and multi-cell occupancy commit are now wired for non-full holes, and full-hole release bypass with stale committed-occupancy cleanup is now wired, but outcome routing is still a separate follow-up work
-* current prototype docs describe win both as all stickmen collected and as all required holes completed; the new full-hole completion-flow design intentionally exposes only a `hole completed` fact, so outcome-routing implementation should reconcile the final win predicate before wiring `GameStateSystem`
-* win and lose evaluation are not yet wired into `GameStateSystem`
-* timer-vs-final-completion terminal guarding is designed but not yet implemented in prototype runtime flow
+* the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
+* prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, but it is not yet wired to scene flow or actual timer advancement
+* timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router, but it is not yet exercised by scene/input/timer integration
 
 ---
 
@@ -345,9 +345,8 @@ These are worth remembering but do not require action before the next prototype 
 
 Before implementing scene objects or presentation reactions, complete the smallest runtime orchestration slice that:
 
-* reconciles the final prototype win predicate in docs before outcome wiring
-* requests `Won` or `Lost` through `GameStateSystem`
-* connects timer expiry to the prototype lose rule
-* applies the designed first-terminal-wins guard once outcome routing is added
+* wires successful full-hole completion results into the prototype outcome router
+* connects timer expiry facts into the prototype outcome router
+* starts and advances the timer from the intended gameplay flow
 
 After that slice, run another context check and update this watchlist.
