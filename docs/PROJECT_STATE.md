@@ -283,6 +283,8 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man full-hole completion-flow foundation [done]
 - Drop The Man win-predicate reconciliation and outcome-routing design [done]
 - Drop The Man outcome router foundation [done]
+- Drop The Man runtime integration / playable scene wiring design [done]
+- Drop The Man runtime integration foundation [done]
 
 ### Core Board Systems
 
@@ -344,7 +346,7 @@ Drop The Man Prototype
 
 Current system:
 
-Prototype scene/timer wiring planning after outcome router foundation
+Prototype playable scene adapter planning after runtime integration foundation
 
 ---
 

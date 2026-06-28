@@ -334,19 +334,22 @@ These are worth remembering but do not require action before the next prototype 
 * timer start and stop hookup to actual gameplay state is not implemented yet
 * the prototype movement coordinator is now connected through a narrow drag-session owner, but duplicate pointer-sample prevention is still a caller contract until scene/input integration can provide a stable update token or equivalent guard
 * shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
-* release-time snap and multi-cell occupancy commit are now wired for non-full holes, and full-hole release bypass with stale committed-occupancy cleanup is now wired, but outcome routing is still a separate follow-up work
+* release-time snap and multi-cell occupancy commit are now wired for non-full holes, and full-hole release bypass with stale committed-occupancy cleanup is now wired, but scene/input integration is still a separate follow-up work
 * the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
-* prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, but it is not yet wired to scene flow or actual timer advancement
-* timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router, but it is not yet exercised by scene/input/timer integration
+* prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, and the runtime integration foundation can route full-hole completion and timer-expired facts into it, but no Unity scene adapter is wired yet
+* timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router and reachable through the runtime controller, but it is not yet exercised by real scene/input/timer MonoBehaviour wiring
+* the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, view adapter contracts, world-position drag orchestration, and timer-expiry handoff, but no scene, prefab, camera, or input adapter implementation exists yet
 
 ---
 
 ## Recommended Next Checkpoint
 
-Before implementing scene objects or presentation reactions, complete the smallest runtime orchestration slice that:
+Before implementing scene objects or presentation reactions, complete the smallest playable scene adapter slice that:
 
-* wires successful full-hole completion results into the prototype outcome router
-* connects timer expiry facts into the prototype outcome router
-* starts and advances the timer from the intended gameplay flow
+* creates simple pre-placed hole and stickman view components implementing the runtime adapter contracts
+* adds a narrow Unity input adapter that performs hit-test and screen-to-world conversion, then calls the runtime controller once per accepted pointer sample
+* wires a dev-only level source and already-built runtime model into the prototype bootstrap path
+* advances the optional countdown timer from Unity update while `GameState.Playing`
+* keeps animation, prefab spawning, polished UI, and progression out of the slice
 
 After that slice, run another context check and update this watchlist.
