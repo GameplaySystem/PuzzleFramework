@@ -279,6 +279,8 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man movement coordinator foundation [done]
 - Drop The Man drag-session owner foundation [done]
 - Drop The Man release snap and occupancy commit foundation [done]
+- Drop The Man full-hole completion-flow design [done]
+- Drop The Man full-hole completion-flow foundation [done]
 
 ### Core Board Systems
 
@@ -340,7 +342,7 @@ Drop The Man Prototype
 
 Current system:
 
-Prototype full-hole completion-flow planning after release snap and occupancy-commit foundation
+Prototype outcome-routing planning after full-hole completion foundation
 
 ---
 

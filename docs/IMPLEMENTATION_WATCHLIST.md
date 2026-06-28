@@ -333,8 +333,9 @@ These are worth remembering but do not require action before the next prototype 
 * no reusable visual feedback layer exists yet
 * timer start and stop hookup to actual gameplay state is not implemented yet
 * the prototype movement coordinator is now connected through a narrow drag-session owner, but duplicate pointer-sample prevention is still a caller contract until scene/input integration can provide a stable update token or equivalent guard
-* shape-based fill and immediate `Full` interruption are now wired, but full-hole closing and completed removal sequencing are not yet connected
-* release-time snap and multi-cell occupancy commit are now wired for non-full holes, but full-hole release bypass, closing, completion, and outcome routing are still separate follow-up work
+* shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
+* release-time snap and multi-cell occupancy commit are now wired for non-full holes, and full-hole release bypass with stale committed-occupancy cleanup is now wired, but outcome routing is still a separate follow-up work
+* current prototype docs describe win both as all stickmen collected and as all required holes completed; the new full-hole completion-flow design intentionally exposes only a `hole completed` fact, so outcome-routing implementation should reconcile the final win predicate before wiring `GameStateSystem`
 * win and lose evaluation are not yet wired into `GameStateSystem`
 * timer-vs-final-completion terminal guarding is designed but not yet implemented in prototype runtime flow
 
@@ -344,9 +345,7 @@ These are worth remembering but do not require action before the next prototype 
 
 Before implementing scene objects or presentation reactions, complete the smallest runtime orchestration slice that:
 
-* drives the new movement coordinator from an actual drag-session owner
-* updates release-time snap and committed occupancy for moved multi-cell holes
-* coordinates full-hole closing and completed removal sequencing after drag-time capacity fill
+* reconciles the final prototype win predicate in docs before outcome wiring
 * requests `Won` or `Lost` through `GameStateSystem`
 * connects timer expiry to the prototype lose rule
 * applies the designed first-terminal-wins guard once outcome routing is added
