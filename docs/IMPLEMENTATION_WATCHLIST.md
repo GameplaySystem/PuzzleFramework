@@ -339,6 +339,7 @@ These are worth remembering but do not require action before the next prototype 
 * prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, and the runtime integration foundation can route full-hole completion and timer-expired facts into it, but no Unity scene adapter is wired yet
 * timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router and reachable through the runtime controller, but it is not yet exercised by real scene/input/timer MonoBehaviour wiring
 * the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, view adapter contracts, world-position drag orchestration, and timer-expiry handoff, but no scene, prefab, camera, or input adapter implementation exists yet
+* the playable scene adapter design now defines pre-placed MonoBehaviour view adapters, authored runtime id mapping, pointer hit-test ownership, pointer screen-to-world conversion ownership, timer `Update()` forwarding, and terminal input shutdown, but no scene adapter code exists yet
 
 ---
 
@@ -351,5 +352,6 @@ Before implementing scene objects or presentation reactions, complete the smalle
 * wires a dev-only level source and already-built runtime model into the prototype bootstrap path
 * advances the optional countdown timer from Unity update while `GameState.Playing`
 * keeps animation, prefab spawning, polished UI, and progression out of the slice
+* preserves the design rule that pointer conversion and hit-testing stay in the scene adapter, while gameplay authority stays in `DropTheManRuntimeController` and existing runtime services
 
 After that slice, run another context check and update this watchlist.
