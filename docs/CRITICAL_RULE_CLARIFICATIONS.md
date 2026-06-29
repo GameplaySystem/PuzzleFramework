@@ -49,15 +49,16 @@ Clarified rule:
 * the important gameplay question is whether the moving hole may enter the next cell during drag
 * same-color collectible cells are enterable
 * wrong-color collectible cells are not enterable
-* collection happens during drag when the hole enters or overlaps a same-color collectible cell
+* collection ownership stays in the drag-time prototype rule path when the hole reaches a same-color collectible cell
 * snap happens only on release for final grid alignment or visual settling
 * snap does not own collection timing
 * snap does not own wrong-color rejection
+* updated collection presentation timing may split drag-time collection into reservation, visual trigger, presentation completion, and capacity fill
 
 Architecture consequence:
 
 * framework drag and board systems still answer structural validity
-* prototype rule logic answers color-based enterability and drag-time collection meaning
+* prototype rule logic answers color-based enterability, drag-time reservation, and collection timing meaning
 * release-time snap stays a framework alignment concern rather than the owner of prototype collection behavior
 
 Implementation caution:
@@ -73,6 +74,7 @@ Affected docs:
 * `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
 * `DropAwayPrototype/docs/DropTheManMVPRules.md`
 * `DropAwayPrototype/docs/DropTheManMVPGameModuleRequirements.md`
+* `DropAwayPrototype/docs/DropTheManCollectionPresentationTimingDesign.md`
 
 ---
 
@@ -173,13 +175,14 @@ Date:
 
 Clarified rule:
 
-* immediate non-blocking collection acceptance is now explicit
+* same-color collection reservation/acceptance and non-blocking behavior is now explicit
 * collectible states and hole states are now explicit
 * over-capacity handling is now explicit
 * footprint-based movement validation is now explicit
 * deterministic swept traversal is now explicit
 * deterministic diagonal handling is now explicit
 * final win gate is now explicit
+* newer collection presentation timing design splits immediate gameplay reservation from visual trigger, presentation completion, and capacity fill
 
 Architecture consequence:
 
@@ -193,6 +196,7 @@ Implementation caution:
 Affected docs:
 
 * `DropAwayPrototype/docs/DropTheManMovementAndCollectionRules.md`
+* `DropAwayPrototype/docs/DropTheManCollectionPresentationTimingDesign.md`
 
 ---
 
