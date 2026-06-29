@@ -341,6 +341,10 @@ These are worth remembering but do not require action before the next prototype 
 * the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, view adapter contracts, world-position drag orchestration, and timer-expiry handoff, but no scene, prefab, camera, or input adapter implementation exists yet
 * the playable scene adapter code now provides pre-placed MonoBehaviour view adapters, authored runtime id mapping, pointer hit-test ownership, pointer screen-to-world conversion ownership, timer `Update()` forwarding, and terminal input shutdown, but it is not yet wired into an actual Unity scene
 * the dev-only scene bootstrapper now creates a minimal 5x5 Drop The Man level definition, builds the framework runtime context and prototype runtime model, and initializes the scene controller, but the actual Unity test scene still must be wired manually
+* `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
+* first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
+* Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
+* `DropTheManCollectionPresentationTimingDesign.md` now proposes splitting immediate same-color overlap into reservation, visual trigger threshold, presentation completion, and capacity fill; older rules docs still describe immediate `Collecting` and immediate fill and must be reconciled before implementation
 
 ---
 
@@ -352,7 +356,11 @@ Before implementing scene polish or presentation reactions, manually wire the fi
 * a pre-placed stickman view uses runtime id `stickman_red_01`
 * optional custom blocker tests use an explicitly authored dev stickman id such as `stickman_blue_blocker_01`
 * colliders and layers allow `DropTheManPointerInputAdapter` to hit-test hole views
-* the board plane and cell size match the dev bootstrapper's serialized world layout fields
+* the pointer input adapter uses a horizontal board plane normal `(0, 1, 0)` and the dev bootstrapper uses board axes `(1, 0, 0)` and `(0, 0, 1)`
+* the board plane, board origin, and cell size match the dev bootstrapper's serialized world layout fields
+* collection hides the `stickman_red_01` visual and completion hides or disables the completed `hole_red_01` placeholder without adding animation or scene-object destruction
+* dragging near board bounds keeps runtime bounds respected while preserving the grab offset between pointer and hole center
+* edge dragging allows sliding along the board boundary without letting any footprint cell leave the board
 * runtime drag, collection, full-hole completion, release, and optional countdown loss can be observed without adding animation, prefab spawning, polished UI, or framework changes
 
 After that slice, run another context check and update this watchlist.
