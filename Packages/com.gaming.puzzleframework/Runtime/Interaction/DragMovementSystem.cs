@@ -14,8 +14,9 @@ namespace PuzzleFramework.Interaction
         /// <inheritdoc />
         public DragMovementResult Evaluate(DragMovementRequest request)
         {
-            GridCoordinate resolvedOrigin = WorldToGrid(request.PointerWorldPosition, request.WorldLayout);
-            Vector3 previewWorldPosition = GridToWorld(resolvedOrigin, request.WorldLayout);
+            GridCoordinate resolvedOrigin =
+                request.WorldLayout.WorldToNearestGridCoordinate(request.PointerWorldPosition);
+            Vector3 previewWorldPosition = request.WorldLayout.GridToWorldPosition(resolvedOrigin);
 
             if (!TryValidateFootprint(
                     request,
@@ -29,26 +30,6 @@ namespace PuzzleFramework.Interaction
             }
 
             return DragMovementResult.Valid(previewWorldPosition, resolvedOrigin);
-        }
-
-        private static GridCoordinate WorldToGrid(
-            Vector3 worldPosition,
-            GridWorldLayout worldLayout)
-        {
-            Vector3 relativePosition = worldPosition - worldLayout.BoardOrigin;
-            int x = Mathf.RoundToInt(relativePosition.x / worldLayout.CellSize.x);
-            int y = Mathf.RoundToInt(relativePosition.y / worldLayout.CellSize.y);
-            return new GridCoordinate(x, y);
-        }
-
-        private static Vector3 GridToWorld(
-            GridCoordinate coordinate,
-            GridWorldLayout worldLayout)
-        {
-            return new Vector3(
-                worldLayout.BoardOrigin.x + (coordinate.X * worldLayout.CellSize.x),
-                worldLayout.BoardOrigin.y + (coordinate.Y * worldLayout.CellSize.y),
-                worldLayout.BoardOrigin.z);
         }
 
         private static bool TryValidateFootprint(

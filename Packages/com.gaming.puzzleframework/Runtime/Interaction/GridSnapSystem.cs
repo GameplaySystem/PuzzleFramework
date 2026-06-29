@@ -14,8 +14,9 @@ namespace PuzzleFramework.Interaction
         /// <inheritdoc />
         public GridSnapResult Evaluate(GridSnapRequest request)
         {
-            GridCoordinate resolvedOrigin = WorldToGrid(request.WorldPosition, request.WorldLayout);
-            Vector3 snappedWorldPosition = GridToWorld(resolvedOrigin, request.WorldLayout);
+            GridCoordinate resolvedOrigin =
+                request.WorldLayout.WorldToNearestGridCoordinate(request.WorldPosition);
+            Vector3 snappedWorldPosition = request.WorldLayout.GridToWorldPosition(resolvedOrigin);
 
             if (!TryValidateFootprint(
                     request,
@@ -25,32 +26,12 @@ namespace PuzzleFramework.Interaction
                 return GridSnapResult.Invalid(
                     request.CurrentOriginCell,
                     request.CurrentOriginCell.HasValue
-                        ? GridToWorld(request.CurrentOriginCell.Value, request.WorldLayout)
+                        ? request.WorldLayout.GridToWorldPosition(request.CurrentOriginCell.Value)
                         : snappedWorldPosition,
                     failureReason);
             }
 
             return GridSnapResult.Valid(resolvedOrigin, snappedWorldPosition);
-        }
-
-        private static GridCoordinate WorldToGrid(
-            Vector3 worldPosition,
-            GridWorldLayout worldLayout)
-        {
-            Vector3 relativePosition = worldPosition - worldLayout.BoardOrigin;
-            int x = Mathf.RoundToInt(relativePosition.x / worldLayout.CellSize.x);
-            int y = Mathf.RoundToInt(relativePosition.y / worldLayout.CellSize.y);
-            return new GridCoordinate(x, y);
-        }
-
-        private static Vector3 GridToWorld(
-            GridCoordinate coordinate,
-            GridWorldLayout worldLayout)
-        {
-            return new Vector3(
-                worldLayout.BoardOrigin.x + (coordinate.X * worldLayout.CellSize.x),
-                worldLayout.BoardOrigin.y + (coordinate.Y * worldLayout.CellSize.y),
-                worldLayout.BoardOrigin.z);
         }
 
         private static bool TryValidateFootprint(
