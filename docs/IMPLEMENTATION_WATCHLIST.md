@@ -339,19 +339,20 @@ These are worth remembering but do not require action before the next prototype 
 * prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, and the runtime integration foundation can route full-hole completion and timer-expired facts into it, but no Unity scene adapter is wired yet
 * timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router and reachable through the runtime controller, but it is not yet exercised by real scene/input/timer MonoBehaviour wiring
 * the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, view adapter contracts, world-position drag orchestration, and timer-expiry handoff, but no scene, prefab, camera, or input adapter implementation exists yet
-* the playable scene adapter design now defines pre-placed MonoBehaviour view adapters, authored runtime id mapping, pointer hit-test ownership, pointer screen-to-world conversion ownership, timer `Update()` forwarding, and terminal input shutdown, but no scene adapter code exists yet
+* the playable scene adapter code now provides pre-placed MonoBehaviour view adapters, authored runtime id mapping, pointer hit-test ownership, pointer screen-to-world conversion ownership, timer `Update()` forwarding, and terminal input shutdown, but it is not yet wired into an actual Unity scene
+* the dev-only scene bootstrapper now creates a minimal 5x5 Drop The Man level definition, builds the framework runtime context and prototype runtime model, and initializes the scene controller, but the actual Unity test scene still must be wired manually
 
 ---
 
 ## Recommended Next Checkpoint
 
-Before implementing scene objects or presentation reactions, complete the smallest playable scene adapter slice that:
+Before implementing scene polish or presentation reactions, manually wire the first ugly Drop The Man test scene and verify:
 
-* creates simple pre-placed hole and stickman view components implementing the runtime adapter contracts
-* adds a narrow Unity input adapter that performs hit-test and screen-to-world conversion, then calls the runtime controller once per accepted pointer sample
-* wires a dev-only level source and already-built runtime model into the prototype bootstrap path
-* advances the optional countdown timer from Unity update while `GameState.Playing`
-* keeps animation, prefab spawning, polished UI, and progression out of the slice
-* preserves the design rule that pointer conversion and hit-testing stay in the scene adapter, while gameplay authority stays in `DropTheManRuntimeController` and existing runtime services
+* a pre-placed hole view uses runtime id `hole_red_01`
+* a pre-placed stickman view uses runtime id `stickman_red_01`
+* optional custom blocker tests use an explicitly authored dev stickman id such as `stickman_blue_blocker_01`
+* colliders and layers allow `DropTheManPointerInputAdapter` to hit-test hole views
+* the board plane and cell size match the dev bootstrapper's serialized world layout fields
+* runtime drag, collection, full-hole completion, release, and optional countdown loss can be observed without adding animation, prefab spawning, polished UI, or framework changes
 
 After that slice, run another context check and update this watchlist.
