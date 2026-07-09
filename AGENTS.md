@@ -179,6 +179,44 @@ When creating a new system:
 
 Documentation should form a navigable dependency graph.
 
+## Documentation Preflight Before Implementation
+
+Before implementing any non-trivial task, Codex must identify and read the documentation files relevant to that task.
+
+The preflight should include:
+
+1. List the docs that were read.
+2. Summarize the rules, constraints, and decisions from those docs that affect the task.
+3. Identify any conflicts, stale assumptions, or gaps between the prompt and the docs.
+4. Stop for clarification if the requested implementation would contradict approved documentation.
+5. Proceed only after the task scope is aligned with the docs.
+
+Do not read every document blindly. Read the smallest sufficient set of task-relevant docs.
+
+Examples:
+
+- For Drop The Man movement, collection, snap, capacity, or completion tasks, read:
+  - `DropAwayPrototype/docs/DropTheManMovementAndCollectionRules.md`
+  - `DropAwayPrototype/docs/DropTheManMVPRules.md`
+  - `DropAwayPrototype/docs/DropTheManRuntimeIntegrationDesign.md`
+  - `DropAwayPrototype/docs/DropTheManPlayableSceneAdapterDesign.md`
+  - `PuzzleFramework/docs/CRITICAL_RULE_CLARIFICATIONS.md`
+  - `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
+- For collection presentation timing tasks, also read:
+  - `DropAwayPrototype/docs/DropTheManCollectionPresentationTimingDesign.md`
+- For framework-level system changes, read:
+  - the relevant `PuzzleFramework/docs/FrameworkSystems/**` document
+  - `PuzzleFramework/docs/FrameworkArchitecture.md`
+  - `PuzzleFramework/docs/ImplementationRoadmap/FrameworkMVPPlan.md`
+  - `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
+- For content, JSON, save/load, or editor tasks, read:
+  - relevant Content Systems docs
+  - relevant Runtime Construction docs
+  - Drop The Man level/content docs
+  - `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
+
+Documentation is the source of truth. If code and docs disagree, report the drift before changing behavior.
+
 ## 6. Unity Project Rules
 
 - Do not modify Unity assets or scripts unless the user asks for code or content changes.
@@ -216,6 +254,14 @@ Documentation-only tasks may keep the simpler changed-files summary.
 Implementation tasks must include the full maintainer handoff.
 
 Every implementation handoff must include:
+
+### 0. Preflight
+
+Report:
+
+- documents read
+- rules, constraints, and decisions that affected the implementation
+- conflicts, stale assumptions, or gaps discovered before implementation
 
 ### 1. What changed
 
@@ -272,6 +318,9 @@ Report:
 - test status if any
 - manual verification performed
 - known limitations
+- any docs updated
+- any unresolved risks
+- whether unrelated dirty files were left untouched
 
 ### 8. Suggested next step
 
