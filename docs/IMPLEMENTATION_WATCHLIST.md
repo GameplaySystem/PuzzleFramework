@@ -345,6 +345,7 @@ These are worth remembering but do not require action before the next prototype 
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
 * Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
 * `DropTheManCollectionPresentationTimingDesign.md` now proposes splitting immediate same-color overlap into reservation, visual trigger threshold, presentation completion, and capacity fill; older rules docs still describe immediate `Collecting` and immediate fill and must be reconciled before implementation
+* the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
 
 ---
 

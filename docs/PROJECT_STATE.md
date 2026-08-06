@@ -291,6 +291,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man first playtest scene placeholder and pointer-offset fixes [done]
 - Drop The Man footprint-aware boundary drag clamp [done]
 - Drop The Man collection presentation timing design [done]
+- Drop The Man JSON level pipeline foundation [done]
 
 ### Core Board Systems
 
@@ -352,7 +353,7 @@ Drop The Man Prototype
 
 Current system:
 
-Drop The Man collection timing model review before implementation
+Drop The Man JSON-authored dev level pipeline verification
 
 ---
 
