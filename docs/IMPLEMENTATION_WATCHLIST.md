@@ -345,6 +345,7 @@ Resolved decision:
 * editor phase 1 covers design, shared color-slot expansion, blocked-cell authored data, and editor config foundation only
 * editor phase 2 is now a dedicated play-mode authoring scene foundation rather than selected-object SceneView tooling as the main UX
 * editor phase 2 may add blocked-cell painting, narrow stickman/hole placement, runtime input, and lightweight runtime HUD feedback on top of that authored-data path
+* editor phase 3A may add save/export from the play-mode scene by reusing the existing Drop The Man JSON schema and validation path, while still deferring load/import UI and gameplay play/test bridging
 * obstacle mode currently means blocked-cell painting, not separate obstacle entities
 * inactive-cell authoring remains deferred for now
 * gameplay play/test behavior remains deferred
@@ -356,7 +357,7 @@ Owner decision:
 
 Recommended follow-up:
 
-* keep manual validation focused on resize cleanup, footprint overlap rejection, play-mode input ergonomics, and HUD clarity before adding save/load UI or polish
+* keep manual validation focused on resize cleanup, footprint overlap rejection, play-mode input ergonomics, HUD clarity, and JSON export correctness before adding load/import UI or polish
 * treat gameplay play/test and runtime-spawning work as a separate documented prototype runtime slice
 
 ---
@@ -381,7 +382,7 @@ These are worth remembering but do not require action before the next prototype 
 * Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
 * Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
-* the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, and a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, while still leaving gameplay play/test behavior and runtime spawning for later slices
+* the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and a first JSON export path, while still leaving load/import UI, gameplay play/test behavior, and runtime spawning for later slices
 
 ---
 
@@ -398,6 +399,8 @@ Before implementing scene polish, save/load UX, or presentation reactions, manua
 * hole placement scrolls the configured palette, rotates footprints with `R`, rejects blocked or overlapping footprints, and generates stable ids
 * the runtime HUD reflects current mode, color, and hole selection clearly enough for basic authoring
 * right-click erase remains simple and does not create ambiguous multi-object behavior
-* no gameplay play/test behavior, runtime spawning, collection timing, or framework changes were added to this slice
+* pressing Save/Export writes or updates a JSON file that matches the existing Drop The Man JSON schema
+* export failures report a useful reason and do not mutate authored data
+* no load/import UI, gameplay play/test behavior, runtime spawning, collection timing, or framework changes were added to this slice
 
 After that slice, run another context check and update this watchlist.
