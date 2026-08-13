@@ -183,6 +183,7 @@ Clarified rule:
 * deterministic diagonal handling is now explicit
 * final win gate is now explicit
 * newer collection presentation timing design splits immediate gameplay reservation from visual trigger, presentation completion, and capacity fill
+* an accepted reservation remains assigned to its hole across non-full release; release snap does not trigger or cancel it
 
 Architecture consequence:
 
