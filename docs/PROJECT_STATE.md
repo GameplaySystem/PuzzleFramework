@@ -293,6 +293,10 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man collection presentation timing design [done]
 - Drop The Man JSON level pipeline foundation [done]
 - Drop The Man collection presentation timing foundation [done]
+- Drop The Man level editor design phase 1 [done]
+- Drop The Man 10-slot color identity foundation [done]
+- Drop The Man blocked-cell JSON authoring foundation [done]
+- Drop The Man editor config foundation [done]
 
 ### Core Board Systems
 
@@ -354,7 +358,7 @@ Drop The Man Prototype
 
 Current system:
 
-Drop The Man collection presentation timing manual playtest
+Drop The Man editor foundation phase 1
 
 ---
 

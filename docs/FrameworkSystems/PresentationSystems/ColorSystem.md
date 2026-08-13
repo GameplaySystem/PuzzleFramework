@@ -37,12 +37,30 @@ The Color System is a framework-level presentation and data mapping system.
 
 # Core Design Idea
 
-The framework may define color identities such as:
+The framework should define a stable shared identity set that can scale across multiple
+games and editor tooling.
+
+The current approved direction is ten framework-safe color slots:
+
+* `Slot0`
+* `Slot1`
+* `Slot2`
+* `Slot3`
+* `Slot4`
+* `Slot5`
+* `Slot6`
+* `Slot7`
+* `Slot8`
+* `Slot9`
+
+Legacy aliases such as:
 
 * `Red`
 * `Blue`
 * `Green`
 * `Yellow`
+
+may remain available for compatibility where existing prototype content already uses them.
 
 The framework may then map those identities to visuals such as:
 
@@ -58,7 +76,8 @@ Color identity is framework-level.
 
 Color meaning is game-module-level.
 
-That means the framework can define `Red`, but only a game module decides whether `Red` means:
+That means the framework can define `Slot0` or a legacy alias such as `Red`, but only a game
+module decides whether that identity means:
 
 * a red stickman
 * a red bus
@@ -152,7 +171,7 @@ It only maps identity to presentation.
 
 ## Drop Away
 
-The framework may provide a `Red` identity.
+The framework may provide `Slot0` with a compatible `Red` alias.
 
 The Drop Away game module may use that identity for red stickmen and red holes.
 
@@ -210,10 +229,11 @@ The moment the system decides whether colors match or what that match means, it 
 
 The first version of the Color System should support:
 
-* reusable color identities
+* ten reusable shared color identities
 * consistent visual mapping
 * framework-safe color references
 * game-module-defined color meaning
+* compatibility with existing prototype color names where required
 
 ---
 

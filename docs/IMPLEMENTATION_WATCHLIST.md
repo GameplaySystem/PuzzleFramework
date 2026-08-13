@@ -264,34 +264,37 @@ Recommended follow-up:
 
 ---
 
-### 7. Color identity breadth may need expansion after the second game
+### 7. Shared color identity breadth is now a confirmed authoring requirement
 
 Status:
 
-* Low Priority
+* Accepted Decision
 
 Why it matters:
 
-* current framework `ColorIdentity` is intentionally small and fixed
-* current `ColorSystem` maps only to `UnityEngine.Color`
+* the upcoming level-editor workflow needs stable shared color hotkeys and palette slots
+* a four-color identity set is now too narrow even before the second prototype is implemented
 
-Risk:
+Resolved decision:
 
-* second-game pressure may reveal the need for more identities or richer visual mapping than a raw color value
+* framework-owned color identities now use a stable ten-slot model
+* legacy names such as `Red`, `Blue`, `Green`, and `Yellow` remain compatibility aliases for the first four slots
+* color meaning still remains prototype-owned or game-module-owned
+* the framework `ColorSystem` still maps identities to presentation only
 
 Owner decision:
 
-* simple equality-based color matching is not currently the concern
-* the likely future pressure point is shared identity breadth and richer visual mapping, not whether game-module matching can compare ids
+* accepted
 
 Current interpretation:
 
 * keep game-rule color matching inside the game module
-* leave the framework color slice narrow until a second real game forces broader reuse pressure
+* allow editor hotkeys `0-9` to map to stable shared framework identities without adding gameplay meaning to framework code
 
 Recommended follow-up:
 
-* revisit only after `ColorBlockJamPrototype` creates real reuse pressure
+* reuse the ten shared slots across future prototype authoring tools
+* revisit richer palette or accessibility behavior separately from gameplay color meaning
 
 ---
 
@@ -326,6 +329,36 @@ Recommended follow-up:
 
 ---
 
+### 9. Drop The Man editor phase 1 intentionally defers play and runtime spawning
+
+Status:
+
+* Accepted Decision
+
+Why it matters:
+
+* editor work can easily blur into runtime-preview or runtime-spawning work before the content foundation is stable
+* the current playable-scene runtime path still assumes pre-placed runtime views and no generalized spawning flow
+
+Resolved decision:
+
+* editor phase 1 covers design, shared color-slot expansion, blocked-cell authored data, and editor config foundation only
+* obstacle mode currently means blocked-cell painting, not separate obstacle entities
+* inactive-cell authoring remains deferred for now
+* play button behavior remains deferred
+* JSON-driven runtime spawning remains deferred
+
+Owner decision:
+
+* accepted
+
+Recommended follow-up:
+
+* build the visual editor placement layer on top of the authored-data foundation first
+* treat play-button and runtime-spawning work as a separate documented prototype runtime slice
+
+---
+
 ## Immediate Non-Blockers
 
 These are worth remembering but do not require action before the next prototype slice:
@@ -346,6 +379,7 @@ These are worth remembering but do not require action before the next prototype 
 * Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
 * Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
+* the Drop The Man editor phase 1 foundation now adds a concrete design doc, ten shared color slots with legacy aliases, blocked-cell authored board data, and a prototype-owned editor config asset, while leaving visual placement interaction, play button behavior, and runtime spawning for later slices
 
 ---
 
