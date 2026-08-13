@@ -301,6 +301,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man editor phase 2 play-mode authoring scene foundation [done]
 - Drop The Man editor phase 3A save/export JSON foundation [done]
 - Drop The Man editor phase 3B import/load JSON foundation [done]
+- Drop The Man phase 4A JSON-driven gameplay runtime spawning [done]
 
 ### Core Board Systems
 
@@ -362,7 +363,7 @@ Drop The Man Prototype
 
 Current system:
 
-Drop The Man editor phase 3B import/load JSON foundation
+Drop The Man movement-feel pass - shape-aware drag clearance inset
 
 ---
 

@@ -329,7 +329,7 @@ Recommended follow-up:
 
 ---
 
-### 9. Drop The Man editor slices intentionally defer play and runtime spawning
+### 9. Drop The Man editor slices intentionally deferred play and runtime spawning until a separate prototype runtime slice
 
 Status:
 
@@ -337,8 +337,8 @@ Status:
 
 Why it matters:
 
-* editor work can easily blur into runtime-preview or runtime-spawning work before the content foundation is stable
-* the current playable-scene runtime path still assumes pre-placed runtime views and no generalized spawning flow
+* editor work could easily blur into runtime-preview or runtime-spawning work before the content foundation was stable
+* later runtime-spawning work still needed to stay prototype-owned and avoid turning into a framework spawner or an editor one-click test bridge
 
 Resolved decision:
 
@@ -348,8 +348,8 @@ Resolved decision:
 * editor phase 3A may add save/export from the play-mode scene by reusing the existing Drop The Man JSON schema and validation path, while still deferring load/import UI and gameplay play/test bridging
 * obstacle mode currently means blocked-cell painting, not separate obstacle entities
 * inactive-cell authoring remains deferred for now
-* gameplay play/test behavior remains deferred
-* JSON-driven runtime spawning remains deferred
+* gameplay play/test behavior remains deferred from the editor workflow
+* JSON-driven runtime spawning is now implemented as a separate gameplay-scene slice
 
 Owner decision:
 
@@ -357,8 +357,8 @@ Owner decision:
 
 Recommended follow-up:
 
-* keep manual validation focused on resize cleanup, footprint overlap rejection, play-mode input ergonomics, HUD clarity, and JSON export correctness before adding load/import UI or polish
-* treat gameplay play/test and runtime-spawning work as a separate documented prototype runtime slice
+* keep gameplay-scene validation focused on spawned-view registration, id/color assignment, pointer hit-testing, wrong-color blocking, and full-hole completion before attempting an editor-driven Test button
+* keep gameplay play/test bridging and broader runtime asset/prefab pipeline decisions as separate documented slices
 
 ---
 
@@ -374,15 +374,17 @@ These are worth remembering but do not require action before the next prototype 
 * the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
 * prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, and the runtime integration foundation can route full-hole completion and timer-expired facts into it, but no Unity scene adapter is wired yet
 * timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router and reachable through the runtime controller, but it is not yet exercised by real scene/input/timer MonoBehaviour wiring
-* the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, view adapter contracts, world-position drag orchestration, and timer-expiry handoff, but no scene, prefab, camera, or input adapter implementation exists yet
-* the playable scene adapter code now provides pre-placed MonoBehaviour view adapters, authored runtime id mapping, pointer hit-test ownership, pointer screen-to-world conversion ownership, timer `Update()` forwarding, and terminal input shutdown, but it is not yet wired into an actual Unity scene
-* the dev-only scene bootstrapper now creates a minimal 5x5 Drop The Man level definition, builds the framework runtime context and prototype runtime model, and initializes the scene controller, but the actual Unity test scene still must be wired manually
+* the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, scene controller, pointer input adapter, timer-expiry handoff, and JSON-driven runtime spawning path; the current spawning path clones scene-local hole/stickman templates in the gameplay test scene rather than using dedicated prefab assets
+* the playable scene adapter now supports runtime-spawned MonoBehaviour hole and stickman views that receive ids, colors, and XZ-board positions from the loaded runtime model before normal controller registration
+* the dev-only scene bootstrapper can now load JSON `TextAsset` level content, build the framework/runtime model path, spawn gameplay views, and initialize the playable scene controller without manually placing id-matched hole/stickman content objects
 * `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
+* the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority
+* runtime-spawned hole views may now apply a visual-only spawned scale multiplier so holes read slightly smaller than their occupied board cells; authored footprint, occupancy, and JSON coordinates remain unchanged
 * Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
 * Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
-* the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and a first JSON export path, while still leaving load/import UI, gameplay play/test behavior, and runtime spawning for later slices
+* the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and JSON import/export paths, while still leaving gameplay play/test bridging for a later slice
 
 ---
 
