@@ -297,6 +297,8 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man 10-slot color identity foundation [done]
 - Drop The Man blocked-cell JSON authoring foundation [done]
 - Drop The Man editor config foundation [done]
+- Drop The Man editor phase 2 visual authoring shell [done]
+- Drop The Man editor phase 2 play-mode authoring scene foundation [done]
 
 ### Core Board Systems
 
@@ -358,7 +360,7 @@ Drop The Man Prototype
 
 Current system:
 
-Drop The Man editor foundation phase 1
+Drop The Man editor phase 2 play-mode authoring scene foundation
 
 ---
 

@@ -329,7 +329,7 @@ Recommended follow-up:
 
 ---
 
-### 9. Drop The Man editor phase 1 intentionally defers play and runtime spawning
+### 9. Drop The Man editor slices intentionally defer play and runtime spawning
 
 Status:
 
@@ -343,9 +343,11 @@ Why it matters:
 Resolved decision:
 
 * editor phase 1 covers design, shared color-slot expansion, blocked-cell authored data, and editor config foundation only
+* editor phase 2 is now a dedicated play-mode authoring scene foundation rather than selected-object SceneView tooling as the main UX
+* editor phase 2 may add blocked-cell painting, narrow stickman/hole placement, runtime input, and lightweight runtime HUD feedback on top of that authored-data path
 * obstacle mode currently means blocked-cell painting, not separate obstacle entities
 * inactive-cell authoring remains deferred for now
-* play button behavior remains deferred
+* gameplay play/test behavior remains deferred
 * JSON-driven runtime spawning remains deferred
 
 Owner decision:
@@ -354,8 +356,8 @@ Owner decision:
 
 Recommended follow-up:
 
-* build the visual editor placement layer on top of the authored-data foundation first
-* treat play-button and runtime-spawning work as a separate documented prototype runtime slice
+* keep manual validation focused on resize cleanup, footprint overlap rejection, play-mode input ergonomics, and HUD clarity before adding save/load UI or polish
+* treat gameplay play/test and runtime-spawning work as a separate documented prototype runtime slice
 
 ---
 
@@ -379,23 +381,23 @@ These are worth remembering but do not require action before the next prototype 
 * Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
 * Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
-* the Drop The Man editor phase 1 foundation now adds a concrete design doc, ten shared color slots with legacy aliases, blocked-cell authored board data, and a prototype-owned editor config asset, while leaving visual placement interaction, play button behavior, and runtime spawning for later slices
+* the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, and a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, while still leaving gameplay play/test behavior and runtime spawning for later slices
 
 ---
 
 ## Recommended Next Checkpoint
 
-Before implementing scene polish or presentation reactions, manually wire the first ugly Drop The Man test scene and verify:
+Before implementing scene polish, save/load UX, or presentation reactions, manually validate the dedicated Drop The Man play-mode authoring scene and verify:
 
-* a pre-placed hole view uses runtime id `hole_red_01`
-* a pre-placed stickman view uses runtime id `stickman_red_01`
-* optional custom blocker tests use an explicitly authored dev stickman id such as `stickman_blue_blocker_01`
-* colliders and layers allow `DropTheManPointerInputAdapter` to hit-test hole views
-* the pointer input adapter uses a horizontal board plane normal `(0, 1, 0)` and the dev bootstrapper uses board axes `(1, 0, 0)` and `(0, 0, 1)`
-* the board plane, board origin, and cell size match the dev bootstrapper's serialized world layout fields
-* collection hides the `stickman_red_01` visual and completion hides or disables the completed `hole_red_01` placeholder without adding animation or scene-object destruction
-* dragging near board bounds keeps runtime bounds respected while preserving the grab offset between pointer and hole center
-* edge dragging allows sliding along the board boundary without letting any footprint cell leave the board
-* runtime drag, collection, full-hole completion, release, and optional countdown loss can be observed without adding animation, prefab spawning, polished UI, or framework changes
+* the `DropTheManLevelEditor` scene opens and enters Play mode cleanly
+* the editor board appears as a visible checkered grid using the intended XZ mapping
+* changing board width or height through the runtime HUD regenerates visuals, preserves in-bounds authored content, and reports any dropped out-of-bounds content
+* `O`, `M`, and `H` switch modes correctly and `0-9` switch color slots correctly in Play mode
+* blocked-cell painting toggles visual state and updates the authored blocked-cell list
+* stickman placement uses selected colors, avoids blocked or hole-occupied cells, and generates stable ids
+* hole placement scrolls the configured palette, rotates footprints with `R`, rejects blocked or overlapping footprints, and generates stable ids
+* the runtime HUD reflects current mode, color, and hole selection clearly enough for basic authoring
+* right-click erase remains simple and does not create ambiguous multi-object behavior
+* no gameplay play/test behavior, runtime spawning, collection timing, or framework changes were added to this slice
 
 After that slice, run another context check and update this watchlist.
