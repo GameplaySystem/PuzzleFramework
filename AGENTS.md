@@ -127,6 +127,14 @@ Each system validates only what it owns.
 
 ## 5. Documentation Workflow
 
+### Daily Milestone Workflow
+
+- Follow `docs/Workflow/DailyMilestoneWorkflow.md` for project-day planning and reporting across both repositories.
+- At the beginning of a project day, establish and discuss one realistic daily milestone before non-trivial implementation.
+- Continue later tasks against the established daily plan; re-plan only when scope materially changes or a blocker invalidates it.
+- At the user's end-of-day signal, create or update `docs/DailyReports/YYYY-MM-DD.md` using the canonical report template.
+- Never invent work-time or Codex-usage values. Record `Not tracked`, `User estimate needed`, or `Unavailable` when appropriate.
+
 - Read the relevant markdown specs before proposing or implementing a system.
 - Treat `docs/PROJECT_STATE.md` as the project status reference.
 - Treat each system markdown file under `docs/FrameworkSystems/**` as the design spec for that system.
