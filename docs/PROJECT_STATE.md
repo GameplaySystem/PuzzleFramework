@@ -198,7 +198,7 @@ Content Systems do not instantiate runtime objects.
 
 Runtime Construction Systems are responsible for converting loaded authored level data into runtime objects and runtime state.
 
-Runtime Construction Systems remain future implementation scope even though their architecture is now documented.
+Framework runtime construction foundations are now implemented, but broader reusable object-factory generalization remains future scope.
 
 ## Progression Systems
 
@@ -213,6 +213,15 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Visual Feedback System
 
 ---
+
+# Status Language
+
+Progress markers below use these meanings:
+
+- `[implemented]` = reusable code exists in the repositories now
+- `[implemented foundation]` = a narrow MVP or reusable foundation exists, but broader generalization is still deferred
+- `[prototype-only]` = implemented only in `DropAwayPrototype`, not yet extracted into shared framework code
+- `[documented only]` = approved or designed in docs, but not implemented in code yet
 
 # Current Progress
 
@@ -302,93 +311,91 @@ Progression Systems handle player-owned progression state and persistence of tha
 - Drop The Man editor phase 3A save/export JSON foundation [done]
 - Drop The Man editor phase 3B import/load JSON foundation [done]
 - Drop The Man phase 4A JSON-driven gameplay runtime spawning [done]
+- Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
 - Drop The Man phase 4B basic level result flow and level sequence [done]
+- Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
 
 ### Core Board Systems
 
-- Grid System [done]
-- Cell Occupancy System [done]
-- Shape System [done]
-- Wall Generation System [done]
-- Pathfinding System [done]
+- Grid System [implemented]
+- Cell Occupancy System [implemented]
+- Shape System [implemented foundation]
+- Wall Generation System [documented only]
+- Pathfinding System [documented only]
 
 ### Runtime Flow Systems
 
-- Game State System [done]
-- Timer System [done]
-- Event System [done]
+- Game State System [implemented]
+- Timer System [implemented foundation]
+- Event System [documented only]
 
 ### Interaction Systems
 
-- Input System [done]
-- Drag Movement System [done]
-- Grid Snap System [done]
+- Input System [implemented foundation]
+- Drag Movement System [implemented foundation]
+- Grid Snap System [implemented]
 
 ### Resource Processing Systems
 
-- Queue System [done]
-- Buffer System [done]
-- Capacity System [done]
+- Queue System [documented only]
+- Buffer System [documented only]
+- Capacity System [documented only]
 
 ### Content Systems
 
-- Level Data System [done]
-- Level Save Load System [done]
-- Level Editor Foundation [done]
+- Level Data System [implemented]
+- Level Save Load System [implemented]
+- Level Editor Foundation [documented only in framework; first concrete tool is prototype-only]
 
 ### Presentation Systems
 
-- Color System [done]
-- Visual Feedback System [done]
+- Color System [implemented]
+- Visual Feedback System [documented only]
 
 ### Runtime Construction Systems
 
-- Level Runtime Builder System [done]
-- Runtime Object Factory System [done]
-- Runtime Construction Validation System [done]
+- Level Runtime Builder System [implemented foundation]
+- Runtime Object Factory System [documented only]
+- Runtime Construction Validation System [implemented foundation]
 
 ### Progression Systems
 
-- Player Progress Data System [done]
-- Progress Save Load System [done]
+- Player Progress Data System [documented only]
+- Progress Save Load System [documented only]
 
 ---
 
 # Current Focus
 
-Implementing the approved Framework MVP slice.
+Stabilizing documentation and preparing the Drop The Man prototype for the eventual placeholder-to-asset and temporary-UI replacement phase.
 
 Current category:
 
-Drop The Man Prototype
+Drop The Man Prototype Documentation And Pre-Polish Prep
 
 Current system:
 
-Drop The Man phase 4B result flow validation and next gameplay-loop follow-up
+Project-state correction is complete; board visual construction is intentionally deferred until the final runtime board assets exist.
 
 ---
 
 # Next Steps
 
-1. Framework MVP Slice
-2. Drop Away Prototype
-3. Color Block Jam
-4. Shared System Generalization
-5. Sky Rush
-6. Hole People
-7. Bus Jam
-8. Polish and Portfolio Cleanup
-
-Progression Systems are documented, but implementation remains future scope.
+1. Wait for final board cell / wall / corner assets, then document the board visual construction slice.
+2. Replace placeholder runtime and editor visuals using the approved board visual construction plan.
+3. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
+4. Revisit reusable level-editor extraction only after a second prototype proves which authoring mechanics are truly shared.
+5. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
 
 ---
 
 # Open Questions
 
+- Once board art arrives, should board visual construction stay prototype-owned first or define a reusable wall-generation slice immediately?
+- After a second prototype uses authoring, which level-editor concerns are proven reusable enough to move into `PuzzleFramework`?
 - Should Bus Jam buses use Shape System or remain road-only entities?
 - Should Door System be framework-level?
 - Should Visual Feedback remain framework-level or game-specific?
-- How should wall generation interact with doors?
 
 ---
 

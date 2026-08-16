@@ -22,7 +22,7 @@ Its job is narrower:
 
 Audit date:
 
-* 2026-06-22
+* 2026-08-16
 
 Repos reviewed:
 
@@ -60,15 +60,15 @@ The following areas are currently aligned enough to continue:
 
 ## Active Watchlist
 
-### 1. `PROJECT_STATE.md` overstates category completion
+### 1. `PROJECT_STATE.md` status language needed correction
 
 Status:
 
-* Accepted Follow-Up
+* Resolved 2026-08-16
 
 Why it matters:
 
-* `docs/PROJECT_STATE.md` currently marks multiple system categories as `[done]` even though only a subset has been implemented in code so far
+* `docs/PROJECT_STATE.md` previously marked multiple system categories as `[done]` even though only a subset had been implemented in code so far
 * this can mislead future context checks, handoffs, and milestone decisions
 
 Examples:
@@ -80,19 +80,19 @@ Examples:
 * `Visual Feedback System [done]`
 * `Progress Save Load System [done]`
 
-Interpretation risk:
+Interpretation risk that existed:
 
 * readers may assume those systems are implemented rather than merely documented or approved
 
-Owner decision:
+Resolved decision:
 
-* approved for follow-up
-* future progress tracking should be more explicit and more detailed at the step level
+* `docs/PROJECT_STATE.md` now distinguishes `implemented`, `implemented foundation`, `prototype-only`, and `documented only`
+* future progress tracking should keep that explicit wording instead of collapsing everything into `[done]`
 
 Recommended follow-up:
 
-* clarify whether category completion sections mean `documented`, `approved`, or `implemented`
-* if they are meant to reflect implementation, correct the current overstated entries before later milestone reviews
+* keep status wording explicit whenever new slices are added
+* avoid reintroducing category-level `[done]` claims that imply code exists when only documentation exists
 
 ---
 
@@ -329,7 +329,7 @@ Recommended follow-up:
 
 ---
 
-### 9. Drop The Man editor slices intentionally deferred play and runtime spawning until a separate prototype runtime slice
+### 9. Drop The Man editor and gameplay runtime remain intentionally separated
 
 Status:
 
@@ -337,8 +337,8 @@ Status:
 
 Why it matters:
 
-* editor work could easily blur into runtime-preview or runtime-spawning work before the content foundation was stable
-* later runtime-spawning work still needed to stay prototype-owned and avoid turning into a framework spawner or an editor one-click test bridge
+* editor work can still blur into gameplay runtime or a premature framework editor extraction if the scene boundaries become fuzzy
+* runtime-spawning and result-loop work needed to stay prototype-owned and avoid turning into either a framework spawner or an editor one-click test bridge
 
 Resolved decision:
 
@@ -346,10 +346,12 @@ Resolved decision:
 * editor phase 2 is now a dedicated play-mode authoring scene foundation rather than selected-object SceneView tooling as the main UX
 * editor phase 2 may add blocked-cell painting, narrow stickman/hole placement, runtime input, and lightweight runtime HUD feedback on top of that authored-data path
 * editor phase 3A may add save/export from the play-mode scene by reusing the existing Drop The Man JSON schema and validation path, while still deferring load/import UI and gameplay play/test bridging
+* editor phase 3B may add import/load back into the authoring scene without becoming gameplay runtime
 * obstacle mode currently means blocked-cell painting, not separate obstacle entities
 * inactive-cell authoring remains deferred for now
 * gameplay play/test behavior remains deferred from the editor workflow
-* JSON-driven runtime spawning is now implemented as a separate gameplay-scene slice
+* JSON-driven runtime spawning, drag/collision feel tuning, and the basic result loop are now implemented as separate gameplay-scene slices
+* the gameplay test scene remains a separate dev-only runtime path from the authoring scene
 
 Owner decision:
 
@@ -357,8 +359,36 @@ Owner decision:
 
 Recommended follow-up:
 
-* keep gameplay-scene validation focused on spawned-view registration, id/color assignment, pointer hit-testing, wrong-color blocking, and full-hole completion before attempting an editor-driven Test button
+* keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them
 * keep gameplay play/test bridging and broader runtime asset/prefab pipeline decisions as separate documented slices
+* defer framework-level editor extraction until a second prototype proves the shared kernel
+
+---
+
+### 10. Board visual construction is intentionally deferred until the final asset set exists
+
+Status:
+
+* Awaiting Assets
+
+Why it matters:
+
+* the current prototype uses placeholder board visuals and scene-local runtime view templates
+* the eventual board-construction slice must respect real art constraints such as straight edges, inner corners, outer corners, and any editor/runtime differences
+
+Risk:
+
+* implementing board visual construction before the final cell / wall / corner assets exist would likely hard-code the wrong abstraction and produce avoidable rework
+
+Owner decision:
+
+* wait for the final board asset set before implementing board visual construction
+* when assets arrive, start with a doc-first prototype-owned design rather than immediate framework extraction
+
+Recommended follow-up:
+
+* once assets arrive, define the board visual construction rules for gameplay and editor scenes first
+* only revisit a shared framework wall-generation or board-visual slice after the prototype solution is proven
 
 ---
 
@@ -367,16 +397,13 @@ Recommended follow-up:
 These are worth remembering but do not require action before the next prototype slice:
 
 * no reusable visual feedback layer exists yet
-* timer start and stop hookup to actual gameplay state is not implemented yet
-* the prototype movement coordinator is now connected through a narrow drag-session owner, but duplicate pointer-sample prevention is still a caller contract until scene/input integration can provide a stable update token or equivalent guard
+* framework-level event and feedback generalization remains intentionally deferred; the current prototype still uses direct calls and temporary `OnGUI` HUD/result windows
+* framework timer support is still countdown-only in practice, so unsupported `CountUp` content should be rejected before broader content tooling expands
+* the prototype movement coordinator is now connected through a narrow drag-session owner plus scene input adapters, but long-term duplicate-sample protection should stay deliberate rather than ad hoc if input complexity grows
 * shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
-* release-time snap and multi-cell occupancy commit are now wired for non-full holes, and full-hole release bypass with stale committed-occupancy cleanup is now wired, but scene/input integration is still a separate follow-up work
 * the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
-* prototype-owned outcome routing now requests `Won` or `Lost` through `GameStateSystem`, and the runtime integration foundation can route full-hole completion and timer-expired facts into it, but no Unity scene adapter is wired yet
-* timer-vs-final-completion terminal guarding is implemented inside the prototype outcome router and reachable through the runtime controller, but it is not yet exercised by real scene/input/timer MonoBehaviour wiring
-* the runtime integration foundation now provides a prototype-owned bootstrapper helper, view registry, scene controller, pointer input adapter, timer-expiry handoff, and JSON-driven runtime spawning path; the current spawning path clones scene-local hole/stickman templates in the gameplay test scene rather than using dedicated prefab assets
-* the playable scene adapter now supports runtime-spawned MonoBehaviour hole and stickman views that receive ids, colors, and XZ-board positions from the loaded runtime model before normal controller registration
-* the dev-only scene bootstrapper can now load JSON `TextAsset` level content, build the framework/runtime model path, spawn gameplay views, and initialize the playable scene controller without manually placing id-matched hole/stickman content objects
+* prototype-owned outcome routing, timer advancement, JSON-driven runtime spawning, and the basic result loop are now wired through the dev gameplay scene, but they remain prototype-owned and dev-scene oriented rather than production progression infrastructure
+* the current runtime spawning path still clones scene-local hole/stickman templates in the gameplay test scene rather than using a dedicated prefab pipeline
 * `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
 * the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority
@@ -385,24 +412,17 @@ These are worth remembering but do not require action before the next prototype 
 * Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
 * the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and JSON import/export paths, while still leaving gameplay play/test bridging for a later slice
+* board visual construction for cells, straight walls, inner corners, and outer corners is intentionally deferred until the final asset set exists
+* reusable framework level-editor extraction is still deferred until at least one more prototype proves which authoring mechanics are actually shared
 
 ---
 
 ## Recommended Next Checkpoint
 
-Before implementing scene polish, save/load UX, or presentation reactions, manually validate the dedicated Drop The Man play-mode authoring scene and verify:
+Before replacing placeholder visuals or temporary HUDs:
 
-* the `DropTheManLevelEditor` scene opens and enters Play mode cleanly
-* the editor board appears as a visible checkered grid using the intended XZ mapping
-* changing board width or height through the runtime HUD regenerates visuals, preserves in-bounds authored content, and reports any dropped out-of-bounds content
-* `O`, `M`, and `H` switch modes correctly and `0-9` switch color slots correctly in Play mode
-* blocked-cell painting toggles visual state and updates the authored blocked-cell list
-* stickman placement uses selected colors, avoids blocked or hole-occupied cells, and generates stable ids
-* hole placement scrolls the configured palette, rotates footprints with `R`, rejects blocked or overlapping footprints, and generates stable ids
-* the runtime HUD reflects current mode, color, and hole selection clearly enough for basic authoring
-* right-click erase remains simple and does not create ambiguous multi-object behavior
-* pressing Save/Export writes or updates a JSON file that matches the existing Drop The Man JSON schema
-* export failures report a useful reason and do not mutate authored data
-* no load/import UI, gameplay play/test behavior, runtime spawning, collection timing, or framework changes were added to this slice
-
-After that slice, run another context check and update this watchlist.
+* keep `docs/PROJECT_STATE.md` aligned with actual implementation status
+* wait for the final board cell / wall / corner assets
+* once assets arrive, do a doc-first board visual construction pass for both gameplay and editor scenes
+* keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them
+* revisit framework-level editor extraction only after a second prototype validates the shared kernel
