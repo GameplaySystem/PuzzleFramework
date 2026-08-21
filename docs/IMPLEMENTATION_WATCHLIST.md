@@ -426,6 +426,7 @@ These are worth remembering but do not require action before the next prototype 
 * the prototype now has material-only stencil writer/receiver test assets with no layer or renderer-feature dependency; color-matched grid/cell variants use an explicit stencil-enabled ForwardLit pass backed by URP's Lit includes but omit auxiliary passes, so they must not replace production cell materials until Game-view ordering, camera silhouette, depth, lighting, and shadow behavior are evaluated; declaring stencil around `UsePass` was tested and rejected because it did not affect the imported pass reliably
 * DOTween Core is a prototype-owned dependency, and the corrected single-hole prefab has manually validated `DropTheManHolePresentation` cap-close, shrink, reset, named blend shape, stencil aperture, visual-root, collection-socket wiring, drag termination, destruction, win routing, restart, and next-level loading; immediate fallback remains implemented for missing or invalid presentation
 * full-hole closing alignment is exposed on `DropTheManSceneController` as a scene-wide presentation toggle while visual feel is evaluated; enabled uses a framework grid snap query for footprint-valid view alignment, disabled preserves the final freeform drag position, and neither path routes through non-full release commit, mutates `CurrentCoordinate`, or reoccupies the departing footprint
+* `GridWorldLayout.CreateCentered(...)` centers logical rectangular board bounds rather than the centroid of participating cells; Drop The Man now uses it from the gameplay bootstrapper so every runtime consumer shares one conversion, but odd/even board sizes and asymmetric blocked-cell layouts still require Unity validation
 
 ---
 
@@ -435,6 +436,7 @@ Before the next placeholder replacement:
 
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
 * preserve the validated modular board baseline and keep topology ownership in framework
+* validate centered gameplay construction with odd and even dimensions before adding dynamic camera framing
 * design concrete hole/cat presentation as separate prototype-owned slices
 * validate the material-only stencil proof against the corrected single-hole aperture before approving production shader state or adding a renderer feature
 * keep the validated prototype-owned begin/finalize callback split direct; do not introduce a framework event bus or let the view mutate gameplay lifecycle state

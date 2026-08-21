@@ -318,6 +318,7 @@ Progress markers below use these meanings:
 - Drop The Man URP 17.3 rendering-pipeline baseline [done, prototype-owned]
 - Drop The Man material-only URP stencil proof assets [manually validated proof, production adaptation pending]
 - Drop The Man DOTween single-hole completion presentation [implemented and manually validated, prototype-owned]
+- Centered rectangular `GridWorldLayout` construction [implemented, manual gameplay validation pending]
 
 ### Core Board Systems
 
@@ -398,16 +399,24 @@ final freeform drag position and first applying a view-only framework snap to th
 footprint-origin cell. Neither option changes committed coordinates or occupancy; the preferred
 visual policy remains under manual evaluation.
 
+`GridWorldLayout.CreateCentered(...)` now derives the cell `(0,0)` world origin from a requested
+board center, logical width and height, cell size, and orthogonal board axes. Drop The Man's
+gameplay bootstrapper uses this shared layout with world zero as its default center, so generated
+cells, holes, cats/stickmen, drag, snap, and collection conversion move together. Centering uses
+the logical rectangular board bounds; blocked or visually absent cells do not shift the level.
+Unity gameplay validation is still required.
+
 ---
 
 # Next Steps
 
-1. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
-2. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
-3. Validate the material-only URP stencil proof against the real hole aperture before adapting it to production cell and hole materials.
-4. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
-5. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
-6. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
+1. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
+2. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
+3. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
+4. Validate the material-only URP stencil proof against the real hole aperture before adapting it to production cell and hole materials.
+5. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
+6. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
+7. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
 
 ---
 
