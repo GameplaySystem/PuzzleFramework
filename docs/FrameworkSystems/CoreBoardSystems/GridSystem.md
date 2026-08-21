@@ -141,6 +141,25 @@ The exact implementation type can be decided later.
 
 The architecture boundary is simply that the Grid System owns the shared coordinate convention.
 
+## Centered World Layout
+
+World layout may be derived from a requested board center without changing grid coordinates.
+For a rectangular board, centering uses the logical `width x height` bounds:
+
+```text
+cell (0,0) world position
+    = requested board center
+    - BoardXAxis * ((width - 1) * cell width / 2)
+    - BoardYAxis * ((height - 1) * cell height / 2)
+```
+
+The requested center is the midpoint between the first and last cell centers. It is not the
+centroid of active, visible, occupied, or boundary-participating cells. Sparse cells and internal
+holes therefore do not shift the board layout.
+
+Centered layout is a conversion helper only. It must not renumber coordinates, mutate level data,
+or introduce a second coordinate convention.
+
 ---
 
 # Coordinate Validation

@@ -11,6 +11,49 @@ namespace PuzzleFramework.CoreBoard
     [Serializable]
     public readonly struct GridWorldLayout
     {
+        /// <summary>
+        /// Creates a layout whose logical rectangular board bounds are centered on the requested
+        /// world position. The returned <see cref="BoardOrigin"/> remains the center of cell (0,0).
+        /// </summary>
+        public static GridWorldLayout CreateCentered(
+            Vector3 boardCenter,
+            int boardWidth,
+            int boardHeight,
+            Vector2 cellSize,
+            Vector3 boardXAxis,
+            Vector3 boardYAxis)
+        {
+            if (boardWidth <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(boardWidth),
+                    "Centered grid world layout board width must be positive.");
+            }
+
+            if (boardHeight <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(boardHeight),
+                    "Centered grid world layout board height must be positive.");
+            }
+
+            GridWorldLayout centerAnchoredLayout = new(
+                boardCenter,
+                cellSize,
+                boardXAxis,
+                boardYAxis);
+            Vector3 boardOrigin =
+                boardCenter -
+                (centerAnchoredLayout.BoardXAxis * ((boardWidth - 1) * cellSize.x * 0.5f)) -
+                (centerAnchoredLayout.BoardYAxis * ((boardHeight - 1) * cellSize.y * 0.5f));
+
+            return new GridWorldLayout(
+                boardOrigin,
+                cellSize,
+                centerAnchoredLayout.BoardXAxis,
+                centerAnchoredLayout.BoardYAxis);
+        }
+
         public GridWorldLayout(Vector3 boardOrigin, Vector2 cellSize)
             : this(boardOrigin, cellSize, Vector3.right, Vector3.up)
         {

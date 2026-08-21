@@ -139,6 +139,10 @@ The system consumes:
 * a game-supplied modular cell visual prefab or visual factory
 * an optional visual root for generated instances
 
+The supplied board-to-world layout may be centered from logical board dimensions before visual
+construction. The visual builder must consume that layout as-is; it must not independently center
+only the generated cells because gameplay views and interaction systems need the same conversion.
+
 The system must not infer participation from:
 
 * `IsBlocked`
