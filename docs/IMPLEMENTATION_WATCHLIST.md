@@ -423,6 +423,9 @@ These are worth remembering but do not require action before the next prototype 
 * reusable board topology, modular activation, cell-view validation, Drop The Man adapters, concrete prefab wiring, and the initial visual playtest are complete
 * reusable framework level-editor extraction is still deferred until at least one more prototype proves which authoring mechanics are actually shared
 * DropAwayPrototype now uses a prototype-owned URP 17.3 baseline; pipeline assets, shaders, materials, renderer features, and mobile profiling must remain outside the render-pipeline-agnostic framework
+* the prototype now has material-only stencil writer/receiver test assets with no layer or renderer-feature dependency; color-matched grid/cell variants use an explicit stencil-enabled ForwardLit pass backed by URP's Lit includes but omit auxiliary passes, so they must not replace production cell materials until Game-view ordering, camera silhouette, depth, lighting, and shadow behavior are evaluated; declaring stencil around `UsePass` was tested and rejected because it did not affect the imported pass reliably
+* DOTween Core is a prototype-owned dependency, and the corrected single-hole prefab has manually validated `DropTheManHolePresentation` cap-close, shrink, reset, named blend shape, stencil aperture, visual-root, collection-socket wiring, drag termination, destruction, win routing, restart, and next-level loading; immediate fallback remains implemented for missing or invalid presentation
+* full-hole closing alignment is exposed on `DropTheManSceneController` as a scene-wide presentation toggle while visual feel is evaluated; enabled uses a framework grid snap query for footprint-valid view alignment, disabled preserves the final freeform drag position, and neither path routes through non-full release commit, mutates `CurrentCoordinate`, or reoccupies the departing footprint
 
 ---
 
@@ -433,6 +436,7 @@ Before the next placeholder replacement:
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
 * preserve the validated modular board baseline and keep topology ownership in framework
 * design concrete hole/cat presentation as separate prototype-owned slices
-* validate the future stencil hole effect against real hole meshes before approving shader state or adding a renderer feature
+* validate the material-only stencil proof against the corrected single-hole aperture before approving production shader state or adding a renderer feature
+* keep the validated prototype-owned begin/finalize callback split direct; do not introduce a framework event bus or let the view mutate gameplay lifecycle state
 * keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them
 * revisit framework-level editor extraction only after a second prototype validates the shared kernel

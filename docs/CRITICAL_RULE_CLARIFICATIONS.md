@@ -129,7 +129,7 @@ Affected docs:
 
 Status:
 
-* Confirmed
+* Gameplay Sequence Confirmed / Closing Alignment Under Visual Evaluation
 
 Date:
 
@@ -139,7 +139,10 @@ Clarified rule:
 
 * when a hole reaches full capacity during drag, collection for that hole stops immediately
 * the hole becomes non-draggable immediately
-* the hole aligns back to valid cell placement
+* closing alignment is a scene-level presentation toggle while visual feel is evaluated
+* enabled aligns the view to the nearest valid footprint-origin cell before closing
+* disabled keeps the final freeform drag position for closing
+* neither option changes committed coordinates or occupancy
 * collected targets finish their own collection animation first
 * after target collection visuals finish, the hole closes and scales down to disappear
 * the last collection in the level should not skip directly to `Won` before that full-hole completion sequence is respected
@@ -153,6 +156,7 @@ Implementation caution:
 
 * do not request win purely from raw collection count without respecting the completion sequence
 * do not let a full hole continue dragging after the capacity threshold is reached
+* do not treat the closing-alignment toggle as gameplay snap or structural commit
 
 Affected docs:
 
@@ -203,6 +207,7 @@ Affected docs:
 
 ## Open Discussion Candidates
 
-No unresolved movement or collection rule questions are currently tracked here.
+The preferred full-hole closing presentation remains under visual evaluation: nearest-cell
+alignment versus closing from the final freeform drag position.
 
 If a new edge case is discovered, add it only after checking whether the dedicated rules spec already answers it.

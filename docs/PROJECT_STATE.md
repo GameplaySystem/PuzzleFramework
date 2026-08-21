@@ -316,6 +316,8 @@ Progress markers below use these meanings:
 - Drop The Man phase 4B basic level result flow and level sequence [done]
 - Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
 - Drop The Man URP 17.3 rendering-pipeline baseline [done, prototype-owned]
+- Drop The Man material-only URP stencil proof assets [manually validated proof, production adaptation pending]
+- Drop The Man DOTween single-hole completion presentation [implemented and manually validated, prototype-owned]
 
 ### Core Board Systems
 
@@ -382,17 +384,27 @@ Current system:
 DropAwayPrototype now uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
 across Graphics Settings and every Quality tier. Existing project materials use URP Lit. The
 pipeline, renderer, materials, and future stencil work remain outside PuzzleFramework; reusable
-board topology and modular slot planning remain render-pipeline agnostic. Static configuration and
-runtime assembly checks pass, while final visual confirmation in the editor and gameplay scenes is
-still required from the open Unity project.
+board topology and modular slot planning remain render-pipeline agnostic. A manually validated
+material-only stencil proof now provides an invisible writer plus color-matched grid and cell receivers whose explicit
+ForwardLit pass uses URP's Lit input/forward implementation without layers or renderer features.
+It remains a prototype-owned rendering concern. DOTween Core is installed in the prototype, and
+`DropTheManHolePresentation` defines the logical-root versus presentation-root split, named cap
+blend shape, stencil aperture, collection sockets, reset and cancellation behavior, and cap-close/
+shrink sequence. The corrected single-hole prefab passed isolated Unity validation. The prototype
+runtime now splits `Full -> Closing` from callback-driven `Closing -> Completed`, with an immediate
+fallback when presentation is absent or invalid. The callback path passed integrated Unity
+validation. `DropTheManSceneController` now exposes a scene-wide toggle between closing from the
+final freeform drag position and first applying a view-only framework snap to the nearest valid
+footprint-origin cell. Neither option changes committed coordinates or occupancy; the preferred
+visual policy remains under manual evaluation.
 
 ---
 
 # Next Steps
 
 1. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
-2. Plan the next placeholder-replacement slice for concrete hole and cat visuals without changing gameplay truth.
-3. Prototype the hole-depth stencil/shader presentation under URP separately from board topology.
+2. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
+3. Validate the material-only URP stencil proof against the real hole aperture before adapting it to production cell and hole materials.
 4. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
 5. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
 6. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
