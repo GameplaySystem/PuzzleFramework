@@ -211,6 +211,7 @@ Progression Systems handle player-owned progression state and persistence of tha
 
 - Color System
 - Visual Feedback System
+- Modular Board Visual System
 
 ---
 
@@ -320,7 +321,7 @@ Progress markers below use these meanings:
 - Grid System [implemented]
 - Cell Occupancy System [implemented]
 - Shape System [implemented foundation]
-- Wall Generation System [documented only]
+- Wall Generation System [implemented]
 - Pathfinding System [documented only]
 
 ### Runtime Flow Systems
@@ -351,6 +352,7 @@ Progress markers below use these meanings:
 
 - Color System [implemented]
 - Visual Feedback System [documented only]
+- Modular Board Visual System [implemented foundation]
 
 ### Runtime Construction Systems
 
@@ -367,31 +369,39 @@ Progress markers below use these meanings:
 
 # Current Focus
 
-Stabilizing documentation and preparing the Drop The Man prototype for the eventual placeholder-to-asset and temporary-UI replacement phase.
+The reusable modular board-generation baseline is implemented, wired to the concrete Drop The Man
+cell prefab, and manually validated in Unity.
 
 Current category:
 
-Drop The Man Prototype Documentation And Pre-Polish Prep
+Framework Modular Board Visual Integration
 
 Current system:
 
-Project-state correction is complete; board visual construction is intentionally deferred until the final runtime board assets exist.
+Core Board Wall Generation now derives deterministic exposed edges, convex/concave vertices, and
+diagonal-touch diagnostics from an explicit participation mask. The Presentation Modular Board
+Visual implementation converts that topology into eight half-wall, four convex-corner, and four
+concave-corner slots, validates the prefab contract, and rebuilds presentation-only cell views.
+Drop The Man supplies the prototype-specific mapping where blocked coordinates are visually
+absent. Its editor config and gameplay scene now reference one concrete modular cell prefab with
+all 17 visual slots assigned, and the owner confirmed the generated board behaves correctly.
 
 ---
 
 # Next Steps
 
-1. Wait for final board cell / wall / corner assets, then document the board visual construction slice.
-2. Replace placeholder runtime and editor visuals using the approved board visual construction plan.
-3. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
-4. Revisit reusable level-editor extraction only after a second prototype proves which authoring mechanics are truly shared.
-5. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
+1. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
+2. Plan the next placeholder-replacement slice for concrete hole and cat visuals without changing gameplay truth.
+3. Revisit the hole-depth stencil/shader presentation separately from board topology.
+4. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
+5. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
+6. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
 
 ---
 
 # Open Questions
 
-- Once board art arrives, should board visual construction stay prototype-owned first or define a reusable wall-generation slice immediately?
+- How should diagonal-only cell contact render if a future level contains that topology?
 - After a second prototype uses authoring, which level-editor concerns are proven reusable enough to move into `PuzzleFramework`?
 - Should Bus Jam buses use Shape System or remain road-only entities?
 - Should Door System be framework-level?

@@ -365,30 +365,38 @@ Recommended follow-up:
 
 ---
 
-### 10. Board visual construction is intentionally deferred until the final asset set exists
+### 10. Reusable modular board generation is implemented and manually validated
 
 Status:
 
-* Awaiting Assets
+* Implemented / Owner-Validated In Unity
 
 Why it matters:
 
-* the current prototype uses placeholder board visuals and scene-local runtime view templates
-* the eventual board-construction slice must respect real art constraints such as straight edges, inner corners, outer corners, and any editor/runtime differences
+* the editor config and gameplay scene now reference the concrete modular cell prefab
+* the approved piece profile uses two `0.5` half-walls per exposed edge, a `0.145` convex pillar
+  that caps intersecting half-walls, and a concave L with a `0.145` core plus two `0.355` arms
+* framework blocked-cell metadata does not generically mean absent geometry, so callers must provide an explicit boundary-participation mask
 
 Risk:
 
-* implementing board visual construction before the final cell / wall / corner assets exist would likely hard-code the wrong abstraction and produce avoidable rework
+* diagonal-only cell contact creates two coincident convex turns and may not be supported cleanly by the final art set
+* generated roots must remain dedicated to board visuals because rebuild clears their children
 
 Owner decision:
 
-* wait for the final board asset set before implementing board visual construction
-* when assets arrive, start with a doc-first prototype-owned design rather than immediate framework extraction
+* Wall Generation, modular slot planning, the passive cell view, and the narrow visual builder are implemented in the framework package
+* deterministic package tests cover single cells, rectangles, internal holes, L shapes, empty masks, duplicate input, and diagonal contact
+* Drop The Man blocked coordinates are visually absent board space, but that remains a prototype mapping rather than framework meaning
+* Drop The Man editor and gameplay adapters now use the shared pipeline when an optional modular cell prefab is assigned
+* concrete meshes, materials, prefab references, and scene wiring remain in DropAwayPrototype
+* the concrete prefab has 17 unique assigned slots, optional pieces default inactive, and the owner confirmed the generated result works correctly
+* duplicate imported models and materials were removed; retained models share one canonical border, grid, and cell material
 
 Recommended follow-up:
 
-* once assets arrive, define the board visual construction rules for gameplay and editor scenes first
-* only revisit a shared framework wall-generation or board-visual slice after the prototype solution is proven
+* keep diagonal-touch levels unsupported until a deliberate concrete-art policy is approved
+* rerun the board visual playtest after future prefab geometry, material, or importer changes
 
 ---
 
@@ -412,17 +420,17 @@ These are worth remembering but do not require action before the next prototype 
 * Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
 * the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and JSON import/export paths, while still leaving gameplay play/test bridging for a later slice
-* board visual construction for cells, straight walls, inner corners, and outer corners is intentionally deferred until the final asset set exists
+* reusable board topology, modular activation, cell-view validation, Drop The Man adapters, concrete prefab wiring, and the initial visual playtest are complete
 * reusable framework level-editor extraction is still deferred until at least one more prototype proves which authoring mechanics are actually shared
 
 ---
 
 ## Recommended Next Checkpoint
 
-Before replacing placeholder visuals or temporary HUDs:
+Before the next placeholder replacement:
 
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
-* wait for the final board cell / wall / corner assets
-* once assets arrive, do a doc-first board visual construction pass for both gameplay and editor scenes
+* preserve the validated modular board baseline and keep topology ownership in framework
+* design concrete hole/cat presentation as separate prototype-owned slices
 * keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them
 * revisit framework-level editor extraction only after a second prototype validates the shared kernel

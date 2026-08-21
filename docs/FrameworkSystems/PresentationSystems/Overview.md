@@ -14,10 +14,13 @@ Parent:
 Related Documents:
 - ColorSystem.md
 - VisualFeedbackSystem.md
+- ModularBoardVisualSystem.md
+- ../CoreBoardSystems/WallGenerationSystem.md
 
 Depends On:
 - Gameplay state producers
 - Gameplay event producers
+- ../CoreBoardSystems/WallGenerationSystem.md
 
 Used By:
 - Drop Away
@@ -58,6 +61,7 @@ Presentation Systems are responsible for:
 * providing visual feedback
 * providing player-facing clarity
 * playing animations, effects, highlights, and transitions where needed
+* applying reusable static board-visual structure where framework-derived topology is available
 
 Presentation Systems do not own gameplay rules, validation, progression, win or lose logic, object ownership, or data persistence.
 
@@ -69,12 +73,17 @@ This category currently contains:
 
 1. Color System
 2. Visual Feedback System
+3. Modular Board Visual System
 
 `ColorSystem` provides framework-level color identity and presentation mapping.
 
 `VisualFeedbackSystem` reacts to gameplay results and makes them visible to the player.
 
-These two systems cover the current shared presentation needs without prematurely splitting into more specialized subsystems.
+`ModularBoardVisualSystem` converts framework-derived board boundaries into generic modular
+cell-prefab visual state without deciding what the board means in a particular puzzle.
+
+These systems cover the current shared presentation needs without mixing gameplay authority with
+visual construction.
 
 ---
 
@@ -92,6 +101,8 @@ Presentation Systems may:
 * play particles
 * play sounds
 * show timer warnings
+* construct presentation-only board cell instances through explicit visual inputs
+* apply derived wall and corner slot state
 
 Presentation Systems must not:
 
@@ -102,6 +113,9 @@ Presentation Systems must not:
 * own level data
 * own progression data
 * instantiate runtime level objects
+
+Presentation-only cell instances are allowed when they are disposable views of already-defined
+board structure. They must not become authoritative runtime gameplay objects.
 
 Logical state remains elsewhere.
 
@@ -183,6 +197,31 @@ Gameplay systems still own actual logical position and state.
 
 ---
 
+# Modular Board Visual System
+
+The Modular Board Visual System is a reusable structural-presentation system.
+
+It consumes boundary facts already derived by the Core Board Wall Generation System and applies
+them to a generic modular cell-visual contract.
+
+It may:
+
+* plan per-cell half-wall and corner slot state
+* create presentation-only cell visual instances through explicit inputs
+* apply and rebuild modular board visuals
+
+It must not:
+
+* decide which game-specific cells count as visible board space
+* interpret blocked cells, obstacles, occupancy, or movement rules
+* own concrete meshes, materials, or puzzle-specific prefabs
+* create authoritative gameplay entities
+
+The game module supplies the participation mapping and concrete art. The framework supplies the
+reusable topology-to-visual behavior.
+
+---
+
 # Events vs Direct Calls
 
 Use direct calls when one clear owner exists.
@@ -215,6 +254,8 @@ Framework ownership:
 * shared color-to-visual mapping patterns
 * shared visual feedback triggers and presentation hooks
 * reusable presentation conventions
+* reusable conversion from board-boundary topology into modular cell-visual state
+* generic modular board visual application contracts
 
 Game module ownership:
 
@@ -222,6 +263,8 @@ Game module ownership:
 * puzzle-specific feedback selection
 * puzzle-specific art direction
 * puzzle-specific visual interpretation of gameplay results
+* concrete board cell prefabs, meshes, and materials
+* mapping puzzle-specific board data into visual participation
 
 The framework provides presentation infrastructure.
 
@@ -277,6 +320,7 @@ Presentation Systems may provide:
 * collection feedback
 * invalid move feedback
 * selection and drag feedback
+* modular floor, half-wall, convex-cap, and concave-elbow board visuals
 
 They do not decide whether a hole may collect a stickman.
 
@@ -323,6 +367,9 @@ The current category should stay small until real reuse pressure exists.
 # Final Design Rule
 
 Presentation Systems react to gameplay truth and translate it into player-facing visuals.
+
+Presentation Systems may also visualize framework-derived static structure without becoming the
+authority that defines that structure.
 
 They do not define gameplay truth.
 

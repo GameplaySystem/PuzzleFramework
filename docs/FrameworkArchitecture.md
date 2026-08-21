@@ -136,10 +136,12 @@ Own:
 * player-facing visual response
 * color identity mapping
 * visual feedback reactions
+* reusable application of derived board structure to presentation-only visual instances
 
 Rule:
 
-Presentation Systems react to gameplay truth and show feedback.
+Presentation Systems react to gameplay truth and show feedback. They may also visualize
+framework-derived static structure without redefining that structure.
 
 ## Progression Systems
 

@@ -221,6 +221,16 @@ Required because the first playable `Drop The Man` slice includes multi-cell hol
 Reason:
 Not required for playability.
 
+Post-baseline decision:
+
+The reusable Wall Generation System is approved as the structural dependency for the modular
+board-visual replacement phase. This does not change the fact that it was deferred from the
+minimum playable baseline.
+
+Implementation status:
+
+The post-baseline topology foundation is implemented from an explicit participation mask.
+
 `Pathfinding System`
 
 Reason:
@@ -331,6 +341,19 @@ Reason:
 Drop Away only needs enough presentation to remain readable and usable.
 
 Do not build a large feedback framework during MVP.
+
+`Modular Board Visual System`
+
+Reason:
+
+Not required for the minimum playable baseline. It is approved as a focused post-baseline system
+for converting reusable Wall Generation results into modular cell-prefab visual state. It must
+remain separate from gameplay runtime object construction and puzzle-specific obstacle meaning.
+
+Implementation status:
+
+The initial half-wall, convex-cap, concave-elbow, passive cell-view, and narrow builder profile is
+implemented. Concrete prefab wiring and visual validation remain game-module work.
 
 ## Progression Systems
 

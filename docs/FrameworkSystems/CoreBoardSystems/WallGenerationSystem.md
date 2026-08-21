@@ -15,12 +15,14 @@ Related Documents:
 - Overview.md
 - GridSystem.md
 - ShapeSystem.md
+- ../PresentationSystems/ModularBoardVisualSystem.md
 
 Depends On:
 - GridSystem.md
 - ShapeSystem.md
 
 Used By:
+- Modular Board Visual System
 - Drop Away
 - Color Block Jam
 - Sky Rush
@@ -54,7 +56,7 @@ Wall Generation System analyzes boundaries
     ->
 System returns wall segments and corners
     ->
-Caller uses result for setup or presentation
+Modular Board Visual System or another caller consumes the structural result
 ```
 
 The important boundary is:
@@ -119,6 +121,101 @@ This reduces duplication and keeps boundaries consistent with the board definiti
 
 ---
 
+# Boundary Input Contract
+
+Wall generation should consume an explicit set of coordinates that participate in the
+derived boundary.
+
+Conceptually:
+
+```text
+Boundary-participating cell coordinates
+    ->
+Wall Generation System
+    ->
+Derived edge and corner facts
+```
+
+The caller owns the mapping from its board data into that boundary-participation mask.
+
+This distinction is required because generic cell metadata does not always describe visual
+presence. In particular, an authored `Blocked` cell remains an existing structural cell in
+the Grid System. One game may render it as a hole while another may render it as a present
+but non-enterable cell.
+
+Rules:
+
+* missing, inactive, and out-of-bounds coordinates do not participate by default
+* existing structural coordinates may participate
+* callers may deliberately exclude existing coordinates based on game-module meaning
+* Wall Generation must not assign generic visual meaning to `Blocked` or occupancy state
+
+The system derives topology from the supplied mask. It does not decide how that mask was
+created.
+
+---
+
+# Exact Edge Derivation
+
+For every participating cell, inspect its four orthogonal neighbors.
+
+An exposed edge exists on a side when the coordinate on the other side does not participate
+in the boundary mask.
+
+```text
+participating cell + participating neighbor     -> no exposed edge
+participating cell + non-participating neighbor -> one exposed edge
+```
+
+Each exposed edge belongs to the participating cell and carries an orientation:
+
+* North
+* East
+* South
+* West
+
+This rule handles rectangular outer bounds, internal holes, irregular silhouettes, and
+disconnected board regions without special cases.
+
+---
+
+# Exact Corner Derivation
+
+Corner classification should be vertex-based rather than inferred only from pairs of wall
+objects. At each grid vertex, inspect the four cells that touch that vertex.
+
+The structural names should describe geometry:
+
+* `Convex` means the participating silhouette turns outward
+* `Concave` means the participating silhouette turns inward around missing space
+
+Presentation code may map those facts to art assets named `Outer Corner` and `Inner Corner`.
+The framework should not rely on potentially ambiguous asset naming.
+
+Vertex classification:
+
+| Participating quadrants | Derived result |
+| --- | --- |
+| 0 | No corner |
+| 1 | One convex corner owned by the participating cell |
+| 2, orthogonally adjacent | No corner; the boundary continues straight through the vertex |
+| 2, diagonally opposite | Diagonal-touch topology; preserve this as an explicit diagnostic/result case |
+| 3 | One concave corner oriented toward the missing quadrant |
+| 4 | No corner |
+
+For cell-local presentation, ownership can be mapped deterministically:
+
+* a convex corner belongs to the sole participating cell
+* a concave corner belongs to the participating cell diagonally opposite the missing quadrant
+* a diagonal-touch vertex represents two coincident convex turns and must not be silently
+  collapsed into one corner
+
+Diagonal-touch input is geometrically ambiguous for some art sets. The structural system
+should expose that fact rather than guessing whether presentation should overlap two pieces,
+separate the regions, or reject the layout. The caller decides the supported policy.
+
+---
+
 # Corner Generation
 
 Wall corners belong here as part of derived boundary structure.
@@ -147,15 +244,23 @@ Framework ownership:
 * wall segment generation
 * corner generation
 
+Framework Presentation ownership:
+
+* translating the derived structure into generic modular cell-visual slot state
+* applying that state through framework-safe visual contracts
+
 Game module ownership:
 
 * whether derived boundaries participate in gameplay restrictions
 * whether walls have thematic or puzzle-specific meaning
-* how derived walls are rendered or interpreted by a particular game
+* mapping game-specific level data into the boundary-participation mask
+* concrete cell prefabs, meshes, materials, and art configuration
 
 Framework owns structural derivation.
 
-Game modules own gameplay meaning and presentation meaning.
+Framework Presentation may own reusable visual application patterns.
+
+Game modules own puzzle-specific meaning and concrete art.
 
 ---
 
@@ -170,12 +275,22 @@ Wall Generation System analyzes exposed boundaries
     ->
 System returns wall and corner structure
     ->
-Caller uses result for board setup, rendering, or downstream queries
+Modular Board Visual System converts structure into visual slot state
+    ->
+Game-supplied visual instances display the result
 ```
 
 The Wall Generation System should consume shared board structure and produce derived structural output.
 
 It should not own puzzle-specific consequences of those walls.
+
+Derived output should describe logical coordinates, orientations, corner geometry, and any
+topology diagnostics. It should not contain Unity prefab references, transforms, materials,
+or game-specific presentation objects.
+
+The Wall Generation System should not know whether presentation uses full wall segments,
+half-wall pieces, corner caps, inner elbows, mesh generation, or another rendering strategy.
+Those decisions belong to a presentation consumer such as the Modular Board Visual System.
 
 ---
 
@@ -219,6 +334,14 @@ If the board contains multiple disconnected active regions:
 
 * boundary generation should still derive walls consistently around each region
 
+## Diagonal Cell Contact
+
+If two participating regions touch only at one vertex:
+
+* edge derivation remains deterministic
+* the shared vertex should be reported as diagonal-touch topology
+* presentation policy should not be guessed by the framework
+
 ## Derived Wall Drift Into Rules
 
 A common failure mode is slowly adding gameplay blocking logic directly into wall derivation because walls often imply blocked movement.
@@ -238,6 +361,9 @@ The first version of the Wall Generation System should support:
 * outer boundary wall generation
 * corner generation
 * board boundary structure derivation from shared layout
+* explicit boundary-participation input
+* convex and concave geometric corner classification
+* diagonal-touch topology reporting
 
 The MVP should stay at the level of structural derivation.
 
