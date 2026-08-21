@@ -315,6 +315,7 @@ Progress markers below use these meanings:
 - Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
 - Drop The Man phase 4B basic level result flow and level sequence [done]
 - Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
+- Drop The Man URP 17.3 rendering-pipeline baseline [done, prototype-owned]
 
 ### Core Board Systems
 
@@ -374,17 +375,16 @@ cell prefab, and manually validated in Unity.
 
 Current category:
 
-Framework Modular Board Visual Integration
+Drop The Man Presentation Pipeline
 
 Current system:
 
-Core Board Wall Generation now derives deterministic exposed edges, convex/concave vertices, and
-diagonal-touch diagnostics from an explicit participation mask. The Presentation Modular Board
-Visual implementation converts that topology into eight half-wall, four convex-corner, and four
-concave-corner slots, validates the prefab contract, and rebuilds presentation-only cell views.
-Drop The Man supplies the prototype-specific mapping where blocked coordinates are visually
-absent. Its editor config and gameplay scene now reference one concrete modular cell prefab with
-all 17 visual slots assigned, and the owner confirmed the generated board behaves correctly.
+DropAwayPrototype now uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
+across Graphics Settings and every Quality tier. Existing project materials use URP Lit. The
+pipeline, renderer, materials, and future stencil work remain outside PuzzleFramework; reusable
+board topology and modular slot planning remain render-pipeline agnostic. Static configuration and
+runtime assembly checks pass, while final visual confirmation in the editor and gameplay scenes is
+still required from the open Unity project.
 
 ---
 
@@ -392,7 +392,7 @@ all 17 visual slots assigned, and the owner confirmed the generated board behave
 
 1. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
 2. Plan the next placeholder-replacement slice for concrete hole and cat visuals without changing gameplay truth.
-3. Revisit the hole-depth stencil/shader presentation separately from board topology.
+3. Prototype the hole-depth stencil/shader presentation under URP separately from board topology.
 4. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
 5. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
 6. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.

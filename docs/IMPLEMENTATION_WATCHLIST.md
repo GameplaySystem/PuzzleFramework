@@ -422,6 +422,7 @@ These are worth remembering but do not require action before the next prototype 
 * the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and JSON import/export paths, while still leaving gameplay play/test bridging for a later slice
 * reusable board topology, modular activation, cell-view validation, Drop The Man adapters, concrete prefab wiring, and the initial visual playtest are complete
 * reusable framework level-editor extraction is still deferred until at least one more prototype proves which authoring mechanics are actually shared
+* DropAwayPrototype now uses a prototype-owned URP 17.3 baseline; pipeline assets, shaders, materials, renderer features, and mobile profiling must remain outside the render-pipeline-agnostic framework
 
 ---
 
@@ -432,5 +433,6 @@ Before the next placeholder replacement:
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
 * preserve the validated modular board baseline and keep topology ownership in framework
 * design concrete hole/cat presentation as separate prototype-owned slices
+* validate the future stencil hole effect against real hole meshes before approving shader state or adding a renderer feature
 * keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them
 * revisit framework-level editor extraction only after a second prototype validates the shared kernel
