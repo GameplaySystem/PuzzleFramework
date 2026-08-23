@@ -427,6 +427,7 @@ These are worth remembering but do not require action before the next prototype 
 * DOTween Core is a prototype-owned dependency, and the corrected single-hole prefab has manually validated `DropTheManHolePresentation` cap-close, shrink, reset, named blend shape, stencil aperture, visual-root, collection-socket wiring, drag termination, destruction, win routing, restart, and next-level loading; immediate fallback remains implemented for missing or invalid presentation
 * full-hole closing alignment is exposed on `DropTheManSceneController` as a scene-wide presentation toggle while visual feel is evaluated; enabled uses a framework grid snap query for footprint-valid view alignment, disabled preserves the final freeform drag position, and neither path routes through non-full release commit, mutates `CurrentCoordinate`, or reoccupies the departing footprint
 * `GridWorldLayout.CreateCentered(...)` centers logical rectangular board bounds rather than the centroid of participating cells; Drop The Man now uses it from the gameplay bootstrapper so every runtime consumer shares one conversion, but odd/even board sizes and asymmetric blocked-cell layouts still require Unity validation
+* the prototype stencil Lit receiver now supports material-configured compare operations; board materials retain `NotEqual`, while the manually validated `Hole_Inner_Cavity_Stencil` uses `Equal` against the aperture reference and replaces the inner-wall material without adding another FBX material slot
 
 ---
 

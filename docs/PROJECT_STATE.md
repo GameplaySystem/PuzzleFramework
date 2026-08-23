@@ -406,6 +406,12 @@ cells, holes, cats/stickmen, drag, snap, and collection conversion move together
 the logical rectangular board bounds; blocked or visually absent cells do not shift the level.
 Unity gameplay validation is still required.
 
+The prototype's existing stencil Lit receiver now exposes its comparison operation per material.
+Board cell materials continue rejecting aperture pixels with `NotEqual`, while the new
+`Hole_Inner_Cavity_Stencil` test material uses `Equal` so the dark inner walls render only through
+the matching aperture. The single-hole prefab now uses this material on its inner-wall submesh,
+and the material-only real-hole check passed Game-view validation.
+
 ---
 
 # Next Steps
