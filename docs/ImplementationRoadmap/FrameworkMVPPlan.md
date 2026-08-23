@@ -160,6 +160,12 @@ Required to define a loadable Drop Away level structure.
 Reason:
 Required to load authored level definitions into the runtime slice.
 
+`Level Catalog System` [implemented follow-up]
+
+Reason:
+Removes manually maintained level-reference arrays while keeping shipped-content discovery,
+ordering, and duplicate validation reusable across puzzle game modules.
+
 ### Deferred
 
 `Level Editor Foundation`

@@ -15,6 +15,7 @@ Related Documents:
 - LevelDataSystem.md
 - LevelSaveLoadSystem.md
 - LevelEditorFoundation.md
+- LevelCatalogSystem.md
 - ../RuntimeConstructionSystems/Overview.md
 - ../ProgressionSystems/Overview.md
 
@@ -51,12 +52,14 @@ This category currently contains:
 1. Level Data System
 2. Level Save Load System
 3. Level Editor Foundation
+4. Level Catalog System
 
 Each system has a narrow role:
 
 * `LevelDataSystem` defines the level data model.
 * `LevelSaveLoadSystem` persists authored level definitions.
 * `LevelEditorFoundation` creates and edits authored level definitions.
+* `LevelCatalogSystem` discovers and deterministically orders shipped authored level assets.
 
 Together, they define the authored content side of the framework.
 
@@ -75,6 +78,8 @@ Level Save Load System
     ->
 JSON
     ->
+Level Catalog System
+    ->
 Level Save Load System
     ->
 LevelDefinition
@@ -88,6 +93,7 @@ This pipeline makes the handoff explicit:
 
 * the editor creates data
 * save/load persists data
+* the catalog discovers and selects shipped authored data
 * runtime construction later consumes loaded data
 
 That split keeps authored content concerns separate from runtime construction concerns.
@@ -282,13 +288,16 @@ Content Systems still own authored content, not runtime construction or player p
 
 # Final Design Rule
 
-Content Systems own authored level content data, authored level definition persistence, and editor-side authoring support.
+Content Systems own authored level content data, authored level definition persistence, shipped
+level discovery, and editor-side authoring support.
 
 `LevelDataSystem` defines the data model.
 
 `LevelSaveLoadSystem` persists level definitions.
 
 `LevelEditorFoundation` creates and edits level definitions.
+
+`LevelCatalogSystem` discovers and deterministically orders shipped authored level assets.
 
 Runtime Construction Systems later consume loaded level definitions and turn them into runtime objects.
 

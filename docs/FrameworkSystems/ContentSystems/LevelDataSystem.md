@@ -14,6 +14,7 @@ Parent:
 Related Documents:
 - LevelSaveLoadSystem.md
 - LevelEditorFoundation.md
+- LevelCatalogSystem.md
 - ../CoreBoardSystems/GridSystem.md
 - ../CoreBoardSystems/ShapeSystem.md
 
@@ -28,6 +29,7 @@ Used By:
 - Sky Rush
 - Hole People
 - Bus Jam
+- Level Catalog System
 
 ## Purpose
 

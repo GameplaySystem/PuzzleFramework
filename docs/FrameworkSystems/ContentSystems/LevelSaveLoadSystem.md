@@ -14,6 +14,7 @@ Parent:
 Related Documents:
 - LevelDataSystem.md
 - LevelEditorFoundation.md
+- LevelCatalogSystem.md
 - ../RuntimeConstructionSystems/Overview.md
 - ../ProgressionSystems/Overview.md
 
@@ -27,6 +28,7 @@ Used By:
 - Hole People
 - Bus Jam
 - Level Editor Foundation
+- Level Catalog System
 - Runtime Construction Systems
 
 ## Purpose

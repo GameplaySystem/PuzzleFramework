@@ -60,6 +60,7 @@ Own:
 * level definitions
 * level authoring
 * authored level persistence
+* shipped level discovery and deterministic catalog ordering
 
 Rule:
 
@@ -204,6 +205,8 @@ LevelDefinition
 Level Save Load System
     ->
 Stored authored level data
+    ->
+Level Catalog System
     ->
 Level Save Load System
     ->

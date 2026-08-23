@@ -185,8 +185,10 @@ Approved
 - Level Data System
 - Level Save Load System
 - Level Editor Foundation
+- Level Catalog System
 
-Content Systems handle level content data, level content save/load, and level editor foundation.
+Content Systems handle level content data, level content save/load, shipped level discovery, and
+level editor foundation.
 
 Content Systems do not instantiate runtime objects.
 
@@ -315,6 +317,7 @@ Progress markers below use these meanings:
 - Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
 - Drop The Man phase 4B basic level result flow and level sequence [done]
 - Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
+- Framework Resources level catalog and Drop The Man catalog adapter [implemented and manually validated]
 - Drop The Man URP 17.3 rendering-pipeline baseline [done, prototype-owned]
 - Drop The Man material-only URP stencil proof assets [manually validated proof, production adaptation pending]
 - Drop The Man DOTween single-hole completion presentation [implemented and manually validated, prototype-owned]
@@ -351,6 +354,7 @@ Progress markers below use these meanings:
 - Level Data System [implemented]
 - Level Save Load System [implemented]
 - Level Editor Foundation [documented only in framework; first concrete tool is prototype-only]
+- Level Catalog System [implemented foundation]
 
 ### Presentation Systems
 
@@ -378,11 +382,22 @@ cell prefab, and manually validated in Unity.
 
 Current category:
 
-Drop The Man Presentation Pipeline
+Content Systems / Drop The Man Runtime Integration
 
 Current system:
 
-DropAwayPrototype now uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
+The framework now provides a Resources-backed `LevelCatalogSystem` that treats authored
+`TextAsset` contents as opaque, delegates metadata interpretation to game modules, rejects duplicate
+ids and sequence numbers, reports sequence gaps, and exposes deterministic ordered entries.
+Drop The Man supplies the JSON-validating canonical `Level N` metadata adapter. Its gameplay
+bootstrapper now discovers `Assets/Resources/DropTheMan/Levels`, while editor export defaults to the
+same folder. The old serialized scene sequence and direct JSON asset references are removed. Unity
+Play Mode owner validation confirmed initial Level 1 discovery, Level 1 restart, and deterministic
+Next loading of Level 2 without serialized scene references or Console errors.
+
+Presentation baseline:
+
+DropAwayPrototype uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
 across Graphics Settings and every Quality tier. Existing project materials use URP Lit. The
 pipeline, renderer, materials, and future stencil work remain outside PuzzleFramework; reusable
 board topology and modular slot planning remain render-pipeline agnostic. A manually validated
