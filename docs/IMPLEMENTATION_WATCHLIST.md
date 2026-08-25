@@ -411,7 +411,7 @@ These are worth remembering but do not require action before the next prototype 
 * shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
 * the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
 * prototype-owned outcome routing, timer advancement, JSON-driven runtime spawning, and the basic result loop are now wired through the dev gameplay scene, but they remain prototype-owned and dev-scene oriented rather than production progression infrastructure
-* the current runtime spawning path still clones scene-local hole/stickman templates in the gameplay test scene rather than using a dedicated prefab pipeline
+* the current runtime spawning path uses a config-owned collectable prefab and a scene-controller-owned hole prefab; shape-aware hole prefab resolution remains deferred
 * `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
 * the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority

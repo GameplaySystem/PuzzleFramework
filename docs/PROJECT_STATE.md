@@ -314,6 +314,7 @@ Progress markers below use these meanings:
 - Drop The Man editor phase 3A save/export JSON foundation [done]
 - Drop The Man editor phase 3B import/load JSON foundation [done]
 - Drop The Man phase 4A JSON-driven gameplay runtime spawning [done]
+- Drop The Man config-owned collectable prefab and gameplay-scene template cleanup [implemented, manual validation pending]
 - Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
 - Drop The Man phase 4B basic level result flow and level sequence [done]
 - Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
@@ -395,6 +396,12 @@ same folder. The old serialized scene sequence and direct JSON asset references 
 Play Mode owner validation confirmed initial Level 1 discovery, Level 1 restart, and deterministic
 Next loading of Level 2 without serialized scene references or Console errors.
 
+Drop The Man collectable spawning now resolves one typed prefab from the existing prototype visual
+config shared with editor previews. The gameplay scene no longer contains pre-placed primitive
+hole/stickman test objects, and the obsolete non-spawning/template-hidden paths were removed.
+The config intentionally has no collectable prefab assigned until the owner creates and wires the
+placeholder cat prefab; Unity Play Mode validation is therefore pending.
+
 Presentation baseline:
 
 DropAwayPrototype uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
@@ -431,10 +438,10 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-1. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
-2. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
-3. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
-4. Validate the material-only URP stencil proof against the real hole aperture before adapting it to production cell and hole materials.
+1. Create a placeholder cat prefab with `DropTheManStickmanView`, assign it to the shared visual config, and validate editor preview plus gameplay spawn/collection/restart/next.
+2. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
+3. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
+4. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
 5. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
 6. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
 7. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
