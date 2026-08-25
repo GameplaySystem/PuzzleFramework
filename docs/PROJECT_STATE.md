@@ -319,6 +319,7 @@ Progress markers below use these meanings:
 - Drop The Man phase 4B basic level result flow and level sequence [done]
 - Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
 - Framework Resources level catalog and Drop The Man catalog adapter [implemented and manually validated]
+- Framework commit-pinned Git package consumption workflow [implemented and Unity-resolved]
 - Drop The Man URP 17.3 rendering-pipeline baseline [done, prototype-owned]
 - Drop The Man material-only URP stencil proof assets [manually validated proof, production adaptation pending]
 - Drop The Man DOTween single-hole completion presentation [implemented and manually validated, prototype-owned]
@@ -395,6 +396,14 @@ bootstrapper now discovers `Assets/Resources/DropTheMan/Levels`, while editor ex
 same folder. The old serialized scene sequence and direct JSON asset references are removed. Unity
 Play Mode owner validation confirmed initial Level 1 discovery, Level 1 restart, and deterministic
 Next loading of Level 2 without serialized scene references or Console errors.
+
+Cross-repository package delivery now uses a Git package URL targeting
+`/Packages/com.gaming.puzzleframework` and an immutable full framework commit SHA. Drop The Man no
+longer uses a relative local `file:` dependency, and Unity Package Manager resolved the pinned
+remote revision and compiled the project successfully. The canonical workflow requires framework
+verification, commit, and push before any consumer updates its manifest and resolved lock file.
+This removes sibling-folder assumptions and prevents a prototype from referencing a framework
+commit that collaborators cannot fetch.
 
 Drop The Man collectable spawning now resolves one typed prefab from the existing prototype visual
 config shared with editor previews. The gameplay scene no longer contains pre-placed primitive

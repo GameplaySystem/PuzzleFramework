@@ -17,6 +17,7 @@ Primary source-of-truth documents:
 
 - `docs/PROJECT_STATE.md`
 - `docs/FrameworkSystems/**`
+- `docs/Workflow/FrameworkPackageDependencyWorkflow.md`
 
 Codex must treat those documents as the current design baseline unless the user explicitly changes them.
 
@@ -348,6 +349,16 @@ Do not jump ahead beyond the approved roadmap.
 - Codex should choose the correct commit order, commit batches, and commit messages based on architectural boundaries and change scope.
 - Codex should push the approved commits when requested, while still excluding unrelated local changes from staging.
 
+### Framework Package Dependency Workflow
+
+- Follow `docs/Workflow/FrameworkPackageDependencyWorkflow.md` whenever a prototype consumes a new framework revision.
+- Commit and push framework changes before updating a consuming prototype's package pin.
+- Verify the framework commit exists remotely, then use its full 40-character SHA in the prototype manifest.
+- Committed prototype manifests must use the Git package URL and package subfolder path; do not commit local `file:` dependencies or mutable branch pins.
+- Commit the consumer's `Packages/manifest.json` and resolved `Packages/packages-lock.json` when its framework pin changes.
+- Compile and test each consumer after resolving a new framework revision and before committing or pushing it.
+- A temporary local package override must remain uncommitted and must be restored to the pinned Git dependency before final verification.
+
 ## 11. What Codex Must Ask Approval For
 
 Codex must ask approval before:
@@ -372,3 +383,4 @@ Codex must ask approval before:
 - Never commit automatically.
 - Never move or delete user work unless explicitly instructed.
 - Never rewrite or discard unrelated local changes.
+- Never commit or push a prototype that references an unpushed framework commit or a machine-specific framework path.

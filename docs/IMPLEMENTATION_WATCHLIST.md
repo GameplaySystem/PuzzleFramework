@@ -400,6 +400,37 @@ Recommended follow-up:
 
 ---
 
+### 11. Framework package consumption must be remote and reproducible
+
+Status:
+
+* Implemented / Unity Package Resolution Validated
+
+Why it matters:
+
+* the original relative `file:` dependency required every collaborator to clone framework and
+  prototype repositories into a matching sibling layout
+* that assumption does not scale safely across artists and multiple prototype repositories
+* a mutable branch reference could silently resolve differently across machines or dates
+
+Owner decision:
+
+* committed prototypes use the framework Git repository plus package subfolder path
+* every consumer pins a full 40-character framework commit SHA
+* framework changes are verified, committed, and pushed before consumer pins are updated
+* each consumer commits its manifest and Unity-resolved lock file when adopting a new revision
+* temporary local `file:` overrides are permitted only as uncommitted developer state
+* DropAwayPrototype now resolves the framework from Git at a full commit SHA, and Unity regenerated
+  the lock entry with `source: git` and the matching hash before compiling successfully
+
+Recommended follow-up:
+
+* validate private-repository credentials on each collaborator machine once
+* update each future prototype's `AGENTS.md` and manifest from the canonical workflow at creation
+* consider tagged package releases or a private registry only when release cadence justifies them
+
+---
+
 ## Immediate Non-Blockers
 
 These are worth remembering but do not require action before the next prototype slice:

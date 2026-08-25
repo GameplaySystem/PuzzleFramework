@@ -13,7 +13,7 @@ The goal is to identify the minimum framework work needed to make one real game 
 The implementation structure is:
 
 * reusable `PuzzleFramework` package or package-ready source
-* separate `DropAwayPrototype` Unity project consuming that framework locally
+* separate `DropAwayPrototype` Unity project consuming a commit-pinned framework Git package
 
 The MVP is not a plan to build Drop Away inside one giant framework Unity project.
 
@@ -84,7 +84,7 @@ Drop Away MVP must support the following gameplay requirements:
 * win condition
 * lose condition
 * basic gameplay feedback that keeps the state readable
-* separate prototype project consuming the framework locally
+* separate prototype project consuming a commit-pinned framework Git package
 
 These are gameplay requirements, not implementation commitments.
 
@@ -103,7 +103,7 @@ Implementation structure rule:
 ```text
 1. Prepare PuzzleFramework as reusable package/package-ready source.
 2. Create or use separate DropAwayPrototype Unity project.
-3. Reference PuzzleFramework locally from DropAwayPrototype.
+3. Reference a pushed PuzzleFramework commit from DropAwayPrototype through Unity Package Manager.
 4. Implement framework MVP only as Drop Away requires it.
 5. Implement Drop Away game module inside DropAwayPrototype.
 6. Keep prototype-specific scenes, assets, rules, and nouns outside the framework.
@@ -393,7 +393,7 @@ The implementation sequence should favor dependencies and fast proof of playabil
 Implement:
 
 * package or package-ready framework source structure
-* local package consumption path expected by prototype projects
+* commit-pinned Git package consumption expected by prototype projects
 * separation between framework-owned source and prototype-owned source
 
 Why first:
@@ -407,7 +407,7 @@ The framework should be consumable by a separate Unity project before game-speci
 Implement:
 
 * a separate `DropAwayPrototype` Unity project
-* local reference from `DropAwayPrototype` to `PuzzleFramework`
+* full-SHA Git package reference from `DropAwayPrototype` to `PuzzleFramework`
 * initial project shell for prototype-owned scenes, assets, and game-module code
 
 Why second:
@@ -578,7 +578,7 @@ Framework MVP is complete when all of the following are true:
 
 * a Drop Away level can be loaded
 * `DropAwayPrototype` runs as a separate Unity project
-* `DropAwayPrototype` references `PuzzleFramework` locally
+* `DropAwayPrototype` references a remotely available PuzzleFramework commit through the package subfolder Git URL
 * runtime state can be built from authored level data
 * a hole can be dragged
 * same-color targets can be collected during drag

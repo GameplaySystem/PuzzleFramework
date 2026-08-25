@@ -14,7 +14,7 @@ It defines:
 * Unity project layout
 * framework package strategy
 * prototype project strategy
-* local package dependency workflow
+* commit-pinned Git package dependency workflow
 * portfolio presentation structure
 * future release strategy
 
@@ -172,7 +172,7 @@ It also allows a reviewer to inspect one prototype without wading through every 
 
 ## PuzzleFramework
 
-`PuzzleFramework` should be organized so the reusable source can be consumed as a Unity package or package-ready local dependency.
+`PuzzleFramework` should be organized so the reusable source can be consumed as a Unity Git package.
 
 The important structural idea is:
 
@@ -259,29 +259,34 @@ This also makes future cleanup much easier because prototype-specific content ne
 
 ---
 
-# Local Package Dependency Workflow
+# Git Package Dependency Workflow
 
-During development, each prototype should reference `PuzzleFramework` through a local package or path dependency.
+Each prototype should reference `PuzzleFramework` through Unity Package Manager using the
+framework repository URL, package subfolder, and an immutable full commit SHA.
 
 Conceptually:
 
 ```text
 Prototype Project
     ->
-local package reference
+commit-pinned Git package reference
     ->
 PuzzleFramework
 ```
 
 Recommended workflow:
 
-1. Keep `PuzzleFramework` in its own repository or project root.
+1. Keep `PuzzleFramework` in its own repository.
 2. Create a separate Unity project for a prototype.
-3. Reference `PuzzleFramework` locally through Unity package or path-based dependency configuration.
-4. Make shared-framework changes in `PuzzleFramework`.
-5. Validate those changes from the prototype project consuming it.
+3. Reference `PuzzleFramework` through a Git dependency targeting
+   `/Packages/com.gaming.puzzleframework` and a full commit SHA.
+4. Make, verify, commit, and push shared-framework changes in `PuzzleFramework` first.
+5. Update the prototype pin and resolved lock file only after the framework commit exists remotely.
+6. Validate those changes from the prototype project consuming the pinned revision.
 
 This workflow is preferred because it proves the real consumption model early.
+
+It also allows framework and prototype repositories to live anywhere on a collaborator's machine.
 
 It avoids the false confidence that comes from developing framework code only inside one giant local Unity project.
 
@@ -381,7 +386,7 @@ Instead of building everything inside one Unity project, the practical order bec
 ```text
 1. Prepare framework package/project structure
 2. Create DropAwayPrototype Unity project
-3. Reference PuzzleFramework locally
+3. Reference a pushed PuzzleFramework commit through the Git package dependency
 4. Implement framework MVP through Drop Away needs
 5. Build Drop Away vertical slice
 6. Create second prototype project to pressure-test reuse
@@ -415,8 +420,9 @@ Likewise, each prototype should stay understandable as a consumer of the framewo
 Future possibilities include:
 
 * publishing the framework as a Unity package
-* converting the local dependency to a Git submodule workflow
 * converting the framework to a package registry workflow later
+* publishing tagged framework package releases
+* adding automated consumer compatibility checks
 * moving prototype projects into separate repositories if portfolio needs change
 * asset store packaging later
 * CI or build automation later
@@ -425,7 +431,7 @@ These are future options, not MVP requirements.
 
 The current strategy should stay simple:
 
-* local package dependency first
+* commit-pinned Git package dependency
 * separate prototype projects
 * clean framework repository
 
@@ -439,6 +445,7 @@ Physical project organization should make framework reuse obvious.
 
 Each prototype stays a separate Unity project.
 
-Prototype projects consume the framework through local dependency workflow during development.
+Prototype projects consume the framework through the commit-pinned Git dependency workflow defined
+in `docs/Workflow/FrameworkPackageDependencyWorkflow.md`.
 
 Framework and prototype content must remain physically separated.

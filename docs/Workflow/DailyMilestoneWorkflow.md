@@ -119,6 +119,11 @@ Each task handoff must continue to report:
 - final repository state
 - whether unrelated dirty files were left untouched
 
+When a milestone changes framework code consumed by a prototype, also follow
+`FrameworkPackageDependencyWorkflow.md`. Framework verification, commit, and push must complete
+before the consumer manifest is pinned to that commit and before the consumer is committed or
+pushed.
+
 When a task changes the daily plan, record the change rather than silently redefining the milestone.
 
 ## End-Of-Day Report
