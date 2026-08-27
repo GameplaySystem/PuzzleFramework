@@ -442,7 +442,11 @@ These are worth remembering but do not require action before the next prototype 
 * shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
 * the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
 * prototype-owned outcome routing, timer advancement, JSON-driven runtime spawning, and the basic result loop are now wired through the dev gameplay scene, but they remain prototype-owned and dev-scene oriented rather than production progression infrastructure
-* the current runtime spawning path uses a config-owned collectable prefab and a scene-controller-owned hole prefab; shape-aware hole prefab resolution remains deferred
+* the runtime spawning path now uses a config-owned collectable prefab plus a prototype-owned
+  shape resolver over the config hole palette; it compares exact footprint sets across four
+  quarter-turns, rejects missing/duplicate/rotationally ambiguous mappings before spawning, and
+  leaves JSON plus framework runtime construction presentation-agnostic; owner validation confirmed
+  distinct runtime visuals for all eight canonical unrotated footprints
 * `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
 * the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority
@@ -471,6 +475,15 @@ Before the next placeholder replacement:
 * preserve the validated modular board baseline and keep topology ownership in framework
 * validate centered gameplay construction with odd and even dimensions before adding dynamic camera framing
 * design concrete hole/cat presentation as separate prototype-owned slices
+* concrete hole views now accept multiple pointer-selection colliders for non-rectangular shapes;
+  manually verify every authored collider uses the `DropTheManHole` layer and that disabling a hole
+  disables every configured hit target
+* manually validate all eight config-owned hole prefabs against unrotated and rotated runtime
+  footprints, including logical-root alignment, presentation roots, color targets, cap blend shapes,
+  stencil apertures, collection sockets, and completion callbacks
+* sharp light-dependent marks inside the deep hole meshes are current inner-cavity self-shadows,
+  not footprint or stencil mapping failures; defer the final cavity receive/cast-shadow and gradient
+  policy until the owner and artist review the intended look
 * validate the material-only stencil proof against the corrected single-hole aperture before approving production shader state or adding a renderer feature
 * keep the validated prototype-owned begin/finalize callback split direct; do not introduce a framework event bus or let the view mutate gameplay lifecycle state
 * keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them

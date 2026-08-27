@@ -405,11 +405,22 @@ verification, commit, and push before any consumer updates its manifest and reso
 This removes sibling-folder assumptions and prevents a prototype from referencing a framework
 commit that collaborators cannot fetch.
 
-Drop The Man collectable spawning now resolves one typed prefab from the existing prototype visual
-config shared with editor previews. The gameplay scene no longer contains pre-placed primitive
-hole/stickman test objects, and the obsolete non-spawning/template-hidden paths were removed.
-The config intentionally has no collectable prefab assigned until the owner creates and wires the
-placeholder cat prefab; Unity Play Mode validation is therefore pending.
+Drop The Man collectable spawning now resolves one typed cat prefab from the existing prototype
+visual config shared with editor previews. The gameplay scene no longer contains pre-placed
+primitive hole/stickman test objects, and the obsolete non-spawning/template-hidden paths were
+removed. The placeholder cat prefab is now assigned; its full gameplay presentation remains under
+manual validation.
+
+Concrete Drop The Man hole prefab preparation now supports multiple pointer-selection colliders per
+view so non-rectangular L, T, and plus surfaces can be covered without changing runtime footprint
+authority. Existing single-collider prefab data remains supported through a serialized migration
+fallback. All eight canonical shape prefabs are now authored in the prototype visual config, and a
+prototype-owned resolver matches exact runtime footprint sets across quarter-turn rotations before
+spawning the corresponding prefab. Missing, duplicate, or rotationally ambiguous mappings fail
+startup explicitly. JSON and framework runtime construction remain presentation-agnostic. Owner
+validation confirmed distinct runtime visuals for all eight configured canonical unrotated
+footprints. Rotated variants, individual root alignment, every collider set, and each presentation
+contract still require focused Unity validation.
 
 Presentation baseline:
 
@@ -447,13 +458,14 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-1. Create a placeholder cat prefab with `DropTheManStickmanView`, assign it to the shared visual config, and validate editor preview plus gameplay spawn/collection/restart/next.
-2. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
-3. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
-4. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
-5. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
-6. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
-7. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
+1. Validate rotated hole footprints plus per-prefab root alignment, every selection collider, color application, collection, completion, restart, and next-level reload.
+2. Validate the placeholder cat prefab in editor preview and gameplay spawn/collection/restart/next.
+3. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
+4. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
+5. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
+6. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
+7. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
+8. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
 
 ---
 
