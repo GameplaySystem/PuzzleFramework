@@ -447,6 +447,9 @@ These are worth remembering but do not require action before the next prototype 
   quarter-turns, rejects missing/duplicate/rotationally ambiguous mappings before spawning, and
   leaves JSON plus framework runtime construction presentation-agnostic; owner validation confirmed
   distinct runtime visuals for all eight canonical unrotated footprints
+* the Drop The Man authoring scene now uses the same config-owned concrete hole prefabs for placed
+  hole visuals and a separate click-to-rotate mode for already placed holes; manual validation
+  still needs to confirm editor root alignment, tinting, and rotation coverage across every shape
 * `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
 * the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority
@@ -479,8 +482,8 @@ Before the next placeholder replacement:
   manually verify every authored collider uses the `DropTheManHole` layer and that disabling a hole
   disables every configured hit target
 * manually validate all eight config-owned hole prefabs against unrotated and rotated runtime
-  footprints, including logical-root alignment, presentation roots, color targets, cap blend shapes,
-  stencil apertures, collection sockets, and completion callbacks
+  footprints, including logical-root alignment, presentation roots, editor click-to-rotate,
+  color targets, cap blend shapes, stencil apertures, collection sockets, and completion callbacks
 * sharp light-dependent marks inside the deep hole meshes are current inner-cavity self-shadows,
   not footprint or stencil mapping failures; defer the final cavity receive/cast-shadow and gradient
   policy until the owner and artist review the intended look

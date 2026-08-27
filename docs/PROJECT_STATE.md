@@ -313,6 +313,7 @@ Progress markers below use these meanings:
 - Drop The Man editor phase 2 play-mode authoring scene foundation [done]
 - Drop The Man editor phase 3A save/export JSON foundation [done]
 - Drop The Man editor phase 3B import/load JSON foundation [done]
+- Drop The Man editor concrete hole preview and placed-hole rotation workflow [implemented, manual validation pending]
 - Drop The Man phase 4A JSON-driven gameplay runtime spawning [done]
 - Drop The Man config-owned collectable prefab and gameplay-scene template cleanup [implemented, manual validation pending]
 - Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
@@ -422,6 +423,13 @@ validation confirmed distinct runtime visuals for all eight configured canonical
 footprints. Rotated variants, individual root alignment, every collider set, and each presentation
 contract still require focused Unity validation.
 
+The dedicated Drop The Man authoring scene now resolves those same concrete hole prefabs for
+authored hole visuals instead of rebuilding shapes from square placeholder blocks. Hole placement
+uses the palette's canonical footprint orientation, while `R` now switches the editor into a
+prototype-owned hole-rotation mode that rotates an already placed authored hole on click with the
+same structural bounds, blocked-cell, stickman, and overlap validation used during placement. This
+keeps rotation editor-only and content-owned without adding runtime gameplay rotation behavior.
+
 Presentation baseline:
 
 DropAwayPrototype uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
@@ -458,7 +466,7 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-1. Validate rotated hole footprints plus per-prefab root alignment, every selection collider, color application, collection, completion, restart, and next-level reload.
+1. Validate rotated hole footprints plus per-prefab root alignment, every selection collider, authoring-scene click-to-rotate behavior, color application, collection, completion, restart, and next-level reload.
 2. Validate the placeholder cat prefab in editor preview and gameplay spawn/collection/restart/next.
 3. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
 4. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
