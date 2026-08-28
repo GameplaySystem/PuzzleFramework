@@ -314,6 +314,7 @@ Progress markers below use these meanings:
 - Drop The Man editor phase 3A save/export JSON foundation [done]
 - Drop The Man editor phase 3B import/load JSON foundation [done]
 - Drop The Man editor concrete hole preview and placed-hole rotation workflow [implemented, manual validation pending]
+- Drop The Man board-size-aware gameplay/editor camera positioning [implemented, manual validation pending]
 - Drop The Man phase 4A JSON-driven gameplay runtime spawning [done]
 - Drop The Man config-owned collectable prefab and gameplay-scene template cleanup [implemented, manual validation pending]
 - Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
@@ -430,6 +431,14 @@ prototype-owned hole-rotation mode that rotates an already placed authored hole 
 same structural bounds, blocked-cell, stickman, and overlap validation used during placement. This
 keeps rotation editor-only and content-owned without adding runtime gameplay rotation behavior.
 
+DropAwayPrototype now has one prototype-owned perspective-camera positioning calculation shared by
+the gameplay bootstrap and editor board refresh paths. It derives the complete logical board
+rectangle from `GridWorldLayout`, fits all four padded corners against the current aspect ratio and
+field of view, centers the rectangle, and changes only camera position. Gameplay uses the pointer
+adapter's explicit camera reference; the editor accepts its runtime camera reference and falls back
+to the scene's tagged main camera for edit-time refreshes. Rotation, FOV, projection settings,
+content data, and framework runtime state remain unchanged.
+
 Presentation baseline:
 
 DropAwayPrototype uses a prototype-owned URP 17.3 baseline with one Forward renderer assigned
@@ -468,7 +477,7 @@ and the material-only real-hole check passed Game-view validation.
 
 1. Validate rotated hole footprints plus per-prefab root alignment, every selection collider, authoring-scene click-to-rotate behavior, color application, collection, completion, restart, and next-level reload.
 2. Validate the placeholder cat prefab in editor preview and gameplay spawn/collection/restart/next.
-3. Manually validate that odd and even gameplay boards center on world zero and that blocked-cell changes do not shift the level.
+3. Manually validate odd/even, wide/tall gameplay and editor boards for logical centering and camera fit, including resize, restart, and next-level reload; blocked-cell changes must not shift the level.
 4. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
 5. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
 6. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.

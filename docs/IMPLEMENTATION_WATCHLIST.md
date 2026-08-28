@@ -450,6 +450,10 @@ These are worth remembering but do not require action before the next prototype 
 * the Drop The Man authoring scene now uses the same config-owned concrete hole prefabs for placed
   hole visuals and a separate click-to-rotate mode for already placed holes; manual validation
   still needs to confirm editor root alignment, tinting, and rotation coverage across every shape
+* Drop The Man gameplay loading and editor board refresh now share a prototype-owned perspective
+  camera positioner that fits the complete padded logical rectangle without changing rotation or
+  lens settings; manually validate odd/even and wide/tall boards at target aspect ratios, plus
+  editor resize, restart, and next-level reload behavior
 * `GridWorldLayout` now supports explicit board-local axes, and Drop The Man's dev scene bootstrapper defaults to the intended XZ mapping where `GridCoordinate.X -> world.x`, `GridCoordinate.Y -> world.z`, and world `Y` remains visual height only
 * first playtest scene adapter fixes now auto-cache child renderers/colliders for placeholder collection/completion hiding and preserve the initial pointer-to-hole drag offset before forwarding candidate positions to runtime movement
 * the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority
@@ -476,7 +480,8 @@ Before the next placeholder replacement:
 
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
 * preserve the validated modular board baseline and keep topology ownership in framework
-* validate centered gameplay construction with odd and even dimensions before adding dynamic camera framing
+* validate centered gameplay/editor construction and dynamic camera framing together with odd/even,
+  wide/tall, and asymmetric blocked-cell levels at target aspect ratios
 * design concrete hole/cat presentation as separate prototype-owned slices
 * concrete hole views now accept multiple pointer-selection colliders for non-rectangular shapes;
   manually verify every authored collider uses the `DropTheManHole` layer and that disabling a hole
