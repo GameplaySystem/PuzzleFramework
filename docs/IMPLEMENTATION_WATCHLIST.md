@@ -14,8 +14,15 @@
 * All 38 progression tests passed in isolated Unity 6000.3.17f1 validation, including actual runtime
   terminal callbacks. September 3: framework `96e9b7751686f2652c0374a40841e74c96c74c9f` published and
   adopted with owner approval; prototype manifest/Unity lock agree. Normal-project compilation,
-  all 20 prototype Edit Mode tests and gameplay startup with Editor sandbox HUD passed. Owner
-  win/stop/reopen acceptance and target-device checks remain. Prototype changes are uncommitted.
+  all 27 prototype Edit Mode tests (including seven replay continuation cases) and gameplay startup
+  with Editor sandbox HUD passed. Prototype `cee412bc27ff5956819cbfcd35dd165c54fd19bb` is pushed.
+  Owner win/stop/reopen/replay UI acceptance and target-device checks remain. See
+  [remaining work](DropTheManRemainingWork.md) for the finishing checklist.
+* Replay Next chains completed catalog entries without changing saved progress. An unfinished
+  successor resumes the earliest unfinished campaign entry; final replay returns to saved campaign/
+  loop selection. A completed successor matching the loop cursor is still replay. Selection is
+  read-only and requires accepted win; construction begins the next session. Resume Campaign and
+  relaunch remain independent of replay. No schema change or saved replay cursor was introduced.
 * Broader validation exposed an existing catalog-test assertion failure: `Has.Count.EqualTo(1)`
   targets an array in `Build_ReportsSequenceGapsWithoutRejectingCatalog`. Runtime progression tests
   pass. Fix that assertion separately; do not misreport the full existing suite as green.
@@ -464,9 +471,14 @@ These are worth remembering but do not require action before the next prototype 
 * framework-level event and feedback generalization remains intentionally deferred; the current prototype still uses direct calls and temporary `OnGUI` HUD/result windows
 * framework timer support is still countdown-only in practice, so unsupported `CountUp` content should be rejected before broader content tooling expands
 * the prototype movement coordinator is now connected through a narrow drag-session owner plus scene input adapters, but long-term duplicate-sample protection should stay deliberate rather than ad hoc if input complexity grows
-* shape-based fill, immediate `Full` interruption, and the narrow synchronous `Full -> Closing -> Completed` foundation are now wired, but presentation-backed close/disappear sequencing is still deferred
+* shape-based fill and immediate `Full` interruption are wired; presentation-backed cap-close/shrink
+  now finalizes `Closing -> Completed` through a direct callback, with immediate fallback for missing
+  or invalid presentation. Single-hole and integrated square-hole checks passed; all-shape visual
+  acceptance remains, not implementation of the already delivered sequence.
 * the Drop The Man win predicate is now reconciled in docs: the player-facing goal is collecting all required stickmen, while the runtime victory gate is all required holes completed
-* prototype-owned outcome routing, timer advancement, JSON-driven runtime spawning, and the basic result loop are now wired through the dev gameplay scene, but they remain prototype-owned and dev-scene oriented rather than production progression infrastructure
+* prototype-owned outcome routing, timer advancement, JSON-driven runtime spawning and result flow
+  remain wired through the dev gameplay scene. Local progression now uses reusable framework
+  state/storage plus game-owned replay/loop policy; its OnGUI controls still need player-facing UI.
 * the runtime spawning path now uses a config-owned collectable prefab plus a prototype-owned
   shape resolver over the config hole palette; it compares exact footprint sets across four
   quarter-turns, rejects missing/duplicate/rotationally ambiguous mappings before spawning, and
@@ -501,7 +513,7 @@ These are worth remembering but do not require action before the next prototype 
 
 ## Recommended Next Checkpoint
 
-Before the next placeholder replacement:
+Before expanding the prototype scope:
 
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
 * preserve the validated modular board baseline and keep topology ownership in framework
@@ -528,7 +540,9 @@ Before the next placeholder replacement:
 * sharp light-dependent marks inside the deep hole meshes are current inner-cavity self-shadows,
   not footprint or stencil mapping failures; defer the final cavity receive/cast-shadow and gradient
   policy until the owner and artist review the intended look
-* validate the material-only stencil proof against the corrected single-hole aperture before approving production shader state or adding a renderer feature
+* the corrected single-hole aperture/cavity proof passed Game-view validation; finish all-shape,
+  camera-angle and target-device depth/lighting/shadow checks before changing shader architecture.
+  Do not add a renderer feature solely to redo that already validated proof.
 * keep the validated prototype-owned begin/finalize callback split direct; do not introduce a framework event bus or let the view mutate gameplay lifecycle state
 * keep editor authoring and gameplay runtime scenes separate unless a new approved design intentionally bridges them
 * revisit framework-level editor extraction only after a second prototype validates the shared kernel

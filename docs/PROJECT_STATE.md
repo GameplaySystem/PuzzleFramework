@@ -391,18 +391,22 @@ file replacement and Editor path isolation. Full runtime source compiles in that
 The broader suite exposed one existing catalog-test assertion failure (`Has.Count` on an array),
 not a progression failure. On September 3 the owner approved publication and consumer adoption.
 Framework `96e9b7751686f2652c0374a40841e74c96c74c9f` is pushed and pinned in the prototype manifest
-and Unity-resolved lockfile. Actual prototype compilation and all 20 prototype Edit Mode tests
-passed; gameplay-scene Play Mode startup also passed with the Editor sandbox HUD. No profile was
-created or advanced. Owner win/stop/reopen acceptance and device verification remain. Game-side
-changes remain uncommitted for review. See prototype
-`docs/DropTheManProgressionImplementationHandoff.md` for consumer delivery status.
+and Unity-resolved lockfile. September 3 replay continuation amendment is now implemented: Next
+Level chains completed replays, joins first unfinished campaign content, and returns to saved
+campaign/loop selection after the final shipped replay. Resume Campaign remains separate; replay
+does not move saved progress. Actual prototype compilation and all 27 Edit Mode tests passed;
+gameplay-scene startup passed again with the Editor sandbox HUD. No profile was created or advanced.
+Prototype `cee412bc27ff5956819cbfcd35dd165c54fd19bb` is committed and pushed, excluding unrelated
+scenes/material/new-level edits. Owner UI win/stop/reopen/replay acceptance and device verification
+remain. See prototype `docs/DropTheManProgressionImplementationHandoff.md` for maintenance and
+[Drop The Man remaining work](DropTheManRemainingWork.md) for the prioritized finishing checklist.
 
 The reusable modular board-generation baseline is implemented, wired to the concrete Drop The Man
 cell prefab, and manually validated in Unity.
 
 Current category:
 
-Content Systems / Drop The Man Runtime Integration
+Progression Systems / Drop The Man Integration And Finish Validation
 
 Current system:
 
@@ -521,15 +525,17 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-1. Validate rotated hole footprints plus per-prefab root alignment, every selection collider, authoring-scene click-to-rotate behavior, color application, collection, completion, restart, and next-level reload.
-2. Validate concurrent multi-cat collection across every multi-cell hole: distinct closest-socket
-   assignment, all three falling variants, moving-hole tracking, restart, and next-level reload.
-3. Manually validate odd/even, wide/tall gameplay and editor boards for logical centering and camera fit, including resize, restart, and next-level reload; blocked-cell changes must not shift the level.
-4. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
-5. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
-6. Replace the temporary `OnGUI` editor and gameplay HUDs with real UI assets once they exist.
-7. Revisit reusable level-editor extraction only after another prototype proves the shared authoring contract.
-8. Begin Color Block Jam on top of the current framework and the documented Drop The Man lessons.
+Use [Drop The Man remaining work](DropTheManRemainingWork.md) as the detailed checklist.
+
+1. Complete sandbox save/relaunch, replay Next/Resume Campaign, loop and failure/retry UI acceptance.
+2. Validate all hole shapes/rotations, colliders, editor rotation, six-clip collection readability,
+   moving targets, completion and reload; preserve the already validated animation baseline.
+3. Check gameplay/editor camera fit and centering across board sizes and target aspect ratios.
+4. Choose closing/cavity visual policy, approve the real UI slice and finalize level/loop content.
+5. Run player/device performance and persistence checks; close the existing catalog test assertion
+   issue separately and document the final regression/demo baseline.
+6. Keep diagonal-only cell contact unsupported and framework editor extraction deferred until
+   explicit approval/evidence. Begin Color Block Jam after remaining prototype risks are accepted.
 
 ---
 

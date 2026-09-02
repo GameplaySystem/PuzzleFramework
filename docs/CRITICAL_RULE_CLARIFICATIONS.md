@@ -33,6 +33,19 @@ Its job is narrower:
 
 ## Clarifications
 
+### Replay Navigation Versus Saved Progress (2026-09-03)
+
+Status: Confirmed by owner.
+
+Drop The Man replay is a session-only navigation choice, not a saved campaign rewind. After a
+replay win, Next Level selects the next completed shipped entry. Reaching unfinished content
+returns to the first unfinished campaign level. After the final shipped replay, return to the
+saved campaign/loop selection. Resume Campaign and app relaunch also use that saved selection.
+Do not treat a completed replay successor as campaign play merely because its ID equals the
+saved loop cursor. No save-schema or framework-policy change is needed.
+
+Related design: `DropAwayPrototype/docs/DropTheManProgressionDesign.md`.
+
 ### 1. `Drop The Man` drag, collection, and snap ownership
 
 Status:
