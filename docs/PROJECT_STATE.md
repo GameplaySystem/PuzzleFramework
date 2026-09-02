@@ -389,10 +389,12 @@ campaign/replay/range policy and a profile session. All 38 new tests passed in i
 validation, including real runtime completion callbacks, loss-before-completion, duplicate wins,
 file replacement and Editor path isolation. Full runtime source compiles in that validation host.
 The broader suite exposed one existing catalog-test assertion failure (`Has.Count` on an array),
-not a progression failure. On September 3 the owner approved the framework publication and consumer
-package-pin adoption needed for testing. This framework slice is ready for publication; normal
-prototype compilation and Play Mode verification follow adoption of its immutable package revision.
-Game-side changes remain uncommitted for owner review. See prototype
+not a progression failure. On September 3 the owner approved publication and consumer adoption.
+Framework `96e9b7751686f2652c0374a40841e74c96c74c9f` is pushed and pinned in the prototype manifest
+and Unity-resolved lockfile. Actual prototype compilation and all 20 prototype Edit Mode tests
+passed; gameplay-scene Play Mode startup also passed with the Editor sandbox HUD. No profile was
+created or advanced. Owner win/stop/reopen acceptance and device verification remain. Game-side
+changes remain uncommitted for review. See prototype
 `docs/DropTheManProgressionImplementationHandoff.md` for consumer delivery status.
 
 The reusable modular board-generation baseline is implemented, wired to the concrete Drop The Man

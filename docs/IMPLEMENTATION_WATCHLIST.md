@@ -12,9 +12,10 @@
 * Editor Play Mode uses a separate sandbox save; inspector dev data/disabled editor progression
   bypass saving. Normal saves must never be modified by automated tests or authoring previews.
 * All 38 progression tests passed in isolated Unity 6000.3.17f1 validation, including actual runtime
-  terminal callbacks. On September 3 the owner approved framework commit/push and immutable package
-  adoption. Normal-project compilation and Play Mode verification must follow the package update;
-  the old prototype pin lacks these new types. Leave game-side changes uncommitted for owner review.
+  terminal callbacks. September 3: framework `96e9b7751686f2652c0374a40841e74c96c74c9f` published and
+  adopted with owner approval; prototype manifest/Unity lock agree. Normal-project compilation,
+  all 20 prototype Edit Mode tests and gameplay startup with Editor sandbox HUD passed. Owner
+  win/stop/reopen acceptance and target-device checks remain. Prototype changes are uncommitted.
 * Broader validation exposed an existing catalog-test assertion failure: `Has.Count.EqualTo(1)`
   targets an array in `Build_ReportsSequenceGapsWithoutRejectingCatalog`. Runtime progression tests
   pass. Fix that assertion separately; do not misreport the full existing suite as green.
