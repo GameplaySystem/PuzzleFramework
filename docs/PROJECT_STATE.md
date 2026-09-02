@@ -375,12 +375,25 @@ Progress markers below use these meanings:
 
 ### Progression Systems
 
-- Player Progress Data System [documented only]
-- Progress Save Load System [documented only]
+- Player Progress Data System [implemented; snapshot tests passed]
+- Progress Save Load System [implemented; local JSON persistence tests passed]
 
 ---
 
 # Current Focus
+
+September 2 follow-up: owner approved progression persistence, completed-level replay and
+configurable post-campaign looping. The framework now owns versioned completed-ID/resume-ID
+snapshots and safe local JSON replacement, separate from authored content. The prototype owns
+campaign/replay/range policy and a profile session. All 38 new tests passed in isolated Unity
+validation, including real runtime completion callbacks, loss-before-completion, duplicate wins,
+file replacement and Editor path isolation. Full runtime source compiles in that validation host.
+The broader suite exposed one existing catalog-test assertion failure (`Has.Count` on an array),
+not a progression failure. On September 3 the owner approved the framework publication and consumer
+package-pin adoption needed for testing. This framework slice is ready for publication; normal
+prototype compilation and Play Mode verification follow adoption of its immutable package revision.
+Game-side changes remain uncommitted for owner review. See prototype
+`docs/DropTheManProgressionImplementationHandoff.md` for consumer delivery status.
 
 The reusable modular board-generation baseline is implemented, wired to the concrete Drop The Man
 cell prefab, and manually validated in Unity.

@@ -365,22 +365,14 @@ implemented. Concrete prefab wiring and visual validation remain game-module wor
 
 ### Required Now
 
-None.
-
-Reason:
-Drop Away MVP does not require player-owned progression state to become playable.
-
-### Deferred
-
 `Player Progress Data System`
-
-Reason:
-Not required for a playable first slice.
-
 `Progress Save Load System`
 
 Reason:
-Not required for a playable first slice.
+The playable first slice originally deferred progression. The owner approved the September 2
+follow-up: local progression persistence, replay of completed levels, and game-owned configurable
+post-campaign looping. Implement the narrow progress snapshot and safe save/load contracts before
+the game adapter; no statistics, cloud sync, profiles, or in-progress board saves yet.
 
 ---
 

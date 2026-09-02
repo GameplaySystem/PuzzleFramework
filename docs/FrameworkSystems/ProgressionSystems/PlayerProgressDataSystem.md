@@ -263,6 +263,17 @@ The system should reference progress against content, not absorb content ownersh
 
 # MVP Scope
 
+## Approved First Implementation (2026-09-02)
+
+The first slice owns a set of completed stable level IDs and a resume level ID. It does not store
+catalog indexes, authored level contents, unlock rules, loop ranges, replay mode, or board snapshots.
+Expose completion queries, idempotent completion recording, resume selection, snapshot capture,
+and validated restoration. Snapshots contain `FormatVersion`, `CompletedLevelIds`, `ResumeLevelId`.
+IDs are opaque, ordinal and case-sensitive; reject blank IDs and duplicate snapshot IDs. An empty
+resume string means no selection yet. Snapshot arrays must not alias the in-memory completion set.
+The schema starts at version 1. Reject missing required fields and unsupported versions; no migration
+or speculative statistics/reward fields in this slice. Games decide when and how state changes.
+
 The first version of the Player Progress Data System should support:
 
 * in-memory ownership of player progress

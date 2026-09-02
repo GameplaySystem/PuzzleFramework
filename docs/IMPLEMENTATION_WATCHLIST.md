@@ -1,5 +1,29 @@
 # Implementation Watchlist
 
+## Progression First Slice (2026-09-02)
+
+* Owner approved completed-level replay and a configurable inclusive post-campaign loop range.
+  Keep that policy prototype-owned and out of the version-1 save: completed stable IDs + resume ID.
+* Unknown/deleted IDs remain history; new unfinished shipped levels take priority over loops.
+  Existing `Level N` IDs must not be repurposed when reordering content.
+* Invalid/unsupported/unreadable saves block progression startup without overwriting the file.
+  Save failures retain dirty progress for explicit retry and pause/quit retry. Atomic replacement
+  is validated on Windows; platform filesystem behavior still needs target-device verification.
+* Editor Play Mode uses a separate sandbox save; inspector dev data/disabled editor progression
+  bypass saving. Normal saves must never be modified by automated tests or authoring previews.
+* All 38 progression tests passed in isolated Unity 6000.3.17f1 validation, including actual runtime
+  terminal callbacks. On September 3 the owner approved framework commit/push and immutable package
+  adoption. Normal-project compilation and Play Mode verification must follow the package update;
+  the old prototype pin lacks these new types. Leave game-side changes uncommitted for owner review.
+* Broader validation exposed an existing catalog-test assertion failure: `Has.Count.EqualTo(1)`
+  targets an array in `Build_ReportsSequenceGapsWithoutRejectingCatalog`. Runtime progression tests
+  pass. Fix that assertion separately; do not misreport the full existing suite as green.
+* The isolated host enables New Input System, unlike the prototype. Its copied authoring controller
+  needed legacy input defines to match the prototype because two preexisting new-input branches
+  lack null-device return paths. This was validation-only, not a production input/settings change.
+* Set loop bounds and the Editor progression toggle before Play Mode. Hot-reconfiguring the active
+  profile/catalog is not supported; reopening the picker does not pause the level timer.
+
 ## Purpose
 
 This document records implementation caveats, open questions, and design-to-code drift discovered during context checks.

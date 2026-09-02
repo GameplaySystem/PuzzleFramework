@@ -254,6 +254,20 @@ The reusable idea is persistence ownership, not one prematurely rigid storage mo
 
 # MVP Scope
 
+## Approved First Implementation (2026-09-02)
+
+Persist version-1 progress snapshots as local JSON through `IProgressSaveLoadService`. A Unity
+JsonUtility adapter owns serialization; the progress data system validates its snapshot schema.
+Load distinguishes loaded, missing, invalid data, unsupported version, and I/O failure. A missing
+file is a fresh profile, not an error. Never convert corruption or an unsupported version into
+successful empty progress. Callers supply a profile-specific path; storage does not choose levels.
+
+Write and flush a same-directory temporary file, then atomically replace an existing save or move
+into place for the initial save. Do not fall back to delete-then-write. Report platform/I/O failures
+without discarding the previous file. Assume one process/writer per profile. No cloud, encryption,
+automatic corruption recovery, backup UI or profile switching in this slice. The game retains dirty
+in-memory progress and offers retry after save failures; invalid loads must not be overwritten.
+
 The first version of the Progress Save Load System should support:
 
 * saving player-owned progression state
