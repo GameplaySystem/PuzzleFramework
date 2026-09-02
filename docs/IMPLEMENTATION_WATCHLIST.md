@@ -459,7 +459,7 @@ These are worth remembering but do not require action before the next prototype 
 * the pointer input adapter may now clamp per-frame hole travel against a configurable max drag speed so blocker release cannot create large single-frame jumps; this remains scene-input feel only and must not become gameplay authority
 * runtime-spawned hole views may now apply a visual-only spawned scale multiplier so holes read slightly smaller than their occupied board cells; authored footprint, occupancy, and JSON coordinates remain unchanged
 * Drop The Man movement now clamps the freeform candidate against board bounds before swept validation so holes can slide along board edges, while wrong-color, occupied, reserved, blocked, and inactive cells still block normally
-* Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, synchronous placeholder completion, and capacity fill; real asynchronous falling presentation remains deferred, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
+* Drop The Man collection timing now splits same-color overlap into reservation, a configurable board-local trigger threshold, asynchronous Animator/DOTween cat presentation, and callback-driven capacity fill; the cat follows a live assigned socket while the hole moves, completion resolves the reserved hole independently of active drag state, immediate fallback prevents presentation deadlock, and reserved targets that have not reached the threshold remain assigned to their hole across release/re-drag
 * the Drop The Man JSON level pipeline now supports a prototype-owned readable JSON `TextAsset` source that converts into the existing framework `LevelDefinition`, framework runtime builder, and prototype runtime model path; it deliberately does not add production level-loading UX, required-hole schema, collection timing changes, or framework JSON interpretation
 * the framework Resources level catalog now owns opaque `TextAsset` discovery, generic metadata validation, duplicate rejection, gap warnings, and deterministic sequence ordering; Drop The Man owns canonical `Level N` parsing and its existing JSON validation/build path, and owner validation confirmed Level 1 discovery/restart plus deterministic Next loading of Level 2 without serialized scene references
 * the Drop The Man editor foundation now includes a concrete design baseline, ten shared color slots with legacy aliases, blocked-cell authored board data, a prototype-owned editor config asset, a first visual authoring shell, a dedicated play-mode authoring scene foundation with runtime hotkeys/HUD, and JSON import/export paths, while still leaving gameplay play/test bridging for a later slice
@@ -482,7 +482,18 @@ Before the next placeholder replacement:
 * preserve the validated modular board baseline and keep topology ownership in framework
 * validate centered gameplay/editor construction and dynamic camera framing together with odd/even,
   wide/tall, and asymmetric blocked-cell levels at target aspect ratios
-* design concrete hole/cat presentation as separate prototype-owned slices
+* September 2 cat delivery is integrated from the locally replaced `Cat.fbx`: matching mesh,
+  Generic Avatar, looping `Idle_1` and six non-looping Jump takes now drive the prefab. The old
+  importer named removed takes, and the old `Cat_3D` bind pose is incompatible with the new clips;
+  both stale-source paths are removed. Do not mix those old and new exports or regenerate rebased
+  `.anim` copies. Setup preserves valid authored trims and removes mappings to nonexistent takes.
+* Cat validation passed for six exact active clips, matched early-pose renders, 36 randomized
+  assignments, moving socket tracking, shrinking, callbacks, all 20 cats/five square holes through
+  delayed capacity/full completion/win, restart mid-fall, and next-level reload. Runtime tint now
+  affects only the body slot. Remaining visual checks: all other hole shapes, camera angles, and
+  artist acceptance of pacing. Clips play at authored speed from zero; the 1.05s tween intentionally
+  does not guarantee showing the entire 0.9-2.583s Jump takes. Distinct mesh hashes alone are never
+  proof of readable animation variety; keep the matched early-frame and actual-collection checks.
 * concrete hole views now accept multiple pointer-selection colliders for non-rectangular shapes;
   manually verify every authored collider uses the `DropTheManHole` layer and that disabling a hole
   disables every configured hit target

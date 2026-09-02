@@ -316,7 +316,8 @@ Progress markers below use these meanings:
 - Drop The Man editor concrete hole preview and placed-hole rotation workflow [implemented, manual validation pending]
 - Drop The Man board-size-aware gameplay/editor camera positioning [implemented, manual validation pending]
 - Drop The Man phase 4A JSON-driven gameplay runtime spawning [done]
-- Drop The Man config-owned collectable prefab and gameplay-scene template cleanup [implemented, manual validation pending]
+- Drop The Man config-owned collectable prefab and gameplay-scene template cleanup [done]
+- Drop The Man asynchronous cat collection presentation and moving-hole socket tracking [implemented; facing, Idle, and runtime state selection validated; owner collection visual confirmation pending]
 - Drop The Man gameplay movement-feel baseline (drag speed clamp, spawned-view scale, drag clearance inset) [done]
 - Drop The Man phase 4B basic level result flow and level sequence [done]
 - Drop The Man phase 4B stability fixes for terminal drag cleanup and next-level reload [done]
@@ -407,11 +408,36 @@ verification, commit, and push before any consumer updates its manifest and reso
 This removes sibling-folder assumptions and prevents a prototype from referencing a framework
 commit that collaborators cannot fetch.
 
-Drop The Man collectable spawning now resolves one typed cat prefab from the existing prototype
-visual config shared with editor previews. The gameplay scene no longer contains pre-placed
-primitive hole/stickman test objects, and the obsolete non-spawning/template-hidden paths were
-removed. The placeholder cat prefab is now assigned; its full gameplay presentation remains under
-manual validation.
+Drop The Man collectable spawning resolves one typed cat prefab from the existing prototype visual
+config shared with editor previews. The gameplay scene no longer contains pre-placed primitive
+hole/stickman test objects, and the obsolete non-spawning/template-hidden paths were removed. The
+cat prefab now owns a six-variant animation plus DOTween collection presentation. It rises toward
+the closest unclaimed socket in its already-reserved hole, follows that live socket while the hole
+moves, falls below it while shrinking, and reports completion by direct callback. Runtime capacity
+fills only after that callback and resolves the reserved hole independently of active drag state,
+so release does not cancel an in-flight collection. Integrated Play Mode validation covered a
+second hole movement update, release during presentation, cat disappearance, and later full-hole
+completion. Each spawned cat now receives one persistent falling variant from a shared shuffled
+cycle, ensuring all configured jump clips are assigned before any clip repeats. The September 2
+artist delivery in `Cat.fbx` now supplies the canonical mesh, Generic Avatar, `Idle_1`, and
+`Jump_1` through `Jump_6`. Both Idle takes loop; Jump takes do not. The old `Cat_3D` mesh and the
+new clips have incompatible rest/bind poses despite matching bone names, so they are not mixed.
+The cat-model root owns the Animator, and collection immediately plays the preassigned controller
+state from normalized time zero. The repeatable setup no longer creates rebased `CatCollection_*`
+animation copies. The replacement was supplied locally, not through a commit. Its renamed takes
+required removing stale importer entries that otherwise imported no clips. Matched early renders
+now show distinct motion with correct facing, intact mesh deformation, and white details. The
+runtime tint is restricted to the body material slot. Collection remains 0.35s approach + 0.7s fall;
+the FBX clips are neither rebased nor stretched to that duration.
+
+September 2 validation passed: editor motion/binding/early-mesh checks; repeatable setup; 36 cats
+covering six complete shuffle cycles, live target movement, shrink and once-only callbacks; all
+20 level cats across five holes with move/release, delayed fill, hole completion and win; restart
+mid-fall and next-level reload. Obsolete separate FBXs, generated animation copies, and temporary
+diagnostic scripts were removed. Setup retains valid authored trims and existing controller/model
+tuning. See the prototype's `docs/DropTheManCatAnimationIntegrationHandoff.md` for maintenance,
+verification details and remaining visual checks. Unrelated scene/content/material edits are
+excluded from the animation commit; the framework package pin is unchanged.
 
 Concrete Drop The Man hole prefab preparation now supports multiple pointer-selection colliders per
 view so non-rectangular L, T, and plus surfaces can be covered without changing runtime footprint
@@ -453,7 +479,12 @@ blend shape, stencil aperture, collection sockets, reset and cancellation behavi
 shrink sequence. The corrected single-hole prefab passed isolated Unity validation. The prototype
 runtime now splits `Full -> Closing` from callback-driven `Closing -> Completed`, with an immediate
 fallback when presentation is absent or invalid. The callback path passed integrated Unity
-validation. `DropTheManSceneController` now exposes a scene-wide toggle between closing from the
+validation. `DropTheManCatCollectionPresentation` now uses six controller states backed by
+directly referenced non-looping falling clips and a two-phase rise/fall tween with concurrent shrink.
+Hole presentation claims the closest available
+authored socket and the tween reevaluates that socket every update. Missing or invalid cat
+presentation retains an immediate callback fallback so visual setup cannot strand runtime state.
+`DropTheManSceneController` exposes a scene-wide toggle between closing from the
 final freeform drag position and first applying a view-only framework snap to the nearest valid
 footprint-origin cell. Neither option changes committed coordinates or occupancy; the preferred
 visual policy remains under manual evaluation.
@@ -476,7 +507,8 @@ and the material-only real-hole check passed Game-view validation.
 # Next Steps
 
 1. Validate rotated hole footprints plus per-prefab root alignment, every selection collider, authoring-scene click-to-rotate behavior, color application, collection, completion, restart, and next-level reload.
-2. Validate the placeholder cat prefab in editor preview and gameplay spawn/collection/restart/next.
+2. Validate concurrent multi-cat collection across every multi-cell hole: distinct closest-socket
+   assignment, all three falling variants, moving-hole tracking, restart, and next-level reload.
 3. Manually validate odd/even, wide/tall gameplay and editor boards for logical centering and camera fit, including resize, restart, and next-level reload; blocked-cell changes must not shift the level.
 4. Keep diagonal-only participating-cell contact unsupported until a deliberate visual policy is approved.
 5. Compare full-hole closing with the scene-controller alignment toggle enabled and disabled, then choose the preferred visual policy.
