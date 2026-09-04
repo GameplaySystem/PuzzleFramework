@@ -401,6 +401,13 @@ scenes/material/new-level edits. Owner UI win/stop/reopen/replay acceptance and 
 remain. See prototype `docs/DropTheManProgressionImplementationHandoff.md` for maintenance and
 [Drop The Man remaining work](DropTheManRemainingWork.md) for the prioritized finishing checklist.
 
+September 4 repository cleanup published the intentional prototype asset state: `2dd7def` preserves
+the tuned 0.5s approach/1.0s fall cat presentation, eight-prefab gameplay configuration, progression/
+camera scene settings, and modular editor-board preview after removing nine redundant inactive root
+prefab staging objects. `a743278` adds canonical `Level 3` (10x10, five four-cell holes, 20 cats).
+Unity recompiled and all 27 prototype Edit Mode tests passed; Level 3 also passed an explicit ID,
+bounds, overlap, and per-color capacity audit. Both repositories were clean before README work.
+
 The reusable modular board-generation baseline is implemented, wired to the concrete Drop The Man
 cell prefab, and manually validated in Unity.
 
@@ -446,7 +453,7 @@ state from normalized time zero. The repeatable setup no longer creates rebased 
 animation copies. The replacement was supplied locally, not through a commit. Its renamed takes
 required removing stale importer entries that otherwise imported no clips. Matched early renders
 now show distinct motion with correct facing, intact mesh deformation, and white details. The
-runtime tint is restricted to the body material slot. Collection remains 0.35s approach + 0.7s fall;
+runtime tint is restricted to the body material slot. Collection is tuned to 0.5s approach + 1.0s fall;
 the FBX clips are neither rebased nor stretched to that duration.
 
 September 2 validation passed: editor motion/binding/early-mesh checks; repeatable setup; 36 cats

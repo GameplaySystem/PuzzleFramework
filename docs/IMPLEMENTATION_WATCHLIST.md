@@ -1,5 +1,17 @@
 # Implementation Watchlist
 
+## Repository Cleanup And Level 3 (2026-09-04)
+
+* Prototype `2dd7def` preserves scene/prefab tuning after removing nine redundant inactive root
+  prefab staging objects from the gameplay scene. The large level-editor scene diff is intentional:
+  its 5x5 generated preview now contains concrete modular board cells instead of square placeholders.
+* Cat collection timing is now 0.5s approach + 1.0s fall. This is presentation tuning only; live
+  socket following, randomized six-clip assignment, callback timing and gameplay ownership are unchanged.
+* Prototype `a743278` adds `Level 3`. Its five four-cell holes match 20 cats by color, and an explicit
+  structural audit found no duplicate IDs, out-of-bounds coordinates, or overlaps. Unity compilation
+  and all 27 prototype Edit Mode tests passed after cleanup. A complete manual Level 3 playthrough,
+  visual acceptance and target-device checks remain.
+
 ## Progression First Slice (2026-09-02)
 
 * Owner approved completed-level replay and a configurable inclusive post-campaign loop range.

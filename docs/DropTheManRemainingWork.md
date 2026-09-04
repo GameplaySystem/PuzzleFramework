@@ -44,8 +44,8 @@ to rebuild those systems.
   timer, restart, Next Level, completed replays, Resume Campaign and readable save errors.
   Include touch sizing and an explicit decision about whether menus pause the timer (currently not).
 - [ ] Finalize the playable level sequence, stable IDs, difficulty and loop interval; play through
-  every shipped level. Review the separate pending scene/material/level_3 changes before integrating
-  them. Do not renumber existing IDs without an identity/migration decision.
+  every shipped level, including the structurally validated Level 3 now published in `a743278`.
+  Do not renumber existing IDs without an identity/migration decision.
 - [ ] Decide the smallest editor usability pass still needed: real controls once UI assets exist,
   reliable import/export feedback and documented authoring workflow. A gameplay Play/Test bridge
   is a separate scope decision, not a reason to merge editor and runtime ownership now.
