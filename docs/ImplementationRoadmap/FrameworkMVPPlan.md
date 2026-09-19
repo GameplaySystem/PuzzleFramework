@@ -1,5 +1,13 @@
 # Framework MVP Plan
 
+## Milestone Status - 2026-09-17
+
+The owner has declared Drop The Man development-complete for the current MVP scope. Its basic
+loop is closed; final presentation/UI integration and remaining acceptance work are deferred.
+This document remains the first-prototype implementation baseline, not the active task queue.
+The active phase is the [Color Block Jam architecture preflight](../ColorBlockJamArchitecturePreflight.md).
+That report proposes the next slice but does not approve new systems or implementation.
+
 ## Purpose
 
 This document defines the smallest implementation slice required to produce a playable Drop Away prototype on top of the approved framework architecture.

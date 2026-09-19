@@ -33,6 +33,35 @@ Its job is narrower:
 
 ## Clarifications
 
+### Color Block Jam Is A Separate Rule Baseline (2026-09-17)
+
+Status: separation confirmed by owner; detailed gameplay rules open.
+
+Drop The Man is development-complete for the current MVP scope with presentation/asset integration
+deferred. Color Block Jam is the active architecture/design prototype. Do not carry over same-color
+collectible enterability, shape-derived capacity, reservation behavior or callback-gated hole
+completion as Color Block Jam rules. Its movement, collision, gate geometry, admission/removal timing,
+win/failure precedence and special-mechanic scope require their own approved specification.
+
+Existing framework editor-only rotation remains the project constraint, not verified evidence about
+the reference game's rotation behavior. Publisher descriptions of free sliding do not settle
+continuous versus discrete movement, diagonal handling or collision tolerances. No queue, buffer
+or gate capacity requirement is established by a matching-color exit alone.
+
+The owner's broad asset description was provisional. Inspection of the supplied `tetra_pack.fbx`
+found repeated four-cell silhouettes and no standalone unit model; it does not justify restricting
+authored footprints to that mesh catalog. Shape data remains authoritative and visuals derive from it.
+
+Framework Blocked cells remain structural. Drop The Man alone currently maps them to absent board
+geometry; Color Block Jam must define its own visual mapping. Framework topology uses Convex and
+Concave with explicit diagonal-touch diagnostics. The implemented modular profile's unsupported
+diagonal case must not be silently treated as supported.
+
+Affected documentation: [Color Block Jam preflight](ColorBlockJamArchitecturePreflight.md),
+[project state](PROJECT_STATE.md), [watchlist](IMPLEMENTATION_WATCHLIST.md). Future module rule specs
+must resolve the open questions before implementation. Existing Drop The Man rule docs remain its
+maintenance baseline; this clarification does not change its gameplay.
+
 ### Replay Navigation Versus Saved Progress (2026-09-03)
 
 Status: Confirmed by owner.

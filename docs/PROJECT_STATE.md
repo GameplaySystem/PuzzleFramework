@@ -1,3 +1,20 @@
+# Active Prototype Transition - 2026-09-17
+
+Drop The Man is **DEVELOPMENT-COMPLETE FOR CURRENT MVP SCOPE** with
+**PRESENTATION/ASSET INTEGRATION DEFERRED**, by owner decision. Its core loop is closed:
+level load -> play -> win/fail -> next/restart -> load again. It remains a maintenance/regression
+target and a future presentation-integration target, not an abandoned or rewritten prototype.
+
+Color Block Jam is the active second prototype, in architecture/design preflight. No gameplay
+implementation is authorized by this transition. See the
+[Color Block Jam architecture preflight](ColorBlockJamArchitecturePreflight.md) for evidence,
+reuse classification, proposed boundaries, and unresolved requirements.
+
+Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
+an explicit return to presentation integration when final UI/art assets are available. Existing
+[remaining work](DropTheManRemainingWork.md) is retained as deferred acceptance/presentation work;
+unchecked items are not newly verified and do not block beginning Color Block Jam.
+
 # Vision
 
 Build a reusable Unity Puzzle Framework by deconstructing and recreating several successful puzzle games.
@@ -59,7 +76,8 @@ Grid-based puzzle game where colored bricks exit through matching colored doors.
 
 Status:
 
-- Deconstructed
+- Active second prototype: architecture/design preflight.
+- Earlier high-level deconstruction is not an approved detailed gameplay requirements baseline.
 
 ## Sky Rush Traffic Puzzle
 
@@ -231,7 +249,7 @@ Progress markers below use these meanings:
 ## Game Design
 
 - Drop Away [done]
-- Color Block Jam [done]
+- Color Block Jam [high-level deconstruction recorded; detailed reference rules/MVP scope pending]
 - Sky Rush [done]
 - Hole People [done]
 - Bus Jam [done]
@@ -382,6 +400,20 @@ Progress markers below use these meanings:
 
 # Current Focus
 
+Color Block Jam architecture/design preflight, following the owner-authorized Drop The Man MVP
+freeze on 2026-09-17. Establish reference rules, asset evidence, content and construction boundaries,
+movement/exit ownership, and the smallest justified reuse slice before implementation.
+
+The [preflight report](ColorBlockJamArchitecturePreflight.md) is a proposal, not an approved system
+spec. No Color Block Jam Unity project has been created. The framework drag implementation checks
+rounded destinations only; continuous swept movement is prototype-owned today. Gate traversal and
+exact removal timing require reference evidence before an extension can be approved.
+
+## Preserved Drop The Man Delivery History
+
+The following records delivered work and remaining verification at the time of each slice. It is
+maintenance context, not the active work queue; the transition above governs prioritization.
+
 September 2 follow-up: owner approved progression persistence, completed-level replay and
 configurable post-campaign looping. The framework now owns versioned completed-ID/resume-ID
 snapshots and safe local JSON replacement, separate from authored content. The prototype owns
@@ -411,11 +443,11 @@ bounds, overlap, and per-color capacity audit. Both repositories were clean befo
 The reusable modular board-generation baseline is implemented, wired to the concrete Drop The Man
 cell prefab, and manually validated in Unity.
 
-Current category:
+Category at delivery:
 
 Progression Systems / Drop The Man Integration And Finish Validation
 
-Current system:
+Delivered systems:
 
 The framework now provides a Resources-backed `LevelCatalogSystem` that treats authored
 `TextAsset` contents as opaque, delegates metadata interpretation to game modules, rejects duplicate
@@ -532,17 +564,21 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-Use [Drop The Man remaining work](DropTheManRemainingWork.md) as the detailed checklist.
-
-1. Complete sandbox save/relaunch, replay Next/Resume Campaign, loop and failure/retry UI acceptance.
-2. Validate all hole shapes/rotations, colliders, editor rotation, six-clip collection readability,
-   moving targets, completion and reload; preserve the already validated animation baseline.
-3. Check gameplay/editor camera fit and centering across board sizes and target aspect ratios.
-4. Choose closing/cavity visual policy, approve the real UI slice and finalize level/loop content.
-5. Run player/device performance and persistence checks; close the existing catalog test assertion
-   issue separately and document the final regression/demo baseline.
-6. Keep diagonal-only cell contact unsupported and framework editor extraction deferred until
-   explicit approval/evidence. Begin Color Block Jam after remaining prototype risks are accepted.
+1. Review the [Color Block Jam preflight](ColorBlockJamArchitecturePreflight.md) and approve a
+   bounded reference-game/MVP rule set, especially continuous movement, rotation, gate geometry,
+   exit timing, and terminal precedence.
+2. Review the read-only `tetra_pack.fbx` findings and proposed footprint-composed unit visuals.
+   The supplied pack has repeated four-cell meshes and no standalone unit model. Approve asset
+   preparation and Unity fidelity/pivot/material checks before finalizing the visual-config schema.
+3. Approve Color Block Jam content, construction, interaction and editor specs; authorize project
+   setup separately. Keep all game-owned code/assets in a separate prototype.
+4. Implement only the smallest approved slice, reusing existing framework contracts first. Any
+   shared movement or visual extension requires documented cross-game evidence and approval.
+5. Preserve Drop The Man's pinned regression baseline. Follow the framework-first package workflow
+   if either consumer adopts a new framework revision. The catalog assertion issue remains open;
+   historical focused test results are not proof of a green full suite.
+6. Keep [Drop The Man deferred work](DropTheManRemainingWork.md) for the permitted maintenance or
+   presentation return; it is not a prerequisite for the second prototype.
 
 ---
 

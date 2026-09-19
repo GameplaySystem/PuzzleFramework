@@ -1,5 +1,46 @@
 # Implementation Watchlist
 
+## Active Prototype Transition (2026-09-17)
+
+Status: owner-authorized. Drop The Man is development-complete for its current MVP scope; final
+presentation/asset integration is deferred. Its load/play/win-or-fail/next-or-restart loop is closed.
+Color Block Jam architecture/design is now active. See the
+[preflight report](ColorBlockJamArchitecturePreflight.md).
+
+Drop The Man's outstanding UI/art acceptance, camera, replay/save/retry, level/demo and device
+checks below remain recorded but deferred. They are not blockers for beginning Color Block Jam
+and are not marked verified by this transition. Return only for a critical bug, framework regression
+affecting it, or an explicit presentation-integration task when final assets become available.
+Historical notes below preserve delivered behavior and must not automatically reactivate old work.
+
+### Color Block Jam Preflight Findings
+
+- **Open: reference rules.** Publisher sources support matching exits, timer and block clearing;
+  precise movement, gate aperture/direction, exit/removal timing and failure precedence still need
+  observation and approved module rules. Do not import Drop The Man collection/capacity behavior.
+- **Open: shared movement gap.** `DragMovementSystem.Evaluate` checks a rounded destination, not
+  intervening travel. Continuous sweep/clearance support lives in DropAwayPrototype. Treat reuse
+  as a potential narrow geometry extraction only after both games' requirements align. Do not
+  copy the game-specific coordinator or call the current package sweep-safe.
+- **Open: release placement.** `GridSnapSystem` checks only the rounded nearest candidate; it does
+  not find a nearest reachable free alternative. Module session owns self-footprint exclusions,
+  safe per-cell occupancy commit/fallback and exit-related removal. Occupancy has no owner IDs
+  or atomic multi-cell move, and does not independently reject structurally Blocked cells.
+- **Open: gate visuals.** Modular board planning has a fixed half-wall/corner profile, no gate
+  aperture input, and rejects diagonal-only contact. Use module-owned gate presentation adaptation
+  first; a generic edge-suppression extension needs demonstrated reuse and spec approval.
+- **Inspected / preparation deferred: block assets.** Owner supplied Downloads `tetra_pack.fbx`.
+  Read-only inspection found 36 mesh objects, six material definitions, repeated four-cell shapes,
+  and no standalone unit model. Eighteen unmaterialed meshes contain four disconnected cube
+  components each; colored meshes include decorative geometry. Proposed primary representation:
+  prepared unit visual composed from authored footprints. Unity fidelity/pivots/material checks
+  and final visual-config schema remain pending. No asset was imported or modified.
+- **Not activated:** queue, buffer, capacity, pathfinding, event bus, persistent progression and
+  shared editor/factory extraction have no demonstrated need in the proposed first slice.
+- **Existing validation caveats retained:** countdown-only runtime versus CountUp schema; generic
+  JSON positive-version check is not a compatibility/migration policy; catalog NUnit assertion
+  failure remains open. The preflight did not run a new compile or test suite.
+
 ## Repository Cleanup And Level 3 (2026-09-04)
 
 * Prototype `2dd7def` preserves scene/prefab tuning after removing nine redundant inactive root
@@ -523,9 +564,10 @@ These are worth remembering but do not require action before the next prototype 
 
 ---
 
-## Recommended Next Checkpoint
+## Deferred Drop The Man Return Checklist
 
-Before expanding the prototype scope:
+Use only when a permitted Drop The Man maintenance or presentation return is explicitly in scope.
+This preserved checklist does not gate Color Block Jam architecture/design:
 
 * keep `docs/PROJECT_STATE.md` aligned with actual implementation status
 * preserve the validated modular board baseline and keep topology ownership in framework

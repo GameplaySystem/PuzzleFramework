@@ -1,9 +1,19 @@
 # Drop The Man Remaining Work
 
-Updated: 2026-09-03, after progression commit/push.
+Updated: 2026-09-17, owner-authorized MVP freeze and transition to Color Block Jam.
 
-Scope: finish and validate the current Drop The Man prototype, not implement every documented
-framework system. This is a prioritized backlog, not approval to implement deferred features.
+Status: **DEVELOPMENT-COMPLETE FOR CURRENT MVP SCOPE + PRESENTATION/ASSET INTEGRATION DEFERRED**.
+
+Scope: retained backlog for a future permitted return, not the active project queue. The owner
+confirms the authoring/JSON/runtime pipeline and load -> play -> win/fail -> next/restart loop are
+working. Final polished UI and final presentation assets remain deferred because external UI/art
+support is unavailable. These items do not block Color Block Jam architecture/design work.
+
+Reopen Drop The Man only for a critical bug, a framework regression affecting it, or an explicit
+return to presentation integration when final assets are available. Preserve the existing
+implementation as a regression target. Unchecked acceptance/device items below remain unverified;
+the milestone decision does not turn them into completed tests. No new feature/polish work is
+authorized by this backlog. See [transition preflight](ColorBlockJamArchitecturePreflight.md).
 
 ## Delivered Baseline
 
@@ -18,7 +28,7 @@ delayed fill/completion, concrete editor hole visuals, click-to-rotate, and dyna
 positioning are already implemented. Remaining items below are acceptance/polish, not requests
 to rebuild those systems.
 
-## 1. Acceptance First
+## 1. Deferred Acceptance Checks
 
 - [ ] Verify save/relaunch in the Editor sandbox: win, stop before Next Level, reopen at the next
   unfinished level; loss, restart and quitting mid-level must not advance progress.
@@ -36,7 +46,7 @@ to rebuild those systems.
 - [ ] Check camera/centering on odd/even, wide/tall and asymmetric blocked-cell boards, in gameplay
   and editor, across intended aspect ratios and resize/reload. Camera rotation must stay authored.
 
-## 2. Finish The Player Experience
+## 2. Deferred Presentation And Player Experience
 
 - [ ] Agree on final full-hole closing alignment and cavity shadow/gradient appearance with the
   owner/artist, then apply only the chosen prototype presentation settings.
@@ -50,7 +60,7 @@ to rebuild those systems.
   reliable import/export feedback and documented authoring workflow. A gameplay Play/Test bridge
   is a separate scope decision, not a reason to merge editor and runtime ownership now.
 
-## 3. Delivery Checks
+## 3. Deferred Delivery Checks
 
 - [ ] Make and test a player build on the selected target device: input/UI, aspect ratios, stencil
   ordering/depth/shadows, save permissions/replacement, pause/resume and cold launch.
@@ -67,15 +77,16 @@ to rebuild those systems.
 Cloud saves, multiple profiles, rewards/stats, mid-level snapshots, adaptive/random endgame,
 boosters/monetization and generalized event/feedback infrastructure remain deferred. Audio/haptics
 can be a separately approved polish slice. Reusable editor extraction waits for a second game's
-evidence. Start Color Block Jam after closing or explicitly accepting the remaining prototype risks.
+evidence. The owner has authorized beginning Color Block Jam while retaining these deferred risks.
 
 ## References
 
 - [Project state](PROJECT_STATE.md)
 - [Implementation watchlist](IMPLEMENTATION_WATCHLIST.md)
-- [Progression design](../../DropAwayPrototype/docs/DropTheManProgressionDesign.md)
-- [Progression maintainer handoff](../../DropAwayPrototype/docs/DropTheManProgressionImplementationHandoff.md)
-- [Cat integration handoff](../../DropAwayPrototype/docs/DropTheManCatAnimationIntegrationHandoff.md)
+- [Progression design](https://github.com/GameplaySystem/DropTheMan/blob/main/docs/DropTheManProgressionDesign.md)
+- [Progression maintainer handoff](https://github.com/GameplaySystem/DropTheMan/blob/main/docs/DropTheManProgressionImplementationHandoff.md)
+- [Cat integration handoff](https://github.com/GameplaySystem/DropTheMan/blob/main/docs/DropTheManCatAnimationIntegrationHandoff.md)
 
-Recommended immediate next step: the sandbox save/replay acceptance pass, then decide the player UI
-slice. Keep the remaining work small and tied to a visible demo outcome.
+Active next step: Color Block Jam architecture/design preflight. On a permitted future return,
+select only the checks relevant to the critical bug, framework regression, or approved asset/UI
+integration slice; do not reactivate this entire backlog automatically.

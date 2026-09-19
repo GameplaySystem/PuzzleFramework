@@ -184,6 +184,12 @@ Phase 2 is complete when:
 
 # Phase 3: Color Block Jam Pressure Test
 
+Current status (2026-09-17): active architecture/design phase. The owner has declared Drop The Man
+development-complete for its current MVP scope and deferred final presentation integration.
+Remaining Drop The Man acceptance/polish notes are retained, not prerequisites for this phase.
+Start with the [architecture preflight](ColorBlockJamArchitecturePreflight.md); implementation
+requires approved Color Block Jam requirements and specs. Phase 3 reuse is not yet proven.
+
 ## Goal
 
 Use a second game to test whether the framework boundaries actually generalize.
