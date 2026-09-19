@@ -19,7 +19,7 @@ It exists to ensure that:
 Committed prototype manifests must use a Git dependency pinned to a full 40-character commit SHA:
 
 ```json
-"com.gaming.puzzleframework": "https://github.com/Find-Games/PuzzleFramework.git?path=/Packages/com.gaming.puzzleframework#<full-commit-sha>"
+"com.gaming.puzzleframework": "https://github.com/GameplaySystem/PuzzleFramework.git?path=/Packages/com.gaming.puzzleframework#<full-commit-sha>"
 ```
 
 The `path` query points Unity Package Manager to the package manifest inside the framework
@@ -43,7 +43,7 @@ moves forward.
 Every machine opening a prototype must have:
 
 * Git installed and available to Unity
-* access to the `Find-Games/PuzzleFramework` repository
+* access to the `GameplaySystem/PuzzleFramework` repository
 * working GitHub credentials for HTTPS if the repository is private
 
 The framework repository does not need to be cloned locally for normal prototype consumption.

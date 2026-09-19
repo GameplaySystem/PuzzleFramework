@@ -6,6 +6,23 @@
 [Ll]ogs/
 UserSettings/
 
+# Local tooling, captures, diagnostics, and signing material.
+.idea/
+[Rr]ecordings/
+*.log
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.env
+.env.*
+!.env.example
+!.env.sample
+*.keystore
+*.jks
+*.p12
+*.pfx
+
 MemoryCaptures/
 
 Assets/AssetStoreTools*
