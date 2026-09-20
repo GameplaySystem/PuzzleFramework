@@ -6,15 +6,24 @@
   and authoring-core sources are implemented. Focused movement and authoring Edit Mode tests
   pass. DTM pins the published framework revision, compiles, and passes its existing 27 tests
   plus a focused editor migration test. CBE's first payload/construction layer uses the pinned
-  package; gameplay movement, editor workflow and presentation remain open.
+  package. CBE's plain on-board movement checkpoint now compiles and passes focused Edit Mode
+  and Play Mode tests; exit capture, editor workflow and presentation remain open.
 - **Documented editor difference:** Drop The Man's approved editor design prunes content outside
   a resized board with a warning. CBE's approved rule rejects invalidating structural edits.
   Preserve the DTM behavior and keep the CBE rejection in the shared core's CBE usage; do not
   force one resize policy on both games.
-- **Local DOTween binaries to inspect before presentation:** The CBE worktree currently reports
-  three tracked DOTween DLLs as deleted. Their removal was discovered after batch-mode Unity
-  validation; its cause is not established. They were left untouched and excluded from the
-  CBE construction commit. Resolve their intended state before using DOTween in presentation.
+- **DOTween binaries resolved; cache caveat:** The three tracked CBE DOTween DLLs were restored
+  exactly from Git. They are still required by DOTween modules and stayed present after Unity
+  reimport; the deletion trigger remains unknown. The CBE Unity `Library` also had dozens of
+  missing package DLLs and stale import state. It was moved intact to a backup outside the repo,
+  then Unity rebuilt a clean cache; original-project compile, CBE tests and framework movement
+  tests passed. If binaries disappear again, investigate local environmental cleanup rather than
+  treating the deletions as intended source changes.
+- **Movement checkpoint boundary:** Plain dragging uses fixed authored offsets and blocks all
+  boundaries, including openings. It does not yet admit exits, release occupancy progressively,
+  run a timer, decide outcomes or play chipper effects. The fixture validates pointer-to-view
+  subcell motion automatically; subjective drag feel should also be checked in the dedicated
+  `PlainMovementCheckpoint` scene before the eventual gameplay scene is finalized.
 
 The owner has approved the Color Block Escape MVP rules and six implementation clarifications.
 The [requirements](ColorBlockEscapeMVPRequirements.md),
@@ -46,11 +55,10 @@ concrete causes if necessary work takes longer.
   placed-item move, play-test, irregular-edge exits and progressive occupancy may exceed a
   seven-day prototype. Measure integration cost early. Reduce speculative abstraction and polish
   before proposing a scope/schedule change; do not silently copy shared code into CBE.
-- **Implementation gap:** Framework drag is destination-only; extract and verify rule-free swept
-  geometry and structural/occupancy clearance from Drop The Man. Framework occupancy lacks an
-  atomic footprint transfer; its generic release/occupy rollback should be shared without adding
-  block identity or CBE rules.
-  Capture must reconcile the dragged pose to canonical occupancy before progressive release.
+- **Resolved shared movement gap:** The rule-free swept geometry, structural/occupancy clearance
+  and atomic footprint transfer now live in PuzzleFramework and are used by CBE plain movement.
+  Exit capture still must reconcile the dragged pose to canonical occupancy before progressive
+  release; that remains the next CBE movement layer.
 - **Presentation boundary:** CBE project already includes DOTween. Logic must remain independent;
   pooled fragments must kill/reset tweens before reuse. Simple generated block/gate visuals are
   sufficient, so the optional FBX pack is no longer a prototype prerequisite.

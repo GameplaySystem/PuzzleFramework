@@ -19,10 +19,13 @@ geometry, board-plane pointer projection, structural/occupancy clearance, atomic
 transfer, and a small generic authoring core. Focused Unity Edit Mode tests for the movement and
 authoring primitives pass. Drop The Man pins the published framework revision and compiles;
 its 27 existing Edit Mode tests pass, with one focused editor
-regression test also passing. The first Color Block Escape-specific layer now parses its opaque
-payload and constructs validated board/block/exit state; movement, dedicated editor and
-presentation remain open. The day-2/day-4/day-6 checkpoints
-remain the integration targets, not completed milestones.
+regression test also passing. Color Block Escape parses its opaque payload and constructs
+validated board/block/exit state. Its plain on-board movement checkpoint now uses the shared
+sweep, clearance, pointer projection, snap and occupancy-transfer primitives. The dedicated
+movement fixture scene and focused CBE Edit Mode and Play Mode tests verify continuous subcell
+motion, collision, release and view movement. Exit capture, timer/outcome behavior, the CBE
+editor and presentation remain open. The day-2/day-4/day-6 checkpoints remain the integration
+targets, not completed milestones.
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
 an explicit return to presentation integration when final UI/art assets are available. Existing
