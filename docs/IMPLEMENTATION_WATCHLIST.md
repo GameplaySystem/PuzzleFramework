@@ -2,6 +2,14 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **Timer/outcome checkpoint verified:** CBE now creates a fresh outcome session from each
+  authored play-test level, using the framework countdown timer and game-state lifecycle. It
+  treats all successfully accepted blocks as completion, freezes a win before presentation,
+  and locks timer loss only when completion is absent. Exact expiry remains pending through
+  the same input boundary so final acceptance wins; overshoot locks loss before input. Restart
+  rebuilds level, timer, and outcome without reusing terminal state. CBE passes 36/36 Edit Mode
+  and 3/3 Play Mode tests. Chipper presentation and hands-on HUD/interaction acceptance remain.
+
 - **Exit occupancy refinement approved (2026-09-21):** During captured alignment/entry,
   occupancy must include every in-board cell required by the footprint; newly covered cells
   can be acquired only through collision-safe atomic transfer. At the fully aligned pose, CBE
@@ -45,7 +53,8 @@
   package. CBE's plain on-board movement checkpoint now compiles and passes focused Edit Mode
   and Play Mode tests. CBE's editor scene compiles, and the CBE suites pass 21/21 Edit Mode
   and 2/2 Play Mode tests including save/load and isolated play-test. Exit capture now also
-  passes its own checkpoint; timer/outcome behavior and chipper presentation remain open.
+  passes its own checkpoint; timer/outcome behavior now also passes its checkpoint. Chipper
+  presentation remains open.
 - **CBE editor checkpoint caveat:** Save and play-test require construction-ready content (at
   least one block and exit plus valid countdown), as specified by the current payload/runtime
   contracts; partial drafts cannot be exported through this path. The editor stores JSON at a
@@ -64,8 +73,9 @@
   treating the deletions as intended source changes.
 - **Movement fixture boundary:** The dedicated plain-drag fixture uses fixed authored offsets and
   blocks all boundaries, including openings; the authored-level play-test path now admits exits
-  and releases occupancy progressively. Neither path runs a timer, decides outcomes or plays
-  chipper effects. The fixture validates pointer-to-view
+  and releases occupancy progressively. The authored-level path now runs the countdown and
+  decides outcomes; the plain fixture stays isolated from exits and outcome rules. Neither
+  path plays chipper effects. The fixture validates pointer-to-view
   subcell motion automatically; subjective drag feel should also be checked in the dedicated
   `PlainMovementCheckpoint` scene before the eventual gameplay scene is finalized.
 

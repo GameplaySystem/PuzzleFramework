@@ -175,6 +175,14 @@ final acceptance before timer loss, regardless of callback order; this approved 
 covered by a boundary test. A terminal result cannot be reversed by later callbacks. Restart
 invalidates old-session animation callbacks.
 
+The authored-level runtime uses one CBE-owned outcome session per fresh level. It advances the
+framework countdown before sampling that frame's pointer input. An exact arrival at zero leaves
+loss pending until accepted exits from that boundary are reconciled; a final acceptance wins.
+If the frame advances past zero, expiry locks loss before later input is admitted. Acceptance
+already recorded before a timer step locks the win and stops further countdown. The framework
+timer supplies time facts and `GameStateSystem` stores the terminal phase; neither decides CBE's
+completion predicate. Restart constructs fresh level, timer, and state instances.
+
 Build the block and gate views from simple Unity geometry. Derive a gate opening mask from
 validated exit edge runs. The existing modular board planner has no aperture input, so the first
 visual adapter may suppress/replace game-owned wall pieces around an opening; do not change shared
