@@ -123,10 +123,16 @@ block's projected span (initial test value `0.70`). Width must be at least the r
 Before capture, calculate an aligned on-board **integer origin** whose full projected interval
 fits inside the aperture and verify a collision-free path from the current pose to that origin.
 A 70% candidate overlap must never let the remaining 30% pass through a jamb. The chosen origin
-should minimize lateral shift; tie-breaking is deterministic. Transfer the selected block's
-committed occupancy to that canonical footprint through the generic framework transfer before
-starting exit motion. This prevents drag-start cells from becoming ghost blockers and gives
-progressive release a precise starting cell set. The module records the transition once, ends
+should minimize lateral shift; tie-breaking is deterministic. During captured alignment/entry,
+logical occupancy must include every playable cell covered by the moving footprint. An irregular
+footprint may acquire newly covered in-board cells while releasing vacated cells; use the
+framework's collision-safe atomic footprint transfer, never overwriting another occupant.
+Before accepting, validate the complete strictly outward corridor as well as alignment.
+At the aligned pose, atomically transfer the selected block's committed occupancy to the
+validated set of in-board cells its remaining outward path can cover. This may conservatively
+reserve a cell ahead of the currently visible irregular footprint, so another block cannot move
+into the corridor before the exiting block reaches it. It also prevents drag-start cells from
+becoming ghost blockers. The module records the transition once, ends
 pointer ownership, marks the exit busy, and begins a straight outward logical exit trajectory.
 Visual alignment may ease toward that trajectory but cannot veto or duplicate acceptance.
 
@@ -138,19 +144,22 @@ timer ticks. Outside-to-inside samples do not qualify.
 
 Use states such as `OnBoard -> Exiting -> Removed` for each block and `Idle -> Busy -> Idle`
 for each exit. Each accepted block stores its exit ID, outward direction, accepted logical pose,
-and a set of board cells still occupied. The exit remains Busy until **the full block exit
-sequence**, including shredding, has completed. A block cannot be captured twice or selected
-again after acceptance.
+and a set of board cells still occupied. The exit remains Busy until the entire block has
+finished leaving the playable board. A later chipper sequence may extend visual gate use, but
+presentation cannot determine capture success or release gameplay occupancy. A block cannot be
+captured twice or selected again after acceptance.
 
-Advance the accepted block along the logical exit trajectory. For each retained board cell,
-release it once the corresponding translated unit-square portion of the footprint no longer
-overlaps that cell's playable square. Use board-local geometry and a consistent epsilon at exact
-boundaries; never infer release from renderer bounds or fragment position. Cells not yet released
-remain collision blockers for other blocks. Cells already released may be used by other blocks,
-even while this exit is busy. Keep the block entity until it is fully outside and its exit
-sequence finishes; then remove it and clear Busy. A game-owned block-to-retained-cells map
-supplies identity missing from the framework occupancy service. This is monotonic release after
-acceptance, not an in-board occupancy re-transfer.
+Advance the accepted block strictly outward along the logical exit trajectory. Its retained
+occupancy is the set of in-board cells that the current footprint position or its remaining
+outward path can still cover. It must include every playable cell required by the current
+footprint position. From the aligned pose onward, this set is monotonic non-increasing: release
+a cell only when no remaining part of the validated trajectory can cover it. Use board-local
+geometry and a consistent epsilon at exact boundaries; never infer release from renderer bounds
+or fragment position. Cells not yet released remain collision blockers for other blocks. Cells
+already released may be used by other blocks, even while this exit is busy. Keep the block entity
+until it is fully outside and its exit sequence finishes; then remove it and clear Busy. A
+game-owned block-to-retained-cells map supplies identity missing from the framework occupancy
+service. No new in-board cell may be acquired after strictly outward travel begins.
 
 Prototype measurements may expose an expensive or fragile edge case here. Log that evidence and
 return for a scope decision; do not silently free all cells at acceptance.
@@ -185,7 +194,8 @@ animation cannot prevent a locked win or permanently retain gameplay occupancy.
 Focused pure-logic tests should cover projected span for rectangles and irregular footprints;
 wider-than-needed openings; approach direction and 70% trigger versus full-clearance target;
 wrong color, busy exit and start-adjacent inertia; swept collision against a one-cell obstacle;
-monotonic per-cell release with another block using a cleared cell; timer-before-acceptance and
+collision-safe corridor reservation for irregular shapes, monotonic post-alignment release with
+another block using a cleared cell; timer-before-acceptance and
 acceptance-before-timer cases; duplicate callbacks; invalid exit boundary/overlap data; and
 save/load round trips. A Unity playtest must confirm continuous feel, irregular board visuals,
 gate openings, pooled tween reuse, and result timing. Static tests alone cannot prove input feel.

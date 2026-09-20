@@ -28,7 +28,8 @@ Play-mode authoring scene over the live `LevelAuthoringCore`, with block/cell/ex
 reject-on-conflict structural edits, staged JSON save/load, and an isolated plain-movement
 play-test handoff. CBE pins published framework revision
 `c485272d5e0b9764d67fe1b07a5e9af6429623f7`; Unity compiled the editor scene, and CBE
-passed 21/21 Edit Mode and 2/2 Play Mode tests. Exit capture, timer/outcome behavior and chipper
+passed 21/21 Edit Mode and 2/2 Play Mode tests at the editor checkpoint. Exit capture is now
+implemented through that authored-level play-test path; timer/outcome behavior and chipper
 presentation remain open. The day-2/day-4/day-6 checkpoints remain the integration
 targets, not completed milestones.
 
@@ -49,8 +50,19 @@ other CBE gameplay layers are unchanged by this editor work.
 
 DTM's original checkout has stale generated `Library/Bee` script references to three removed
 files. Unity-managed reimport did not clear them; the clean-copy verification establishes the
-source result without manually editing or deleting the generated cache. The next CBE layer is
-exit capture, after this editor checkpoint report.
+source result without manually editing or deleting the generated cache. Exit capture was the
+next CBE layer after the editor checkpoint and is now complete as described below.
+
+The owner refined exit occupancy: captured alignment/entry may atomically acquire cells newly
+covered by irregular footprints, while strictly outward movement after the fully aligned pose
+may only release cells. CBE now validates and reserves the remaining in-board outbound corridor
+at acceptance, so logical occupancy includes every cell the current footprint requires and
+never grows during outward travel. Matching color, aperture fit, tunable overlap, full alignment
+clearance, busy exits, locked control and progressive release are implemented independently of
+timer/outcome and chipper presentation. The CBE project compiles and passes 29/29 Edit Mode and
+3/3 Play Mode tests, including authored-level pointer capture. Stop at this verified exit
+capture checkpoint before the next gameplay layer. See
+[IMPLEMENTATION_WATCHLIST.md](IMPLEMENTATION_WATCHLIST.md).
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
 an explicit return to presentation integration when final UI/art assets are available. Existing

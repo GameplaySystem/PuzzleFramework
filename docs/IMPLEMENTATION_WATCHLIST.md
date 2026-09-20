@@ -2,6 +2,16 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **Exit occupancy refinement approved (2026-09-21):** During captured alignment/entry,
+  occupancy must include every in-board cell required by the footprint; newly covered cells
+  can be acquired only through collision-safe atomic transfer. At the fully aligned pose, CBE
+  validates and reserves the remaining in-board outward corridor. This conservatively holds
+  future cells of irregular footprints before they are visibly covered, then releases cells
+  only as the remaining trajectory clears them. Post-alignment occupancy must be monotonic
+  non-increasing; a runtime guard and focused test enforce that invariant. The checkpoint
+  passes 29/29 CBE Edit Mode and 3/3 Play Mode tests, including authored-level pointer capture.
+  Timer/outcome and chipper presentation are separate future checkpoints.
+
 - **Editor architecture approved; dual adoption implemented:** The framework session layer adds
   explicit center/corner anchoring, structural consequence inspection, staged restore, shared
   cell/edge picking and narrow tool dispatch. DTM now consumes one live session for structural
@@ -34,8 +44,8 @@
   plus a focused editor migration test. CBE's first payload/construction layer uses the pinned
   package. CBE's plain on-board movement checkpoint now compiles and passes focused Edit Mode
   and Play Mode tests. CBE's editor scene compiles, and the CBE suites pass 21/21 Edit Mode
-  and 2/2 Play Mode tests including save/load and isolated play-test. Exit capture,
-  timer/outcome runtime behavior and chipper presentation remain open.
+  and 2/2 Play Mode tests including save/load and isolated play-test. Exit capture now also
+  passes its own checkpoint; timer/outcome behavior and chipper presentation remain open.
 - **CBE editor checkpoint caveat:** Save and play-test require construction-ready content (at
   least one block and exit plus valid countdown), as specified by the current payload/runtime
   contracts; partial drafts cannot be exported through this path. The editor stores JSON at a
@@ -52,9 +62,10 @@
   then Unity rebuilt a clean cache; original-project compile, CBE tests and framework movement
   tests passed. If binaries disappear again, investigate local environmental cleanup rather than
   treating the deletions as intended source changes.
-- **Movement checkpoint boundary:** Plain dragging uses fixed authored offsets and blocks all
-  boundaries, including openings. It does not yet admit exits, release occupancy progressively,
-  run a timer, decide outcomes or play chipper effects. The fixture validates pointer-to-view
+- **Movement fixture boundary:** The dedicated plain-drag fixture uses fixed authored offsets and
+  blocks all boundaries, including openings; the authored-level play-test path now admits exits
+  and releases occupancy progressively. Neither path runs a timer, decides outcomes or plays
+  chipper effects. The fixture validates pointer-to-view
   subcell motion automatically; subjective drag feel should also be checked in the dedicated
   `PlainMovementCheckpoint` scene before the eventual gameplay scene is finalized.
 

@@ -47,6 +47,15 @@ timer expiry locks a win even if presentation finishes later. Timeout is the onl
 reference game's other stated failure has no verified predicate. Initial adjacency to an exit
 must not trigger departure.
 
+The owner refined occupancy on 2026-09-21. While a captured block intersects the playable board,
+logical occupancy must include every board cell required by its current footprint. Captured
+alignment/entry may atomically acquire newly covered in-board cells and release vacated cells,
+without overwriting another block. The complete outbound corridor must be collision-free before
+acceptance. After the fully aligned pose begins strictly outward travel, retained occupancy is
+monotonic non-increasing and releases cells progressively until empty. Reserving future corridor
+cells at alignment is permitted for irregular footprints; it may temporarily block a cell before
+the visible footprint reaches it. Exit success is independent of timer/outcome and chipper effects.
+
 The [MVP requirements](ColorBlockEscapeMVPRequirements.md),
 [runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
 [editor design](ColorBlockEscapeEditorTechnicalDesign.md) contain the reviewable details. They
