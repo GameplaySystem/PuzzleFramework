@@ -196,6 +196,106 @@ namespace PuzzleFramework.CoreBoard
             return FootprintAvailabilityResult.Accepted();
         }
 
+        /// <summary>
+        /// Atomically replaces one occupied footprint with another after validating every cell.
+        /// The caller must supply the actual source footprint and separately decide whether
+        /// blocked cells, movement and puzzle rules permit the destination. No entity IDs are
+        /// stored here. On failure, both occupancy sets remain unchanged.
+        /// </summary>
+        public CellOccupancyOperationResult TransferFootprint(
+            IEnumerable<GridCoordinate> sourceCoordinates,
+            IEnumerable<GridCoordinate> destinationCoordinates)
+        {
+            if (!TryCollectUnique(sourceCoordinates, "Source", out HashSet<GridCoordinate> source, out string failure))
+            {
+                return CellOccupancyOperationResult.Failed(failure);
+            }
+
+            if (!TryCollectUnique(destinationCoordinates, "Destination", out HashSet<GridCoordinate> destination, out failure))
+            {
+                return CellOccupancyOperationResult.Failed(failure);
+            }
+
+            foreach (GridCoordinate coordinate in source)
+            {
+                if (!TryValidateCoordinate(coordinate, out failure))
+                {
+                    return CellOccupancyOperationResult.Failed(failure);
+                }
+
+                if (!_occupiedCoordinates.Contains(coordinate))
+                {
+                    return CellOccupancyOperationResult.Failed($"Source coordinate {coordinate} is not occupied.");
+                }
+            }
+
+            foreach (GridCoordinate coordinate in destination)
+            {
+                if (!TryValidateCoordinate(coordinate, out failure))
+                {
+                    return CellOccupancyOperationResult.Failed(failure);
+                }
+
+                if (_reservedCoordinates.Contains(coordinate))
+                {
+                    return CellOccupancyOperationResult.Failed($"Destination coordinate {coordinate} is reserved.");
+                }
+
+                if (_occupiedCoordinates.Contains(coordinate) && !source.Contains(coordinate))
+                {
+                    return CellOccupancyOperationResult.Failed($"Destination coordinate {coordinate} is occupied.");
+                }
+            }
+
+            // Hash-set mutations cannot fail after complete validation; overlap stays occupied.
+            foreach (GridCoordinate coordinate in source)
+            {
+                if (!destination.Contains(coordinate))
+                {
+                    _occupiedCoordinates.Remove(coordinate);
+                }
+            }
+
+            foreach (GridCoordinate coordinate in destination)
+            {
+                _occupiedCoordinates.Add(coordinate);
+            }
+
+            return CellOccupancyOperationResult.Successful();
+        }
+
+        private static bool TryCollectUnique(
+            IEnumerable<GridCoordinate> coordinates,
+            string label,
+            out HashSet<GridCoordinate> collected,
+            out string failure)
+        {
+            collected = new HashSet<GridCoordinate>();
+            if (coordinates == null)
+            {
+                failure = $"{label} footprint is required.";
+                return false;
+            }
+
+            foreach (GridCoordinate coordinate in coordinates)
+            {
+                if (!collected.Add(coordinate))
+                {
+                    failure = $"{label} footprint contains duplicate coordinate {coordinate}.";
+                    return false;
+                }
+            }
+
+            if (collected.Count == 0)
+            {
+                failure = $"{label} footprint must contain at least one coordinate.";
+                return false;
+            }
+
+            failure = string.Empty;
+            return true;
+        }
+
         private bool TryValidateCoordinate(GridCoordinate coordinate, out string failureReason)
         {
             if (!GridBoard.IsWithinBounds(coordinate))
