@@ -6,7 +6,7 @@ Category:
 - Content Systems
 
 Status:
-- Approved implementation baseline; first framework session layer implemented, dual adoption pending
+- Approved implementation baseline; shared session implemented and adopted by DTM and CBE
 
 Parent:
 - Overview.md
@@ -37,6 +37,17 @@ Used By:
 - Sky Rush
 - Hole People
 - Bus Jam
+
+## Dual-adoption checkpoint
+
+Drop The Man uses the live session with center anchoring while retaining its game-specific
+payload, tools and warned prune-on-resize policy. Color Block Escape uses the same session,
+shared cell/edge picking and tool host with corner anchoring; its module owns block colors,
+exit exterior validation, reject-on-conflict edits, codec mapping and play-test handoff.
+The CBE authoring scene compiled under Unity 6000.3.17f1 and its Edit Mode and Play Mode suites
+passed 21/21 and 2/2. Hands-on Game-view validation of editor ergonomics remains open. The
+historical design discussion below describes the pre-implementation state and is retained as
+the rationale for the shared boundary.
 
 ## Approved second-consumer implementation clarification
 

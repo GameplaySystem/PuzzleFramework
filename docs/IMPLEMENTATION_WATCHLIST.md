@@ -2,21 +2,23 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
-- **Editor architecture approved; CBE adoption still open:** The framework session layer adds
+- **Editor architecture approved; dual adoption implemented:** The framework session layer adds
   explicit center/corner anchoring, structural consequence inspection, staged restore, shared
   cell/edge picking and narrow tool dispatch. DTM now consumes one live session for structural
-  edits and board views. CBE has no editor. Do not count dual adoption complete until CBE also
-  consumes the foundation. DTM keeps warned prune-on-resize; CBE rejects invalidating edits.
-  CBE exits and exterior-only rules stay in its game payload/tool.
+  edits and board views. CBE now consumes the live session, corner-anchored cell/edge picker,
+  derived boundaries, and tool host in its dedicated authoring scene. DTM keeps warned
+  prune-on-resize; CBE rejects invalidating edits. CBE exits and exterior-only rules stay in its
+  game payload/tool. Automated tests pass; a hands-on UI/visual authoring pass remains useful.
 - **Session/payload synchronization:** DTM now restores the session on enable/import, applies
   routine structural edits to it before publishing DTM data, and stages imports. Its direct
   Inspector resize fallback rebuilds the session because Inspector edits bypass commands;
-  preserve the warned prune behavior there. Apply candidate-and-swap discipline to CBE's board
-  plus opaque payload.
+  preserve the warned prune behavior there. CBE now stages codec, generic restore and runtime
+  validation before swapping its live board session and opaque payload together.
 - **Editor picking convention:** DTM's editor now passes `GridCellAnchor.Center` explicitly and
   uses shared cell picking and center-aware board visuals; focused tests cover picks near cell
-  edges and the checked-in scene's board view. CBE's later adapter must pass Corner to match its
-  movement fixture and verify the live scene against picks.
+  edges and the checked-in scene's board view. CBE's editor now passes `GridCellAnchor.Corner`
+  to match movement unit squares; focused tests cover picking across cell boundaries and
+  exterior edge selection. Hands-on Game-view picking remains an acceptance check.
 - **DTM local Unity cache:** A fresh disposable DTM project compiled and passed 35/35 Edit Mode
   tests after the framework repin. The original checkout's `Library/Bee` still refers to three
   removed source files; Unity-managed reimport did not clear the stale generated references.
@@ -31,7 +33,14 @@
   pass. DTM pins the published framework revision, compiles, and passes its existing 27 tests
   plus a focused editor migration test. CBE's first payload/construction layer uses the pinned
   package. CBE's plain on-board movement checkpoint now compiles and passes focused Edit Mode
-  and Play Mode tests; exit capture, editor workflow and presentation remain open.
+  and Play Mode tests. CBE's editor scene compiles, and the CBE suites pass 21/21 Edit Mode
+  and 2/2 Play Mode tests including save/load and isolated play-test. Exit capture,
+  timer/outcome runtime behavior and chipper presentation remain open.
+- **CBE editor checkpoint caveat:** Save and play-test require construction-ready content (at
+  least one block and exit plus valid countdown), as specified by the current payload/runtime
+  contracts; partial drafts cannot be exported through this path. The editor stores JSON at a
+  user-editable filesystem path, defaulting to `Application.persistentDataPath`. Automated
+  checks do not replace a hands-on visual/HUD pass in the dedicated authoring scene.
 - **Documented editor difference:** Drop The Man's approved editor design prunes content outside
   a resized board with a warning. CBE's approved rule rejects invalidating structural edits.
   Preserve the DTM behavior and keep the CBE rejection in the shared core's CBE usage; do not

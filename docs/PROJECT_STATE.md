@@ -23,8 +23,13 @@ regression test also passing. Color Block Escape parses its opaque payload and c
 validated board/block/exit state. Its plain on-board movement checkpoint now uses the shared
 sweep, clearance, pointer projection, snap and occupancy-transfer primitives. The dedicated
 movement fixture scene and focused CBE Edit Mode and Play Mode tests verify continuous subcell
-motion, collision, release and view movement. Exit capture, timer/outcome behavior, the CBE
-editor and presentation remain open. The day-2/day-4/day-6 checkpoints remain the integration
+motion, collision, release and view movement. The CBE editor checkpoint now has a dedicated
+Play-mode authoring scene over the live `LevelAuthoringCore`, with block/cell/exit/timer tools,
+reject-on-conflict structural edits, staged JSON save/load, and an isolated plain-movement
+play-test handoff. CBE pins published framework revision
+`c485272d5e0b9764d67fe1b07a5e9af6429623f7`; Unity compiled the editor scene, and CBE
+passed 21/21 Edit Mode and 2/2 Play Mode tests. Exit capture, timer/outcome behavior and chipper
+presentation remain open. The day-2/day-4/day-6 checkpoints remain the integration
 targets, not completed milestones.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
@@ -35,16 +40,17 @@ preview fit, selection/move/rotation/erase, and derives boundary views. A small 
 host provide anchor-aware cell/edge picks and dispatch to game-owned tools. DTM has now migrated
 to a live session with explicit center anchoring and preserved JSON, tools, visuals and warned
 prune-on-resize behavior. A clean Unity project copy compiled and passed all 35 DTM Edit Mode
-tests, including shipped-level imports and the configured editor scene. CBE has no dedicated
-editor yet. The framework Edit Mode run compiled and passed
+tests, including shipped-level imports and the configured editor scene. CBE now consumes the
+same live session, corner-anchored picking, derived boundaries and framework tool host through
+its dedicated editor scene. The framework Edit Mode run compiled and passed
 52 of 53 tests, including all authoring/layout tests; the sole failure is the previously tracked
 catalog test assertion (`Build_ReportsSequenceGapsWithoutRejectingCatalog`). Exit capture and
 other CBE gameplay layers are unchanged by this editor work.
 
 DTM's original checkout has stale generated `Library/Bee` script references to three removed
 files. Unity-managed reimport did not clear them; the clean-copy verification establishes the
-source result without manually editing or deleting the generated cache. The next editor layer is
-CBE adoption of the same shared session, after this DTM checkpoint report.
+source result without manually editing or deleting the generated cache. The next CBE layer is
+exit capture, after this editor checkpoint report.
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
 an explicit return to presentation integration when final UI/art assets are available. Existing
@@ -446,8 +452,8 @@ Implementation is authorized within those boundaries. Reference behavior
 for oversized doors, exact footprints and “no valid matching doors” remains unverified and does
 not block the chosen MVP simplifications. The original framework drag remains destination-only;
 new shared sweep/clearance, atomic transfer and authoring-core primitives are published, and
-Drop The Man consumes them. The dedicated CBE runtime/editor and full shared editor presentation
-path remain to be built. Seven days is a planning benchmark for disciplined scope, not a
+Drop The Man consumes them. The CBE plain-movement and shared editor adoption checkpoints are
+implemented; exit capture, timer/outcome and chipper behavior remain. Seven days is a planning benchmark for disciplined scope, not a
 real-time deadline; framework ownership and verification take precedence.
 
 ## Preserved Drop The Man Delivery History

@@ -1,9 +1,29 @@
 # Color Block Escape Editor And Shared Authoring Core Design
 
 Date: 2026-09-20
-Status: Approved implementation baseline; first framework layer verified, dual adoption pending.
+Status: Approved baseline; framework, DTM and CBE editor adoption checkpoints implemented and verified.
 Requirements: [Color Block Escape MVP](ColorBlockEscapeMVPRequirements.md).
 Framework baseline: [Level Editor Foundation](FrameworkSystems/ContentSystems/LevelEditorFoundation.md).
+
+## CBE implementation checkpoint
+
+The CBE Play-mode authoring scene now consumes one live framework `LevelAuthoringCore`,
+`AuthoringToolHost`, anchor-aware `BoardAuthoringPicker`, and derived board boundaries.
+Its game-owned session retains block colors and exits, rejects structural edits that affect
+blocks/exits or crop non-default cells, and stages import through the CBE payload codec and
+runtime builder before replacing live state. Presets and custom connected offsets share the
+same placement path, with a configurable default 4×4 guard for newly authored footprints.
+The scene offers cell painting, resize, block placement/selection/move/recolor/rotation/erase,
+exterior-edge exit editing, timer settings, JSON save/load and isolated plain-movement play-test.
+It uses `GridCellAnchor.Corner`, matching the existing CBE movement unit-square coordinates.
+
+Unity 6000.3.17f1 compiled the generated scene with framework pin
+`c485272d5e0b9764d67fe1b07a5e9af6429623f7`. CBE Edit Mode tests passed 21/21 and Play
+Mode tests passed 2/2. The PlayMode bridge uses the existing runtime builder and drag adapter;
+exit capture and runtime timer/outcome gameplay are not part of this checkpoint. A hands-on
+Game-view pass for UI ergonomics, edge highlighting and visual alignment remains open.
+The current codec/runtime builder require at least one block and one exit before save or
+play-test; partial draft export would need a separately approved content-policy decision.
 
 ## Problem and evidence
 
