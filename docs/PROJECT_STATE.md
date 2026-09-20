@@ -17,9 +17,11 @@ Block Escape Unity project has since been created.
 Implementation is underway. The first framework slice adds shared swept-footprint
 geometry, board-plane pointer projection, structural/occupancy clearance, atomic footprint
 transfer, and a small generic authoring core. Focused Unity Edit Mode tests for the movement and
-authoring primitives pass. Drop The Man compiles against a temporary local package override;
-its final pinned-package validation remains open. Color Block
-Escape runtime and dedicated editor are not yet implemented. The day-2/day-4/day-6 checkpoints
+authoring primitives pass. Drop The Man pins the published framework revision and compiles;
+its 27 existing Edit Mode tests pass, with one focused editor
+regression test also passing. The first Color Block Escape-specific layer now parses its opaque
+payload and constructs validated board/block/exit state; movement, dedicated editor and
+presentation remain open. The day-2/day-4/day-6 checkpoints
 remain the integration targets, not completed milestones.
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
@@ -420,10 +422,11 @@ authoring and presentation rules; the [runtime](ColorBlockEscapeRuntimeTechnical
 The Color Block Escape Unity repository exists with a pinned framework package and DOTween.
 Implementation is authorized within those boundaries. Reference behavior
 for oversized doors, exact footprints and “no valid matching doors” remains unverified and does
-not block the chosen MVP simplifications. The framework drag still checks rounded destinations
-only; shared editor implementation still does not exist. The seven-day target is to be met
-through correctly owned framework reuse and disciplined scope, not by placing shared sweep,
-clearance, occupancy transfer or authoring behavior in CBE for short-term speed.
+not block the chosen MVP simplifications. The original framework drag remains destination-only;
+new shared sweep/clearance, atomic transfer and authoring-core primitives are published, and
+Drop The Man consumes them. The dedicated CBE runtime/editor and full shared editor presentation
+path remain to be built. Seven days is a planning benchmark for disciplined scope, not a
+real-time deadline; framework ownership and verification take precedence.
 
 ## Preserved Drop The Man Delivery History
 

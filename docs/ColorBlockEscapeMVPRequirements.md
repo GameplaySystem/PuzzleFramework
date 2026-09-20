@@ -10,8 +10,9 @@ The owner supplied the product rules below on 2026-09-20. They supersede conflic
 [the earlier preflight](ColorBlockJamArchitecturePreflight.md). The reference game is evidence, not
 the authority for this prototype. An unverified reference detail does not displace a chosen MVP rule.
 
-The delivery target is a playable prototype in at most seven development days. That target is a
-constraint on scope and sequencing, not evidence that every requested feature already fits it.
+The seven-development-day goal is a planning benchmark for scope and sequencing, not a hard
+calendar deadline or a reason to monitor wall-clock time during implementation. Necessary shared
+infrastructure may take longer to build correctly.
 Implementation is authorized within the approved framework/game-module boundaries.
 
 **Architecture rule for that target:** put demonstrably reusable infrastructure in
@@ -146,17 +147,17 @@ already provide true placed-item move or an integrated play-test bridge; those a
 
 The requested shared-editor extraction **plus** Drop The Man adoption, true selection/move,
 play-test, irregular-edge exits, continuous sweeps, progressive occupancy, and pooled chipper form
-a high-risk seven-day scope. None can be called already implemented. The technical designs keep
-these requirements and framework boundaries intact. A reliable seven-day promise requires early
-Unity integration and explicit checkpoints. If shared infrastructure or progressive release
-threatens the target, report measured cost and seek a scope/schedule decision. A game-local copy of
+a high-risk scope against that benchmark. The technical designs keep these requirements and
+framework boundaries intact. Use early Unity integration and explicit planning checkpoints.
+If necessary shared infrastructure or progressive release takes longer, report the concrete
+cause; do not rush, reduce verification, or silently change requirements. A game-local copy of
 genuinely shared behavior is not an acceptable automatic fallback.
 
-The target checkpoints, counted from the start of approved prototype development, are: by day 2,
+The planning checkpoints, counted from the start of approved prototype development, are: by day 2,
 framework sweep/clearance primitives are reusable and CBE can load/drag plain blocks; by day 4, CBE
 admits exits with progressive release and correct timer outcomes while shared occupancy transfer
 is available to both games; by day 6, the framework authoring core is consumed by both games and
 the CBE editor round-trips and play-tests levels; by day 7, integrate pooled presentation and
-finish Unity regression checks. These are risk checkpoints, not a high-confidence time estimate.
-A missed checkpoint prompts a concrete scope/schedule review, not an unannounced rule cut or a
-game-local architecture shortcut.
+finish Unity regression checks. These are planning gates, not deadlines or a reason for
+time-of-day checks. A missed checkpoint prompts a concrete progress review, not an unannounced
+rule cut or a game-local architecture shortcut.

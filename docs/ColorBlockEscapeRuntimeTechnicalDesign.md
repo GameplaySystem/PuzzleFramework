@@ -24,7 +24,7 @@ exits, eligibility, lifecycle, presentation and payload interpretation. Framewor
 contain block/exit nouns. No event bus, pathfinder, shared object factory, queue, or capacity system
 is needed for this slice.
 
-The seven-day limit does not move shared work into the game module. Implement the smallest
+The seven-day planning benchmark does not move shared work into the game module. Implement the smallest
 demonstrated shared slices in the framework, verify them against Drop The Man, publish/pin the
 framework revision under the dependency workflow, then consume them in CBE. Leave raw
 platform-specific input polling, view hit targets and game rules with the scene/game adapter.
@@ -194,6 +194,5 @@ The highest technical risks are shared sweep/occupancy integration, capture alig
 wall penetration, progressive release while other blocks move, and wall-visual openings. Deliver
 a plain-geometry vertical slice before chipper polish. Implement shared sweep, structural
 clearance, projection and occupancy primitives in PuzzleFramework, while leaving CBE exit rules
-in its module. If the
-seven-day target becomes implausible, present measured blockers and options rather than weakening
-the owner rules or duplicating shared infrastructure locally.
+in its module. If the seven-day benchmark is exceeded, report concrete causes and options rather
+than weakening the owner rules or duplicating shared infrastructure locally.

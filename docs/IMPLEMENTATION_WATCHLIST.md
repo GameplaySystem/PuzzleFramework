@@ -4,12 +4,17 @@
 
 - **Implementation in progress (2026-09-20):** Framework sweep, clearance, transfer, projection,
   and authoring-core sources are implemented. Focused movement and authoring Edit Mode tests
-  pass; DTM compiles against the temporary local package override. DTM pinned-package
-  regression validation and CBE consumption remain open.
+  pass. DTM pins the published framework revision, compiles, and passes its existing 27 tests
+  plus a focused editor migration test. CBE's first payload/construction layer uses the pinned
+  package; gameplay movement, editor workflow and presentation remain open.
 - **Documented editor difference:** Drop The Man's approved editor design prunes content outside
   a resized board with a warning. CBE's approved rule rejects invalidating structural edits.
   Preserve the DTM behavior and keep the CBE rejection in the shared core's CBE usage; do not
   force one resize policy on both games.
+- **Local DOTween binaries to inspect before presentation:** The CBE worktree currently reports
+  three tracked DOTween DLLs as deleted. Their removal was discovered after batch-mode Unity
+  validation; its cause is not established. They were left untouched and excluded from the
+  CBE construction commit. Resolve their intended state before using DOTween in presentation.
 
 The owner has approved the Color Block Escape MVP rules and six implementation clarifications.
 The [requirements](ColorBlockEscapeMVPRequirements.md),
@@ -28,6 +33,11 @@ authoring behavior belong in PuzzleFramework, with both games consuming them. CB
 color-match, win and chipper
 rules remain game-owned. Assess a narrow common board-plane pointer primitive without forcing
 platform-specific input polling into framework code.
+
+The later clarification makes seven days a **planning benchmark**, not a real-time deadline.
+Do not monitor current hour or wall-clock time to drive implementation decisions. Architectural
+correctness, maintainability, framework ownership and verification take precedence; report
+concrete causes if necessary work takes longer.
 
 - **Open research, not an MVP blocker:** Publisher sources do not resolve acceptance by wider
   doors, exact footprint catalog, or the trigger for “no valid matching doors.” The chosen MVP

@@ -17,7 +17,7 @@ support true placed-item move, Active/Inactive painting, or an editor-to-runtime
 The owner now requires shared authoring behavior to live in PuzzleFramework and be consumed by
 both games. The smallest safe extraction is a common editing **core and scene support**, not a
 copy of the whole DTM controller or a universal editor-window/plugin platform.
-The seven-day target is a reason to keep that core focused, not a reason to duplicate shared
+The seven-day planning benchmark is a reason to keep that core focused, not a reason to duplicate shared
 board/footprint editing inside CBE. The CBE editor must consume the framework core once it is
 implemented; DTM must adopt the same core for its overlapping operations.
 Before package implementation, update the approved framework `LevelEditorFoundation` spec to
@@ -116,9 +116,8 @@ documentation; those changes occur during implementation and verification.
 
 Framework extraction, DTM regression migration, true selection/move, irregular-edge exit editing,
 round-trip persistence, and play-test together are probably the largest schedule risk. The
-minimum shared core above limits that risk, but the promised seven-day prototype cannot be
-treated as guaranteed until an integrated editor and runtime path work in Unity. If extraction
-starts consuming the whole budget, report the actual blocker and request a scope decision;
+minimum shared core above limits that risk, but completion within seven development days is not
+guaranteed. If necessary extraction takes longer, report the actual cause and options;
 do not silently replace the required shared core with a CBE-only duplicate or omit play-test.
 Reduce speculative extension points, unrelated features and polish before considering a change
 to the agreed framework/game-module boundary.
