@@ -16,15 +16,30 @@ Related Documents:
 - InputSystem.md
 - GridSnapSystem.md
 - ../CoreBoardSystems/GridSystem.md
+- ../CoreBoardSystems/CellOccupancySystem.md
+- ../CoreBoardSystems/ShapeSystem.md
 
 Depends On:
 - InputSystem.md
 - ../CoreBoardSystems/GridSystem.md
+- ../CoreBoardSystems/CellOccupancySystem.md
+- ../CoreBoardSystems/ShapeSystem.md
 
 Used By:
 - Drop Away
 - Color Block Jam
 - Sky Rush
+
+## Approved 2026-09-20 implementation extension
+
+The existing concrete drag evaluator checks a rounded destination only. Drop The Man has
+deterministic swept-footprint contact enumeration and board/occupancy clearance code; Color Block
+Escape needs both. Move the rule-free continuous board-local footprint geometry and the
+structural/occupancy clearance query into framework interaction code. Preserve ordered contacts
+and allow callers to exclude their actual committed footprint from self-collision. Make both
+games consume these primitives. Keep Drop The Man collectible/color behavior and CBE exit/color
+admission outside the framework. A destination-only result must never be presented as a swept
+path result. Reuse the structural query in the old destination evaluator where practical.
 
 ## Purpose
 

@@ -33,6 +33,29 @@ Its job is narrower:
 
 ## Clarifications
 
+### Color Block Escape MVP Gate, Movement And Win Rules (2026-09-20)
+
+Status: Approved by owner on 2026-09-20.
+
+The prototype uses free continuous footprint dragging and editor-only rotation. An exit admits
+only player-driven outward movement by a matching block whose full bounding span fits and can
+align without passing through a wall. A 70% initial overlap setting is a tunable capture candidate,
+not permission for partial jamb penetration. An exit processes one block until its full sequence
+finishes. Release board occupancy progressively as the exiting logical footprint clears cells;
+do not use meshes or fragment animation as gameplay truth. Final-block acceptance at or before
+timer expiry locks a win even if presentation finishes later. Timeout is the only MVP loss; the
+reference game's other stated failure has no verified predicate. Initial adjacency to an exit
+must not trigger departure.
+
+The [MVP requirements](ColorBlockEscapeMVPRequirements.md),
+[runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
+[editor design](ColorBlockEscapeEditorTechnicalDesign.md) contain the reviewable details. They
+supersede the older “detailed rules open” preflight paragraph below, not Drop The Man's rules.
+The seven-day limit must not justify CBE-local copies of demonstrably shared sweep,
+structural/occupancy clearance, footprint transfer or authoring behavior. Implement those narrow
+reusable mechanics in PuzzleFramework
+and make both games consume them; keep gate and outcome meaning in CBE.
+
 ### Color Block Jam Is A Separate Rule Baseline (2026-09-17)
 
 Status: separation confirmed by owner; detailed gameplay rules open.

@@ -1,5 +1,53 @@
 # Implementation Watchlist
 
+## Color Block Escape Requirements And Design Review (2026-09-20)
+
+- **Implementation in progress (2026-09-20):** Framework sweep, clearance, transfer, projection,
+  and authoring-core sources are implemented. Focused movement and authoring Edit Mode tests
+  pass; DTM compiles against the temporary local package override. DTM pinned-package
+  regression validation and CBE consumption remain open.
+- **Documented editor difference:** Drop The Man's approved editor design prunes content outside
+  a resized board with a warning. CBE's approved rule rejects invalidating structural edits.
+  Preserve the DTM behavior and keep the CBE rejection in the shared core's CBE usage; do not
+  force one resize policy on both games.
+
+The owner has approved the Color Block Escape MVP rules and six implementation clarifications.
+The [requirements](ColorBlockEscapeMVPRequirements.md),
+[runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
+[editor design](ColorBlockEscapeEditorTechnicalDesign.md) are the approved baseline; do not
+implement from the older preflight alone. Confirmed direction includes continuous footprint
+movement, fixed runtime orientation, full bounding-span gate fit, outward player-driven capture,
+one block per
+busy exit, progressive logical occupancy release, final-acceptance win precedence, and a V1
+play-test editor. Timeout is the chosen MVP-only loss condition.
+
+The owner's 2026-09-20 clarification makes the seven-day target a control on speculation and
+polish, **not** permission for CBE-local copies of demonstrated shared infrastructure. Shared
+continuous-sweep geometry, structural/occupancy clearance, safe footprint transfer and common
+authoring behavior belong in PuzzleFramework, with both games consuming them. CBE gate,
+color-match, win and chipper
+rules remain game-owned. Assess a narrow common board-plane pointer primitive without forcing
+platform-specific input polling into framework code.
+
+- **Open research, not an MVP blocker:** Publisher sources do not resolve acceptance by wider
+  doors, exact footprint catalog, or the trigger for “no valid matching doors.” The chosen MVP
+  permits wider doors, uses the owner's starter presets and does not implement dead-state loss.
+- **High schedule risk:** Shared movement/occupancy/editor extraction plus Drop The Man adoption,
+  placed-item move, play-test, irregular-edge exits and progressive occupancy may exceed a
+  seven-day prototype. Measure integration cost early. Reduce speculative abstraction and polish
+  before proposing a scope/schedule change; do not silently copy shared code into CBE.
+- **Implementation gap:** Framework drag is destination-only; extract and verify rule-free swept
+  geometry and structural/occupancy clearance from Drop The Man. Framework occupancy lacks an
+  atomic footprint transfer; its generic release/occupy rollback should be shared without adding
+  block identity or CBE rules.
+  Capture must reconcile the dragged pose to canonical occupancy before progressive release.
+- **Presentation boundary:** CBE project already includes DOTween. Logic must remain independent;
+  pooled fragments must kill/reset tweens before reuse. Simple generated block/gate visuals are
+  sufficient, so the optional FBX pack is no longer a prototype prerequisite.
+- **Source-of-truth change:** Historical notes below saying shared-editor extraction, play-test,
+  inactive-cell painting or gate timing are deferred describe earlier phases, not the new owner
+  requirements. Their implementation is now approved within the three technical designs.
+
 ## Active Prototype Transition (2026-09-17)
 
 Status: owner-authorized. Drop The Man is development-complete for its current MVP scope; final

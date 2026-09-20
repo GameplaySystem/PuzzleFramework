@@ -28,6 +28,18 @@ Used By:
 - Hole People
 - Bus Jam
 
+## Approved 2026-09-20 implementation extension
+
+Drop The Man already transfers a committed footprint by releasing old cells, occupying new cells,
+and rolling back on failure. Color Block Escape needs the same rule-free operation. Add one
+all-or-nothing transfer contract taking explicit old/new coordinate sets. Validate nonempty,
+unique structural coordinates; verify old cells are occupied and new cells are free except where
+they overlap old cells; reject reservations. Mutate only after complete validation. Return a
+result rather than partially changing occupancy. The caller supplies the correct source cells
+and remains responsible for Blocked-cell placement legality, entity ownership, snap/reachability,
+and gameplay meaning. Do not add game identities or exit rules to occupancy. Both games consume
+this operation; individual `Occupy`/`Release` remain available for progressive CBE exit release.
+
 ## Purpose
 
 The Cell Occupancy System tracks cell usage on the board.

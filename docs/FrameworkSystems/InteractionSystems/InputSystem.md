@@ -15,9 +15,10 @@ Related Documents:
 - Overview.md
 - DragMovementSystem.md
 - GridSnapSystem.md
+- ../CoreBoardSystems/GridSystem.md
 
 Depends On:
-- None
+- ../CoreBoardSystems/GridSystem.md (pointer-to-board projection extension)
 
 Used By:
 - Drop Away
@@ -25,6 +26,15 @@ Used By:
 - Sky Rush
 - Hole People
 - Bus Jam
+
+## Approved 2026-09-20 implementation extension
+
+Both Drop The Man and Color Block Escape need board-plane pointer projection and preservation
+of the selected object's pointer offset. Provide a narrow reusable geometry primitive for
+screen ray/board-plane intersection and offset application, using the caller's camera/layout.
+Game scene adapters keep platform polling, UI gating, hit targets, layers and puzzle meaning.
+Use the existing generic `InputSystem` press/drag lifecycle where its capability contracts fit;
+do not introduce a second generic lifecycle or make framework code depend on a game view.
 
 ## Purpose
 

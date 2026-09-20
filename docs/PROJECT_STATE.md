@@ -5,10 +5,22 @@ Drop The Man is **DEVELOPMENT-COMPLETE FOR CURRENT MVP SCOPE** with
 level load -> play -> win/fail -> next/restart -> load again. It remains a maintenance/regression
 target and a future presentation-integration target, not an abandoned or rewritten prototype.
 
-Color Block Jam is the active second prototype, in architecture/design preflight. No gameplay
-implementation is authorized by this transition. See the
+Color Block Escape is the active second prototype. The 2026-09-20 requirements and technical
+designs are approved for implementation. See the
 [Color Block Jam architecture preflight](ColorBlockJamArchitecturePreflight.md) for evidence,
 reuse classification, proposed boundaries, and unresolved requirements.
+The 2026-09-20 [Color Block Escape MVP requirements](ColorBlockEscapeMVPRequirements.md),
+[runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
+[editor design](ColorBlockEscapeEditorTechnicalDesign.md) are the approved baseline. The Color
+Block Escape Unity project has since been created.
+
+Implementation is underway. The first framework slice adds shared swept-footprint
+geometry, board-plane pointer projection, structural/occupancy clearance, atomic footprint
+transfer, and a small generic authoring core. Focused Unity Edit Mode tests for the movement and
+authoring primitives pass. Drop The Man compiles against a temporary local package override;
+its final pinned-package validation remains open. Color Block
+Escape runtime and dedicated editor are not yet implemented. The day-2/day-4/day-6 checkpoints
+remain the integration targets, not completed milestones.
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
 an explicit return to presentation integration when final UI/art assets are available. Existing
@@ -76,8 +88,9 @@ Grid-based puzzle game where colored bricks exit through matching colored doors.
 
 Status:
 
-- Active second prototype: architecture/design preflight.
-- Earlier high-level deconstruction is not an approved detailed gameplay requirements baseline.
+- Active second prototype: approved implementation baseline.
+- Detailed [MVP rules](ColorBlockEscapeMVPRequirements.md) and technical designs approved on
+  2026-09-20, including the six owner clarifications.
 
 ## Sky Rush Traffic Puzzle
 
@@ -400,14 +413,17 @@ Progress markers below use these meanings:
 
 # Current Focus
 
-Color Block Jam architecture/design preflight, following the owner-authorized Drop The Man MVP
-freeze on 2026-09-17. Establish reference rules, asset evidence, content and construction boundaries,
-movement/exit ownership, and the smallest justified reuse slice before implementation.
-
-The [preflight report](ColorBlockJamArchitecturePreflight.md) is a proposal, not an approved system
-spec. No Color Block Jam Unity project has been created. The framework drag implementation checks
-rounded destinations only; continuous swept movement is prototype-owned today. Gate traversal and
-exact removal timing require reference evidence before an extension can be approved.
+Color Block Escape implementation, following the owner-authorized Drop The Man MVP freeze. The
+[MVP requirements](ColorBlockEscapeMVPRequirements.md) record chosen movement, exit, timer,
+authoring and presentation rules; the [runtime](ColorBlockEscapeRuntimeTechnicalDesign.md) and
+[editor](ColorBlockEscapeEditorTechnicalDesign.md) designs were approved on 2026-09-20.
+The Color Block Escape Unity repository exists with a pinned framework package and DOTween.
+Implementation is authorized within those boundaries. Reference behavior
+for oversized doors, exact footprints and “no valid matching doors” remains unverified and does
+not block the chosen MVP simplifications. The framework drag still checks rounded destinations
+only; shared editor implementation still does not exist. The seven-day target is to be met
+through correctly owned framework reuse and disciplined scope, not by placing shared sweep,
+clearance, occupancy transfer or authoring behavior in CBE for short-term speed.
 
 ## Preserved Drop The Man Delivery History
 
@@ -564,20 +580,19 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-1. Review the [Color Block Jam preflight](ColorBlockJamArchitecturePreflight.md) and approve a
-   bounded reference-game/MVP rule set, especially continuous movement, rotation, gate geometry,
-   exit timing, and terminal precedence.
-2. Review the read-only `tetra_pack.fbx` findings and proposed footprint-composed unit visuals.
-   The supplied pack has repeated four-cell meshes and no standalone unit model. Approve asset
-   preparation and Unity fidelity/pivot/material checks before finalizing the visual-config schema.
-3. Approve Color Block Jam content, construction, interaction and editor specs; authorize project
-   setup separately. Keep all game-owned code/assets in a separate prototype.
-4. Implement only the smallest approved slice, reusing existing framework contracts first. Any
-   shared movement or visual extension requires documented cross-game evidence and approval.
-5. Preserve Drop The Man's pinned regression baseline. Follow the framework-first package workflow
+1. Record the approved six clarifications in the framework system specs and implement the
+   framework-owned movement, occupancy, pointer and editor slices with focused tests.
+2. Treat the three reference-game research items as unverified until direct evidence is captured;
+   proceed with the deliberate MVP rules where specified. Simple assembled Unity visuals are the
+   baseline; `tetra_pack.fbx` is optional later polish.
+3. Implement narrow reusable sweep, structural clearance, occupancy transfer and authoring
+   behavior in PuzzleFramework, publish/pin the verified framework revision, and make both
+   Drop The Man and Color Block Escape consume the shared parts they need. Build CBE-specific exit, outcome,
+   content and presentation rules in its module. Avoid speculative generalization and polish.
+4. Preserve Drop The Man's pinned regression baseline. Follow the framework-first package workflow
    if either consumer adopts a new framework revision. The catalog assertion issue remains open;
    historical focused test results are not proof of a green full suite.
-6. Keep [Drop The Man deferred work](DropTheManRemainingWork.md) for the permitted maintenance or
+5. Keep [Drop The Man deferred work](DropTheManRemainingWork.md) for the permitted maintenance or
    presentation return; it is not a prerequisite for the second prototype.
 
 ---
@@ -585,7 +600,8 @@ and the material-only real-hole check passed Game-view validation.
 # Open Questions
 
 - How should diagonal-only cell contact render if a future level contains that topology?
-- After a second prototype uses authoring, which level-editor concerns are proven reusable enough to move into `PuzzleFramework`?
+- Can the narrowly proposed shared authoring core be integrated into both editors within the
+  seven-day target without regressing Drop The Man?
 - Should Bus Jam buses use Shape System or remain road-only entities?
 - Should Door System be framework-level?
 - Should Visual Feedback remain framework-level or game-specific?

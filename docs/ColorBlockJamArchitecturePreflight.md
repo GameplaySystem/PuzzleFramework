@@ -2,6 +2,19 @@
 
 Date: 2026-09-17.
 
+**2026-09-20 update:** This is a historical preflight, not the current MVP rule source.
+The owner's newer [Color Block Escape MVP requirements](ColorBlockEscapeMVPRequirements.md),
+[runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
+[editor/shared-core design](ColorBlockEscapeEditorTechnicalDesign.md) now capture the approved
+implementation baseline. In particular, the owner chose continuous dragging,
+fixed runtime orientation, bounding-span gate fit, progressive occupancy release, a V1 play-test
+editor, and shared authoring extraction consumed by both games. Earlier deferral suggestions
+below do not override those choices. The Color Block Escape Unity project now exists and its
+manifest pins the framework package; the “no project” snapshot below describes 2026-09-17 only.
+The owner's 2026-09-20 architecture clarification also rules out CBE-only shortcuts for
+demonstrably shared infrastructure: the seven-day target trims speculative scope and polish,
+not correctly owned framework implementation.
+
 Status: owner-authorized project transition recorded; Color Block Jam architecture and MVP scope
 below are **proposals pending requirements approval**, not approved implementation specs.
 

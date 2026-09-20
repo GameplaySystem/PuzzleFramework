@@ -15,10 +15,14 @@ Related Documents:
 - LevelDataSystem.md
 - LevelSaveLoadSystem.md
 - ../RuntimeConstructionSystems/Overview.md
+- ../CoreBoardSystems/GridSystem.md
+- ../CoreBoardSystems/ShapeSystem.md
 
 Depends On:
 - Level Data System
 - Level Save Load System
+- Grid System
+- Shape System
 
 Used By:
 - Drop Away
@@ -26,6 +30,26 @@ Used By:
 - Sky Rush
 - Hole People
 - Bus Jam
+
+## Approved 2026-09-20 implementation slice
+
+Implement the smallest generic authoring core demonstrated by Drop The Man and required by
+Color Block Escape: explicit board dimensions/Active-Inactive-Blocked cell edits; metadata/timer
+edits; board-local cell picking and board visualization; selection by placed-item identity;
+generic footprint fit, translation, editor-only offset rotation and erase operations; structural
+validation; save/load integration through existing content services; and a narrow hook for
+game-owned placement tools and previews. Reject structural edits that would invalidate existing
+authored items; report the affected items without silently deleting, moving or cropping them.
+PuzzleFramework owns this core and both games consume it. Each game owns item payloads, palette,
+concrete previews, rules and UI. The CBE play-test bridge is game-owned and invokes normal runtime
+construction from an isolated authored snapshot. No undo/redo or generic plugin platform is in
+this slice. See the approved
+[editor technical design](../../ColorBlockEscapeEditorTechnicalDesign.md).
+
+Drop The Man's approved editor design intentionally prunes out-of-bounds authored content on
+resize with a warning. Its adapter retains that behavior; it consumes shared picking, footprint
+fit/rotation and blocked-cell validation, while Color Block Escape uses the non-destructive
+structural edit operation. This difference must not be hidden inside a universal resize policy.
 
 ## Purpose
 
