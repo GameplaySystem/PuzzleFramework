@@ -1,18 +1,20 @@
 # Color Block Escape Editor And Shared Authoring Core Design
 
 Date: 2026-09-20
-Status: Approved by owner on 2026-09-20, including the six approval clarifications.
+Status: Approved implementation baseline; first framework layer verified, dual adoption pending.
 Requirements: [Color Block Escape MVP](ColorBlockEscapeMVPRequirements.md).
 Framework baseline: [Level Editor Foundation](FrameworkSystems/ContentSystems/LevelEditorFoundation.md).
 
 ## Problem and evidence
 
-The framework documents a generic editor but has no editor implementation. Drop The Man has a
+The framework has a partial `LevelAuthoringCore`, not a complete reusable editor. Drop The Man has a
 working dedicated Play-mode editor in `DropTheManEditorBoardController`, its runtime HUD/input
 bridge, and a thin SceneView wrapper. The controller mixes reusable board-cell rendering,
 ray-to-cell mapping, resize, footprint fit and erase mechanics with hole/stickman modes, palette,
 visuals and its own readable JSON. It rotates placed holes and erases items. It does not already
 support true placed-item move, Active/Inactive painting, or an editor-to-runtime play-test bridge.
+DTM currently uses the framework core for picking, blocked-cell edits, footprint fit and rotation,
+but rebuilds it as a temporary validator rather than using it as the live editor session.
 
 The owner now requires shared authoring behavior to live in PuzzleFramework and be consumed by
 both games. The smallest safe extraction is a common editing **core and scene support**, not a
@@ -20,8 +22,46 @@ copy of the whole DTM controller or a universal editor-window/plugin platform.
 The seven-day planning benchmark is a reason to keep that core focused, not a reason to duplicate shared
 board/footprint editing inside CBE. The CBE editor must consume the framework core once it is
 implemented; DTM must adopt the same core for its overlapping operations.
-Before package implementation, update the approved framework `LevelEditorFoundation` spec to
-name the actual core contracts and dependencies, preserving its game-agnostic ownership rule.
+The approved second-consumer clarification in the framework
+[`LevelEditorFoundation`](FrameworkSystems/ContentSystems/LevelEditorFoundation.md) now names the
+needed session, view composition, tool dispatch and document boundaries. The owner approved it
+with explicit cell anchoring, framework consequence reporting and game-owned structural policy.
+
+## Second-consumer acceptance and migration boundary (approved)
+
+The editor core is complete only when the existing DTM authoring scene and the new CBE authoring
+scene both use its live board/footprint session, board picking, structural validation and board
+visual composition. DTM's current use of temporary `LevelAuthoringCore` instances proves several
+algorithms are reusable but does not satisfy that acceptance rule. Keep game HUDs, hotkeys,
+camera framing, palettes and concrete item previews in their respective modules.
+
+Use explicit registration of game-owned tools through one narrow framework tool contract. Shared
+dispatch passes a picked cell or boundary edge and an authoring session to the active tool;
+game tools provide previews and candidate edits. Framework validates generic cell-footprint
+fit and structural state. DTM tools interpret stickmen and holes; CBE tools interpret blocks and
+exits. Do not move either game's mode switch, color logic or payload schema into framework code.
+
+Derived board edges use the existing framework wall-generation result. CBE's exit tool can pick
+those edges, but its exterior-connectivity rule, opening width/color and overlap validation stay
+in CBE. A generic edge-entity model is not justified by DTM's editor. CBE reports exits as
+affected game-owned IDs through the structural-edit veto when resize or cell painting would
+invalidate them.
+
+Board picking needs an explicit anchor decision before UI code. The existing shared picker
+rounds around integer-centered cells, matching DTM's board views. CBE's plain movement fixture
+draws each logical footprint square from its integer corner to the next corner. Reusing the
+rounding picker unchanged with those CBE visuals would select the wrong cell near half-cell
+boundaries. The proposed shared picking/layout contract therefore exposes center-versus-corner
+anchoring as a `GridWorldLayout` contract. DTM uses center anchoring and CBE uses corner
+anchoring unless a separately reviewed movement/view alignment change is made. Verify picks at
+cell centers and edges and at inactive gaps.
+
+The shared session supplies a detached board/metadata snapshot and generic restore operation.
+DTM maps its existing readable JSON and editor data into that session without changing the
+format. CBE maps its own opaque payload into the same session. Import must validate a temporary
+candidate before replacing the live session and game payload together; save/load services retain
+persistence ownership. The play-test bridge uses a detached snapshot but remains CBE-owned,
+because DTM has no corresponding editor play-test workflow to generalize.
 
 ## Ownership and minimal common core
 
@@ -96,15 +136,17 @@ the authored snapshot and generic validation entry points.
 
 ## Migration and verification sequence
 
-1. Define the minimal shared authoring contracts and prove them with board resize, cell painting,
-   footprint fit/rotation and selection/erase tests. Reuse existing grid and content types.
-2. Adapt only DTM's shared operations to that core. Keep its hole/stickman UI, prefab previews,
-   rotation behavior and JSON format. Manually verify its existing editor save/load/rotation and
-   board visuals before and after migration.
-3. Add CBE block and exit tools, save/load, then the isolated play-test bridge. Verify malformed
-   import preserves the current session and invalid board edits never discard items.
+1. Extend the existing `LevelAuthoringCore` into a live session and add only the small tool/view
+   composition needed by both consumers. Verify board import, structural edits, footprint
+   selection/move/rotation/erase, preview fit, boundary picks and failure atomicity.
+2. Migrate DTM's working scene onto that session and shared composition. Preserve its current
+   hole/stickman tools, blocked-cell behavior, JSON, visuals, HUD and warned prune-on-resize.
+   Verify existing editor import/export, rotation, picking and resize before proceeding.
+3. Add CBE block/exit tools on the same shared foundation, then CBE save/load and isolated
+   play-test handoff. Verify malformed import leaves the session unchanged, invalid structural
+   edits list affected blocks/exits, and authored exits never target enclosed inactive holes.
 
-No current framework editor code exists to “turn on.” The migration changes both framework and
+The existing framework core is partial and cannot simply be “turned on” as a full editor. The migration changes both framework and
 DTM source and must follow the pinned-package update workflow: publish and verify the new
 framework revision, update DTM's full-SHA dependency, compile/test DTM, and then commit/push
 the consumer under the repository's Git workflow. CBE is a second consumer and follows the

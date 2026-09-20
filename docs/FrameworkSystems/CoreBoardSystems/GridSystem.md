@@ -144,7 +144,12 @@ The architecture boundary is simply that the Grid System owns the shared coordin
 ## Centered World Layout
 
 World layout may be derived from a requested board center without changing grid coordinates.
-For a rectangular board, centering uses the logical `width x height` bounds:
+`GridWorldLayout.CellAnchor` is an explicit shared contract. With `Center`, an integer
+coordinate denotes its cell center; with `Corner`, it denotes the cell's minimum board-local
+corner. DTM's authoring view uses `Center`; CBE's unit-square movement view uses `Corner`.
+Cell picking and visual placement must use the same layout choice.
+
+For a rectangular board with `Center`, centering uses the logical `width x height` bounds:
 
 ```text
 cell (0,0) world position
@@ -156,6 +161,10 @@ cell (0,0) world position
 The requested center is the midpoint between the first and last cell centers. It is not the
 centroid of active, visible, occupied, or boundary-participating cells. Sparse cells and internal
 holes therefore do not shift the board layout.
+
+With `Corner`, the world origin is the requested board center minus half the board width and
+height along their respective world axes. `CellCenterToWorld` adds the half-cell offset for
+visuals; `WorldToCellCoordinate` resolves the containing cell using the selected anchor.
 
 Centered layout is a conversion helper only. It must not renumber coordinates, mutate level data,
 or introduce a second coordinate convention.

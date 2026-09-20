@@ -15,12 +15,14 @@ Related Documents:
 - Overview.md
 - ../CoreBoardSystems/WallGenerationSystem.md
 - ../CoreBoardSystems/GridSystem.md
+- ../ContentSystems/LevelEditorFoundation.md
 
 Depends On:
 - ../CoreBoardSystems/WallGenerationSystem.md
 - ../CoreBoardSystems/GridSystem.md
 
 Used By:
+- Level Editor Foundation (authoring board view composition)
 - Drop Away
 - Color Block Jam
 - Future grid-based puzzle modules using the same modular boundary profile
@@ -142,6 +144,8 @@ The system consumes:
 The supplied board-to-world layout may be centered from logical board dimensions before visual
 construction. The visual builder must consume that layout as-is; it must not independently center
 only the generated cells because gameplay views and interaction systems need the same conversion.
+It places each visual at `GridWorldLayout.CellCenterToWorld`, which respects either center- or
+corner-anchored integer coordinates without a game-owned half-cell correction.
 
 The system must not infer participation from:
 

@@ -67,7 +67,7 @@ namespace PuzzleFramework.Presentation
                 ModularBoardCellView view = UnityEngine.Object.Instantiate(cellPrefab, generatedRoot);
                 view.gameObject.SetActive(false);
 
-                Vector3 position = worldLayout.GridToWorldPosition(state.Coordinate) +
+                Vector3 position = worldLayout.CellCenterToWorld(state.Coordinate) +
                                    (normal * normalOffset);
                 view.transform.SetPositionAndRotation(position, rotation);
                 view.transform.localScale = scale;

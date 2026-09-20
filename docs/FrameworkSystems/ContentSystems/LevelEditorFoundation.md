@@ -6,7 +6,7 @@ Category:
 - Content Systems
 
 Status:
-- Approved
+- Approved implementation baseline; first framework session layer implemented, dual adoption pending
 
 Parent:
 - Overview.md
@@ -17,12 +17,19 @@ Related Documents:
 - ../RuntimeConstructionSystems/Overview.md
 - ../CoreBoardSystems/GridSystem.md
 - ../CoreBoardSystems/ShapeSystem.md
+- ../CoreBoardSystems/WallGenerationSystem.md
+- ../PresentationSystems/ModularBoardVisualSystem.md
+- ../InteractionSystems/InputSystem.md
+- ../../ColorBlockEscapeEditorTechnicalDesign.md
 
 Depends On:
 - Level Data System
 - Level Save Load System
 - Grid System
 - Shape System
+- Wall Generation System
+- Modular Board Visual System
+- Input System (board-plane projection/picking)
 
 Used By:
 - Drop Away
@@ -30,6 +37,73 @@ Used By:
 - Sky Rush
 - Hole People
 - Bus Jam
+
+## Approved second-consumer implementation clarification
+
+`LevelAuthoringCore` already exists in the framework. It owns explicit board cells, metadata and
+timer fields, cell/item selection, generic footprint placement and move checks, rotation math,
+erase, snapshots and cell picking. Drop The Man already calls it for picking, blocked-cell edits,
+fit and rotation, but reconstructs a temporary core from its game-owned data for each structural
+check. This is partial reuse, not yet a shared editor foundation with one live authoring session.
+Color Block Escape has no dedicated editor yet. The task is to complete and adopt the existing
+core, not to copy Drop The Man's large scene controller into the package.
+
+The smallest coherent foundation has four focused parts:
+
+1. **Authoring session and structural operations.** Keep `LevelAuthoringCore` as the generic
+   board/metadata/footprint authority. Add only the missing session operations demonstrated by
+   the two games: restoration from an authored snapshot, lookup/selection of a footprint item at
+   a cell, move/rotation/erase commands with failed edits leaving the old state intact, and
+   non-mutating fit/preview results. A placed cell entity is an ID, origin and explicit offsets;
+   game payloads and visual prefabs stay outside the session. Structural inspection reports
+   affected IDs and non-default cells without changing the board. DTM may explicitly prune on
+   resize; CBE rejects invalidating edits. A game may report its own edge-attached content.
+2. **Board picking and visualization composition.** Reuse `GridWorldLayout`, the existing
+   board-plane projection/picking, `WallGenerationSystem`, and the modular board visual
+   planner/builder. Supply a narrow authoring board-state/view mapping only where these existing
+   services leave a gap. The plan exposes cell states and derived boundary edges; game adapters
+   choose which cells participate in a particular visual profile and supply prefabs, materials,
+   camera framing and previews. Do not build a second wall engine or force one blocked-cell
+   visual meaning on both games. Picking and visuals must explicitly share one cell-anchor
+   convention: DTM currently picks integer-centered cells with rounding, while the CBE plain
+   movement fixture draws logical unit squares at integer corner origins. Support that proven
+   difference through an explicit `GridCellAnchor` on `GridWorldLayout`, shared by picking and
+   world placement. DTM uses center anchoring; CBE uses corner anchoring. Test picks at centers,
+   edges and irregular-board gaps.
+3. **Explicit tool dispatch and validation boundary.** One active tool is selected from an
+   explicitly registered set through a small framework-owned tool contract. The host routes
+   generic cell/edge picks and preview/apply requests; registered game tools interpret them and
+   own palettes, colors, IDs and payload edits. Framework placement checks cover bounds,
+   Active/Inactive/Blocked state and footprint overlap. Game hooks may reject a structural edit
+   that invalidates game-owned content, or add game-specific validation, without inspecting
+   opaque payloads in framework code. No reflection-based discovery, arbitrary plugin platform,
+   service locator, undo stack or monolithic universal controller is required.
+4. **Document handoff.** The session produces a detached generic board/metadata snapshot for
+   existing `LevelDefinition` and persistence services. Each game maps its own payload and
+   stages imports before replacing the live editor state. Framework provides snapshot and
+   structural validation entry points, not a new JSON format or a runtime play-test service.
+   A game-owned play-test bridge may consume a detached snapshot through its normal runtime
+   construction path.
+
+`BoardBoundaryEdge` and wall geometry are shared structural facts. A CBE exit is not a generic
+cell-footprint item: its side, width, color, exterior connectivity, overlap with other exits and
+preview remain CBE-owned. DTM currently has no edge-authored entity. Do not invent a generic
+edge-entity schema until another concrete consumer needs one.
+
+The foundation is accepted only after **both** consumers use it in their working authoring
+flows. DTM must use the persistent shared session and common picking, structural edits,
+footprint operations and board-view composition while preserving its existing scene, tools,
+JSON and resize-with-warning behavior. CBE must use the same foundation for its board and
+block editing while supplying its own block and exit tools and reject-invalidating-edit policy.
+DTM's prune-on-resize policy stays in its adapter; the shared operation reports conflicts and
+never silently discards content. CBE rejects conflicts until the author explicitly changes
+the affected content. No DTM play-test or placed-item move UI is implied by migration.
+
+Implement and verify the framework session/tool/view slice first, then migrate DTM and verify
+its current editor workflow, then build CBE tools and verify the second consumption. Report each
+layer before proceeding. The package pin workflow applies whenever either prototype consumes a
+new framework revision. This clarification changes no gameplay, persistence or runtime
+construction ownership.
 
 ## Approved 2026-09-20 implementation slice
 

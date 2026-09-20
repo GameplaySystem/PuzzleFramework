@@ -27,6 +27,18 @@ motion, collision, release and view movement. Exit capture, timer/outcome behavi
 editor and presentation remain open. The day-2/day-4/day-6 checkpoints remain the integration
 targets, not completed milestones.
 
+The revised editor architecture is approved. Its first framework layer is implemented and
+verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines
+center/corner cell anchors; the live
+`LevelAuthoringCore` reports structural-edit consequences, supports staged board/item restore,
+preview fit, selection/move/rotation/erase, and derives boundary views. A small picker and tool
+host provide anchor-aware cell/edge picks and dispatch to game-owned tools. DTM has not yet
+migrated to a live session, and CBE has no dedicated editor. Both consumer migrations and their
+scene verification remain separate checkpoints. The framework Edit Mode run compiled and passed
+52 of 53 tests, including all authoring/layout tests; the sole failure is the previously tracked
+catalog test assertion (`Build_ReportsSequenceGapsWithoutRejectingCatalog`). Exit capture and
+other CBE gameplay layers are unchanged by this editor work.
+
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
 an explicit return to presentation integration when final UI/art assets are available. Existing
 [remaining work](DropTheManRemainingWork.md) is retained as deferred acceptance/presentation work;

@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace PuzzleFramework.CoreBoard
 {
+    /// <summary>Meaning of the integer grid position in world space.</summary>
+    public enum GridCellAnchor
+    {
+        Center = 0,
+        Corner = 1
+    }
+
     /// <summary>
     /// Shared board world-layout data used by interaction systems to convert
     /// between board coordinates and world positions.
@@ -23,6 +30,15 @@ namespace PuzzleFramework.CoreBoard
             Vector3 boardXAxis,
             Vector3 boardYAxis)
         {
+            return CreateCentered(boardCenter, boardWidth, boardHeight, cellSize,
+                boardXAxis, boardYAxis, GridCellAnchor.Center);
+        }
+
+        /// <summary>Centers the full rectangular board while preserving the requested cell anchor.</summary>
+        public static GridWorldLayout CreateCentered(
+            Vector3 boardCenter, int boardWidth, int boardHeight, Vector2 cellSize,
+            Vector3 boardXAxis, Vector3 boardYAxis, GridCellAnchor cellAnchor)
+        {
             if (boardWidth <= 0)
             {
                 throw new ArgumentOutOfRangeException(
@@ -41,17 +57,20 @@ namespace PuzzleFramework.CoreBoard
                 boardCenter,
                 cellSize,
                 boardXAxis,
-                boardYAxis);
+                boardYAxis,
+                cellAnchor);
+            float firstCellOffset = cellAnchor == GridCellAnchor.Center ? 0.5f : 0f;
             Vector3 boardOrigin =
                 boardCenter -
-                (centerAnchoredLayout.BoardXAxis * ((boardWidth - 1) * cellSize.x * 0.5f)) -
-                (centerAnchoredLayout.BoardYAxis * ((boardHeight - 1) * cellSize.y * 0.5f));
+                (centerAnchoredLayout.BoardXAxis * ((boardWidth * 0.5f - firstCellOffset) * cellSize.x)) -
+                (centerAnchoredLayout.BoardYAxis * ((boardHeight * 0.5f - firstCellOffset) * cellSize.y));
 
             return new GridWorldLayout(
                 boardOrigin,
                 cellSize,
                 centerAnchoredLayout.BoardXAxis,
-                centerAnchoredLayout.BoardYAxis);
+                centerAnchoredLayout.BoardYAxis,
+                cellAnchor);
         }
 
         public GridWorldLayout(Vector3 boardOrigin, Vector2 cellSize)
@@ -64,7 +83,17 @@ namespace PuzzleFramework.CoreBoard
             Vector2 cellSize,
             Vector3 boardXAxis,
             Vector3 boardYAxis)
+            : this(boardOrigin, cellSize, boardXAxis, boardYAxis, GridCellAnchor.Center)
         {
+        }
+
+        /// <summary>Creates a layout with an explicit cell-center or cell-corner origin.</summary>
+        public GridWorldLayout(
+            Vector3 boardOrigin, Vector2 cellSize, Vector3 boardXAxis,
+            Vector3 boardYAxis, GridCellAnchor cellAnchor)
+        {
+            if (!Enum.IsDefined(typeof(GridCellAnchor), cellAnchor))
+                throw new ArgumentOutOfRangeException(nameof(cellAnchor));
             if (cellSize.x <= 0f || cellSize.y <= 0f)
             {
                 throw new ArgumentOutOfRangeException(
@@ -99,12 +128,16 @@ namespace PuzzleFramework.CoreBoard
             CellSize = cellSize;
             BoardXAxis = normalizedBoardXAxis;
             BoardYAxis = normalizedBoardYAxis;
+            CellAnchor = cellAnchor;
         }
 
         /// <summary>
         /// World-space origin used as the anchor for board coordinate conversion.
         /// </summary>
         public Vector3 BoardOrigin { get; }
+
+        /// <summary>Whether an integer coordinate denotes a cell center or its minimum corner.</summary>
+        public GridCellAnchor CellAnchor { get; }
 
         /// <summary>
         /// World-space cell size used for grid-aligned conversion.
@@ -143,6 +176,22 @@ namespace PuzzleFramework.CoreBoard
             return new GridCoordinate(
                 Mathf.RoundToInt(boardLocalPosition.x),
                 Mathf.RoundToInt(boardLocalPosition.y));
+        }
+
+        /// <summary>Returns the cell containing the world position under this layout's anchor convention.</summary>
+        public GridCoordinate WorldToCellCoordinate(Vector3 worldPosition)
+        {
+            Vector2 local = WorldToBoardLocal(worldPosition);
+            return new GridCoordinate(
+                CellAnchor == GridCellAnchor.Center ? Mathf.FloorToInt(local.x + 0.5f) : Mathf.FloorToInt(local.x),
+                CellAnchor == GridCellAnchor.Center ? Mathf.FloorToInt(local.y + 0.5f) : Mathf.FloorToInt(local.y));
+        }
+
+        /// <summary>World-space center of a cell, independent of the selected origin convention.</summary>
+        public Vector3 CellCenterToWorld(GridCoordinate coordinate)
+        {
+            float offset = CellAnchor == GridCellAnchor.Corner ? 0.5f : 0f;
+            return BoardLocalToWorld(new Vector2(coordinate.X + offset, coordinate.Y + offset));
         }
 
         /// <summary>

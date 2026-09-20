@@ -47,6 +47,21 @@ namespace PuzzleFramework.Tests
             AssertVectorApproximately(requestedCenter, Midpoint(firstCell, lastCell));
         }
 
+        [Test]
+        public void ExplicitCornerAnchorCentersBoundsAndMapsInteriorPointsToCells()
+        {
+            GridWorldLayout layout = GridWorldLayout.CreateCentered(Vector3.zero, 4, 2,
+                Vector2.one, Vector3.right, Vector3.forward, GridCellAnchor.Corner);
+            Assert.AreEqual(GridCellAnchor.Corner, layout.CellAnchor);
+            AssertVectorApproximately(new Vector3(-2f, 0f, -1f), layout.BoardOrigin);
+            AssertVectorApproximately(new Vector3(-1.5f, 0f, -0.5f),
+                layout.CellCenterToWorld(new GridCoordinate(0, 0)));
+            Assert.AreEqual(new GridCoordinate(0, 0),
+                layout.WorldToCellCoordinate(new Vector3(-1.01f, 0f, -0.01f)));
+            Assert.AreEqual(new GridCoordinate(1, 0),
+                layout.WorldToCellCoordinate(new Vector3(-1f, 0f, -0.5f)));
+        }
+
         [TestCase(0, 1)]
         [TestCase(1, 0)]
         [TestCase(-1, 1)]

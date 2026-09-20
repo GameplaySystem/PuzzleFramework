@@ -16,6 +16,7 @@ Related Documents:
 - GridSystem.md
 - ShapeSystem.md
 - ../PresentationSystems/ModularBoardVisualSystem.md
+- ../ContentSystems/LevelEditorFoundation.md
 
 Depends On:
 - GridSystem.md
@@ -23,6 +24,7 @@ Depends On:
 
 Used By:
 - Modular Board Visual System
+- Level Editor Foundation (authoring boundary view composition)
 - Drop Away
 - Color Block Jam
 - Sky Rush

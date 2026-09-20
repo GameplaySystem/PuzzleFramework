@@ -16,11 +16,13 @@ Related Documents:
 - DragMovementSystem.md
 - GridSnapSystem.md
 - ../CoreBoardSystems/GridSystem.md
+- ../ContentSystems/LevelEditorFoundation.md
 
 Depends On:
 - ../CoreBoardSystems/GridSystem.md (pointer-to-board projection extension)
 
 Used By:
+- Level Editor Foundation (board-plane picking primitive)
 - Drop Away
 - Color Block Jam
 - Sky Rush

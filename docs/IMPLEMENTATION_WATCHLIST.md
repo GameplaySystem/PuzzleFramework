@@ -2,6 +2,25 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **Editor architecture approved; dual adoption still open:** The framework's first session
+  layer now adds explicit center/corner anchoring, structural consequence inspection, staged
+  restore, shared cell/edge picking and narrow tool dispatch. DTM still recreates temporary
+  authoring cores and CBE has no editor. Do not count the abstraction complete until both
+  working editors consume the live session. DTM keeps warned prune-on-resize; CBE rejects
+  invalidating edits. CBE exits and exterior-only rules stay in its game payload/tool.
+- **Migration risk to verify:** DTM's serialized game data and a new live framework session
+  could diverge. Reconstruct the session on scene enable/import, make it authoritative during
+  editing, stage candidate game data before committing an edit, and test import/resize/rotation
+  round trips. Apply the same candidate-and-swap discipline to CBE's board plus opaque payload.
+- **Editor picking convention:** `GridWorldLayout.CellAnchor` now identifies center or corner
+  anchoring, and shared cell/edge picks use it. DTM's later adapter must pass Center explicitly;
+  CBE's later adapter must pass Corner to match its movement fixture. Verify both scene views
+  against their picks before calling either migration complete.
+- **Framework editor verification:** The first-layer package compiles in a disposable Unity
+  6000.3.17f1 host. All new authoring/layout tests pass. The full Edit Mode suite remains 52/53
+  because the previously tracked catalog test asserts a nonexistent `Count` property; that
+  unrelated baseline failure remains open.
+
 - **Implementation in progress (2026-09-20):** Framework sweep, clearance, transfer, projection,
   and authoring-core sources are implemented. Focused movement and authoring Edit Mode tests
   pass. DTM pins the published framework revision, compiles, and passes its existing 27 tests
