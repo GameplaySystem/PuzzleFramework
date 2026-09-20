@@ -2,20 +2,25 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
-- **Editor architecture approved; dual adoption still open:** The framework's first session
-  layer now adds explicit center/corner anchoring, structural consequence inspection, staged
-  restore, shared cell/edge picking and narrow tool dispatch. DTM still recreates temporary
-  authoring cores and CBE has no editor. Do not count the abstraction complete until both
-  working editors consume the live session. DTM keeps warned prune-on-resize; CBE rejects
-  invalidating edits. CBE exits and exterior-only rules stay in its game payload/tool.
-- **Migration risk to verify:** DTM's serialized game data and a new live framework session
-  could diverge. Reconstruct the session on scene enable/import, make it authoritative during
-  editing, stage candidate game data before committing an edit, and test import/resize/rotation
-  round trips. Apply the same candidate-and-swap discipline to CBE's board plus opaque payload.
-- **Editor picking convention:** `GridWorldLayout.CellAnchor` now identifies center or corner
-  anchoring, and shared cell/edge picks use it. DTM's later adapter must pass Center explicitly;
-  CBE's later adapter must pass Corner to match its movement fixture. Verify both scene views
-  against their picks before calling either migration complete.
+- **Editor architecture approved; CBE adoption still open:** The framework session layer adds
+  explicit center/corner anchoring, structural consequence inspection, staged restore, shared
+  cell/edge picking and narrow tool dispatch. DTM now consumes one live session for structural
+  edits and board views. CBE has no editor. Do not count dual adoption complete until CBE also
+  consumes the foundation. DTM keeps warned prune-on-resize; CBE rejects invalidating edits.
+  CBE exits and exterior-only rules stay in its game payload/tool.
+- **Session/payload synchronization:** DTM now restores the session on enable/import, applies
+  routine structural edits to it before publishing DTM data, and stages imports. Its direct
+  Inspector resize fallback rebuilds the session because Inspector edits bypass commands;
+  preserve the warned prune behavior there. Apply candidate-and-swap discipline to CBE's board
+  plus opaque payload.
+- **Editor picking convention:** DTM's editor now passes `GridCellAnchor.Center` explicitly and
+  uses shared cell picking and center-aware board visuals; focused tests cover picks near cell
+  edges and the checked-in scene's board view. CBE's later adapter must pass Corner to match its
+  movement fixture and verify the live scene against picks.
+- **DTM local Unity cache:** A fresh disposable DTM project compiled and passed 35/35 Edit Mode
+  tests after the framework repin. The original checkout's `Library/Bee` still refers to three
+  removed source files; Unity-managed reimport did not clear the stale generated references.
+  Do not treat this as a source regression or delete generated folders under the current rule.
 - **Framework editor verification:** The first-layer package compiles in a disposable Unity
   6000.3.17f1 host. All new authoring/layout tests pass. The full Edit Mode suite remains 52/53
   because the previously tracked catalog test asserts a nonexistent `Count` property; that

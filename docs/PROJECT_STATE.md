@@ -32,12 +32,19 @@ verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly de
 center/corner cell anchors; the live
 `LevelAuthoringCore` reports structural-edit consequences, supports staged board/item restore,
 preview fit, selection/move/rotation/erase, and derives boundary views. A small picker and tool
-host provide anchor-aware cell/edge picks and dispatch to game-owned tools. DTM has not yet
-migrated to a live session, and CBE has no dedicated editor. Both consumer migrations and their
-scene verification remain separate checkpoints. The framework Edit Mode run compiled and passed
+host provide anchor-aware cell/edge picks and dispatch to game-owned tools. DTM has now migrated
+to a live session with explicit center anchoring and preserved JSON, tools, visuals and warned
+prune-on-resize behavior. A clean Unity project copy compiled and passed all 35 DTM Edit Mode
+tests, including shipped-level imports and the configured editor scene. CBE has no dedicated
+editor yet. The framework Edit Mode run compiled and passed
 52 of 53 tests, including all authoring/layout tests; the sole failure is the previously tracked
 catalog test assertion (`Build_ReportsSequenceGapsWithoutRejectingCatalog`). Exit capture and
 other CBE gameplay layers are unchanged by this editor work.
+
+DTM's original checkout has stale generated `Library/Bee` script references to three removed
+files. Unity-managed reimport did not clear them; the clean-copy verification establishes the
+source result without manually editing or deleting the generated cache. The next editor layer is
+CBE adoption of the same shared session, after this DTM checkpoint report.
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
 an explicit return to presentation integration when final UI/art assets are available. Existing
