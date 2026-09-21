@@ -127,6 +127,35 @@ namespace PuzzleFramework.Presentation
             SetActive(concaveNorthWest, false);
         }
 
+        /// <summary>
+        /// Overrides one complete derived boundary edge for game-owned presentation openings.
+        /// This changes only the two configured half-wall objects and never changes topology.
+        /// </summary>
+        public void SetBoundaryEdgeVisible(BoardEdgeDirection direction, bool visible)
+        {
+            switch (direction)
+            {
+                case BoardEdgeDirection.North:
+                    SetActive(northWestHalfWall, visible);
+                    SetActive(northEastHalfWall, visible);
+                    return;
+                case BoardEdgeDirection.East:
+                    SetActive(eastNorthHalfWall, visible);
+                    SetActive(eastSouthHalfWall, visible);
+                    return;
+                case BoardEdgeDirection.South:
+                    SetActive(southEastHalfWall, visible);
+                    SetActive(southWestHalfWall, visible);
+                    return;
+                case BoardEdgeDirection.West:
+                    SetActive(westSouthHalfWall, visible);
+                    SetActive(westNorthHalfWall, visible);
+                    return;
+                default:
+                    throw new System.ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+        }
+
         private void ApplyHalfWalls(ModularHalfWallFlags flags)
         {
             SetActive(northWestHalfWall, flags.HasFlag(ModularHalfWallFlags.NorthWest));

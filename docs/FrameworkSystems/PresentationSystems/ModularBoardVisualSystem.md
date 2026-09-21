@@ -202,6 +202,13 @@ The component owns references and activation only. It must not:
 * decide gameplay blocking
 * add wall or corner data to persistence
 
+After a complete derived state is applied, a game-owned presentation adapter may suppress one
+full boundary edge on a generated cell through a narrow `BoardEdgeDirection` operation. This is
+intended for concrete visual openings such as CBE exits. The override changes presentation only:
+it must not change topology, board structure, collision, occupancy, or persistence. The game
+module decides which validated edge represents an opening; the framework cell view only toggles
+the two already-configured half-wall slots for that edge.
+
 ---
 
 # Activation Rules

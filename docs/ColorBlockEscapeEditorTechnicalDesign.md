@@ -14,14 +14,32 @@ blocks/exits or crop non-default cells, and stages import through the CBE payloa
 runtime builder before replacing live state. Presets and custom connected offsets share the
 same placement path, with a configurable default 4×4 guard for newly authored footprints.
 The scene offers cell painting, resize, block placement/selection/move/recolor/rotation/erase,
-exterior-edge exit editing, timer settings, JSON save/load and isolated plain-movement play-test.
+exterior-edge exit editing, timer settings, JSON save/load and isolated gameplay play-test.
 It uses `GridCellAnchor.Corner`, matching the existing CBE movement unit-square coordinates.
 
-Unity 6000.3.17f1 compiled the generated scene with framework pin
-`c485272d5e0b9764d67fe1b07a5e9af6429623f7`. CBE Edit Mode tests passed 21/21 and Play
-Mode tests passed 2/2. The PlayMode bridge uses the existing runtime builder and drag adapter;
-exit capture and runtime timer/outcome gameplay are not part of this checkpoint. A hands-on
-Game-view pass for UI ergonomics, edge highlighting and visual alignment remains open.
+The primary mode workflow is keyboard-driven rather than a row of clickable mode buttons. CBE
+owns the mnemonic bindings: `B` block placement, `M` block selection/move, `O` obstacle toggle,
+`E` exit placement/editing, and `S` exit selection. Ordinary cells are Active by default; `O`
+toggles `Active <-> Blocked`, so CBE authors do not manage separate Active, Inactive and Blocked
+modes. The underlying framework states remain readable for payload compatibility. The HUD
+displays the bindings and current mode. Mode shortcuts are ignored while an IMGUI text field owns
+keyboard focus. `0-9` choose the corresponding shared color slot; the mouse wheel cycles the
+block footprint presets while the pointer is over the board.
+Block and exit erase are contextual actions rather than modes: right-click in `B` removes the
+block under the picked cell, and right-click in `E` removes the exit under the picked exterior
+edge. Left-click retains placement/edit behavior. Selection/move and structural painting remain
+separate modes because their left-click semantics are materially different.
+
+The CBE project imports the configured DTM modular board cell prefab and only its mesh/material
+dependencies. The editor and authored play-test build that board through the framework modular
+board planner/builder, while a narrow presentation-only edge override hides the two wall halves
+covered by each validated CBE exit. Block views remain simple generated geometry for now; the
+owner will prepare basic-shape block prefabs for later editor/runtime use.
+
+Unity 6000.3.17f1 compiled the scene against the local framework source. CBE Edit Mode tests
+passed 37/37 and Play Mode tests passed 4/4. The PlayMode bridge uses the existing runtime builder,
+drag adapter, exit capture and outcome path. A hands-on Game-view pass for UI ergonomics, edge
+highlighting and visual alignment remains open.
 The current codec/runtime builder require at least one block and one exit before save or
 play-test; partial draft export would need a separately approved content-policy decision.
 
@@ -120,8 +138,9 @@ derived walls and previews from
 the accepted board state.
 
 Block tool flow: choose a footprint preset or existing explicit footprint, choose one of ten
-colors, place it at a cell, select a placed block, move it by choosing/dragging a new origin,
-recolor it, rotate its occupied offsets in 90-degree steps, or erase it. Placement/move/rotation
+colors, press `B` and left-click to place it at a cell, press `M` to select a placed block and
+move it by choosing/dragging a new origin, recolor it, rotate its occupied offsets in 90-degree
+steps, or press `B` and right-click it to erase it. Placement/move/rotation
 must check Active cells, bounds, blocked cells and overlaps before changing session data.
 Selection is actual placed-item identity, not merely selected palette/color. A failed operation
 leaves the previous item state intact. The displayed preview derives from stored offsets and
@@ -130,7 +149,9 @@ the listed L/T/S/Z variants; initial 4×4 limit is a configurable authoring guar
 limit, pending playtest/reference findings.
 
 Exit tool flow: choose side, select a starting exposed edge cell, choose width and color, then
-create/edit/delete. Highlight the whole proposed opening and report boundary, continuity,
+press `E` and left-click to create or update it. Press `S` to select an existing exit for field
+editing; press `E` and right-click an exit edge to delete it. Highlight the whole proposed
+opening and report boundary, continuity,
 exterior connectivity, overlap and width errors before applying. Permit multiple same-color
 exits. The visual preview masks derived walls at the validated opening and positions a simple
 gate/chipper view outside it. The game payload stores side/start/width/color only; preview

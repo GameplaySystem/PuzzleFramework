@@ -66,7 +66,14 @@ starts from authored duration, locks a win when all blocks are accepted, resolve
 ties in favor of final acceptance, and keeps terminal results independent of exit presentation.
 The authored play-test now displays remaining time and outcome and can restart into a fresh
 runtime level. CBE compiled and passed 36/36 Edit Mode and 3/3 Play Mode tests for this layer.
-Stop before chipper presentation. See
+The CBE authoring workflow has since been simplified to keyboard-selected `B/M/O/E/S` modes,
+`0-9` color slots, mouse-wheel shape cycling, contextual right-click erase, and one Active/Blocked
+obstacle toggle. The configured DTM modular board cell prefab and its direct mesh/material
+dependencies are now present in CBE and drive the authoring and play-test board visuals; validated
+exit spans suppress their corresponding wall halves without changing board topology. Block views
+remain generated placeholders until the owner supplies basic-shape prefabs. CBE compiles and
+passes 37/37 Edit Mode and 4/4 Play Mode tests for the updated editor slice. Stop before chipper
+presentation. See
 [IMPLEMENTATION_WATCHLIST.md](IMPLEMENTATION_WATCHLIST.md).
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or

@@ -2,6 +2,16 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **CBE authoring input and board-visual simplification verified (2026-09-21):** The editor now
+  uses `B/M/O/E/S` mode shortcuts, `0-9` color shortcuts, mouse-wheel shape cycling over the
+  board, and contextual right-click erase in block/exit placement modes. One obstacle mode
+  toggles `Active <-> Blocked`; the data model still reads Inactive cells for existing payload
+  compatibility. The configured DTM modular cell prefab plus its four meshes and two materials
+  are imported into CBE and used by both authoring and authored play-test board views. Validated
+  exit spans suppress only the corresponding visual wall halves. Block visuals remain generated
+  placeholders until the owner supplies the planned basic-shape prefabs. CBE passes 37/37 Edit
+  Mode and 4/4 Play Mode tests; a hands-on ergonomics and visual-alignment pass remains open.
+
 - **Timer/outcome checkpoint verified:** CBE now creates a fresh outcome session from each
   authored play-test level, using the framework countdown timer and game-state lifecycle. It
   treats all successfully accepted blocks as completion, freezes a win before presentation,

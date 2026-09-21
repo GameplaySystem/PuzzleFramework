@@ -43,9 +43,11 @@ version and an actual observed level/action before asserting exact behavior.
 
 ## Board, blocks and colors
 
-- The board has rectangular coordinate bounds, with every authored cell explicitly Active,
-  Inactive, or Blocked. An irregular playable outline is represented by Inactive cells. Blocked
-  cells remain structural obstacles. The editor must expose all three states.
+- The board data retains explicit Active, Inactive, and Blocked states for payload compatibility
+  and irregular-board loading. The V1 CBE editor presents one obstacle toggle: ordinary cells are
+  Active, and authored obstacles toggle `Active <-> Blocked`. It does not expose separate Active,
+  Inactive, and Blocked paint modes. Loaded Inactive cells remain readable and continue to behave
+  as non-playable structure.
 - A block has a unique ID, one of the framework's ten `ColorIdentity` values, an origin, and a
   nonempty unique set of occupied-cell offsets. The authored footprint is the runtime authority.
   Meshes, preset names, and gameplay rotation values are not level-data authorities.
@@ -115,12 +117,14 @@ version and an actual observed level/action before asserting exact behavior.
 
 ## Required V1 authoring workflow
 
-The editor supports board resize; Active/Inactive/Blocked painting; block placement; placed-item
-selection and move; recolor; rotation of placed blocks; erase; exit create/edit/delete; timer edit;
-save; load; and play-test. Undo/redo is explicitly deferred. Loading invalid data must preserve the
-current editing session. Structural edits must reject, with a list of affected items, any change
-that would delete, relocate, crop or invalidate existing blocks or exits. The play-test uses the
-same runtime construction/rules as a saved level
+The editor supports board resize; an Active/Blocked obstacle toggle; block placement; placed-item
+selection and move; recolor; rotation of placed blocks; contextual right-click erase; exit
+create/edit/delete; timer edit; save; load; and play-test. Mnemonic keys select modes, number keys
+`0-9` select shared color slots, and the mouse wheel cycles block-shape presets over the board.
+Undo/redo is explicitly deferred. Loading invalid data must preserve the current editing session.
+Structural edits must reject, with a list of affected items, any change that would delete,
+relocate, crop or invalidate existing blocks or exits. The play-test uses the same runtime
+construction/rules as a saved level
 without turning editor preview objects into gameplay authority.
 
 Common board/cell/footprint authoring behavior demonstrated in Drop The Man and needed here is to
