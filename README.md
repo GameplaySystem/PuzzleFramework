@@ -5,12 +5,6 @@ prototypes first, then promote mechanics into the package only after a second ga
 same abstraction is useful. The repository contains the installable framework, its architectural
 specifications, and a Unity validation project; it is not itself a standalone game.
 
-> **Gameplay reel pending:** the portfolio capture will show the same board, movement, content,
-> runtime-flow, and authoring foundations operating in
-> [Drop The Man](https://github.com/GameplaySystem/DropTheMan) and
-> [Color Block Escape](https://github.com/GameplaySystem/PuzzleFramework-ColorBlockEscape).
-> No placeholder animation is presented as gameplay.
-
 ## Key Features
 
 - coordinate-based boards, explicit cell states, shape footprints, occupancy, and derived walls
@@ -65,9 +59,8 @@ flowchart LR
 ```
 
 The framework owns reusable data and mechanics. Each prototype composes those services, decides
-what a move means, and supplies concrete visuals and outcomes. A detailed GitDiagram repository
-map will be added during the media pass; this smaller diagram remains as the recruiter-facing
-explanation rather than asking readers to decode a full dependency graph unaided.
+what a move means, and supplies concrete visuals and outcomes. This focused view explains the
+important dependency direction without requiring readers to decode the full repository graph.
 
 ## Framework vs. Game-Specific Code
 
@@ -96,47 +89,27 @@ prototype assemblies or interpret prototype payloads.
 
 ## Level Creation / Editor Tooling
 
-Both prototype editors run on the same live `LevelAuthoringCore`. The framework reports whether a
-footprint fits, which authored content a structural change would affect, and which board cell or
-boundary edge was picked. DTM and CBE retain their own tools, payloads, HUDs, and response policies.
-
-```mermaid
-flowchart LR
-    Tool[Game-owned authoring tool] --> Session[LevelAuthoringCore]
-    Session --> Definition[Generic level definition]
-    Tool --> Payload[Opaque game payload]
-    Definition --> JSON[JSON level file]
-    Payload --> JSON
-    JSON --> Validation[Game + framework validation]
-    Validation --> Runtime[Runtime construction]
-```
-
-The tooling exists so new puzzle prototypes can define their entities and rules without rebuilding
-board resize, picking, footprint placement, overlap checks, selection, movement, rotation, erase,
-and save/load coordination.
+Both prototype editors run on the same live `LevelAuthoringCore`. Game-owned tools update the
+shared board/placement session and their own opaque payload, serialize both into level JSON, then
+use framework and game validation before runtime construction. The framework supplies resize,
+picking, footprint fit, overlap checks, selection, move, rotation, erase, and save/load
+coordination; DTM and CBE retain their own entities, HUDs, rules, and structural-edit policies.
 
 ## Technical Decisions
 
-1. **Generalize after demonstrated reuse.** DTM shipped its own editor first. The shared authoring
-   core was extracted only when CBE provided a second concrete use case.
-2. **Keep authored data separate from runtime state.** JSON describes stable content; runtime
-   construction creates occupancy, timers, and mutable gameplay sessions.
-3. **Transport game payloads without interpreting them.** Framework persistence validates its
-   schema while game modules validate cats, holes, blocks, exits, and game rules.
-4. **Prefer composition and result objects.** Small services return explicit requests/results and
-   are composed by prototype controllers instead of relying on a global service locator.
-5. **Keep presentation downstream of logic.** Color and board visual plans consume game facts;
-   animations cannot decide collection, exit success, or outcomes.
+1. **Generalize after demonstrated reuse.** Shared editor and movement primitives were promoted
+   only after both DTM and CBE needed them.
+2. **Separate authored and runtime state.** JSON remains stable while construction creates mutable
+   occupancy, timers, and gameplay sessions.
+3. **Keep payload meaning and presentation game-owned.** Framework services transport data and
+   return explicit results without interpreting cats, holes, blocks, exits, or animations.
 
 ## Performance Considerations
 
-- Core board, movement, validation, timer, and authoring policies are plain C# objects and do not
-  create one Unity `Update` loop per logical entity.
-- Swept-footprint queries operate on grid/occupancy data, allowing fast pointer motion to remain a
-  deterministic board query rather than relying on Rigidbody collision callbacks.
-- Modular board visuals are planned from derived topology and rebuilt through configured prefabs.
-- No framework performance benchmark is published yet. Generic pooling and resource-processing
-  implementations are not claimed as finished features.
+- Core board, movement, validation, timer, and authoring policies are plain C# objects rather than
+  one Unity `Update` loop per logical entity.
+- Swept movement uses grid/occupancy queries instead of Rigidbody collision callbacks. No framework
+  benchmark or generic pooling implementation is claimed.
 
 ## Project Structure
 
@@ -174,15 +147,14 @@ technology.
   acceptance deferred.
 - **Color Block Escape:** movement, shared editor adoption, exit capture, and timer/outcome
   checkpoints complete; block prefab integration and chipper presentation remain in progress.
-- **Validation:** focused framework movement/authoring tests pass. The latest recorded broad
-  framework run passed 52/53 tests; the remaining failure is a tracked catalog-test assertion
-  mismatch rather than a runtime compilation failure.
+- **Validation:** focused framework movement and authoring tests pass; broader validation details
+  remain in the project documentation.
 
 ## What I Built / Role
 
-This is my independent portfolio engineering project. I own the framework architecture, gameplay
-systems, prototype integrations, custom level-authoring workflow, data formats, runtime
-construction, documentation, tests, and cross-repository package/version workflow.
+This is my independent portfolio engineering project. I designed and directed the architecture,
+reviewed and integrated implementations, built and debugged framework and prototype systems, and
+own the documentation, testing strategy, and cross-repository package workflow.
 
 ## Running and Using the Project
 
@@ -203,17 +175,6 @@ https://github.com/GameplaySystem/PuzzleFramework.git?path=/Packages/com.gaming.
 
 To play the systems in context, use the linked DTM and CBE repositories; this repository is the
 package and validation host.
-
-## Screenshots / Media
-
-The final portfolio media pass should add:
-
-- a short cross-prototype gameplay reel near the top of this README
-- one DTM/CBE side-by-side image showing shared modular-board or authoring behavior
-- DTM and CBE editor screenshots
-- the GitDiagram export, followed by the concise architecture explanation above
-
-Only captures from the running projects will be used.
 
 ## Further Documentation
 
