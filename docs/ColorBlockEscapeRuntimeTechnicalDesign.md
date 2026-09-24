@@ -188,6 +188,13 @@ validated exit edge runs. The existing modular board planner has no aperture inp
 visual adapter may suppress/replace game-owned wall pieces around an opening; do not change shared
 wall topology to embed gate meaning. Keep logic independent of whether a custom FBX is available.
 
+Normal block views use the shared `FootprintMeshGenerator`: exposed footprint edges form one
+hole-free contour, which is extruded and beveled into one cached mesh without internal cell seams.
+CBE supplies depth/bevel settings and applies its color material. Editor and runtime views request
+the same cache entry, and dragging only moves the view transform; it never rebuilds geometry.
+Generation is presentation-only and cannot affect occupancy, movement, exit admission, or level
+data. Unsupported multi-contour footprints fall back visually without changing gameplay state.
+
 The chipper consumes an accepted-exit presentation request. It may subdivide each footprint cell
 into pooled fragments, stagger movement and scatter/rotate them with DOTween. The existing CBE
 Unity project already contains DOTween; no new package install is part of this design. Each pool

@@ -15,6 +15,7 @@ Related Documents:
 - ColorSystem.md
 - VisualFeedbackSystem.md
 - ModularBoardVisualSystem.md
+- FootprintMeshGenerationSystem.md
 - ../CoreBoardSystems/WallGenerationSystem.md
 
 Depends On:
@@ -74,6 +75,7 @@ This category currently contains:
 1. Color System
 2. Visual Feedback System
 3. Modular Board Visual System
+4. Footprint Mesh Generation System
 
 `ColorSystem` provides framework-level color identity and presentation mapping.
 
@@ -81,6 +83,9 @@ This category currently contains:
 
 `ModularBoardVisualSystem` converts framework-derived board boundaries into generic modular
 cell-prefab visual state without deciding what the board means in a particular puzzle.
+
+`FootprintMeshGenerationSystem` converts a generic connected grid footprint into one unified,
+anchor-aware extruded presentation mesh without interpreting the entity that owns the footprint.
 
 These systems cover the current shared presentation needs without mixing gameplay authority with
 visual construction.
@@ -256,6 +261,7 @@ Framework ownership:
 * reusable presentation conventions
 * reusable conversion from board-boundary topology into modular cell-visual state
 * generic modular board visual application contracts
+* generic footprint-to-mesh generation and equivalent-mesh caching
 
 Game module ownership:
 

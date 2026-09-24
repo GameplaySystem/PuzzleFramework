@@ -33,8 +33,10 @@ separate modes because their left-click semantics are materially different.
 The CBE project imports the configured DTM modular board cell prefab and only its mesh/material
 dependencies. The editor and authored play-test build that board through the framework modular
 board planner/builder, while a narrow presentation-only edge override hides the two wall halves
-covered by each validated CBE exit. Block views remain simple generated geometry for now; the
-owner will prepare basic-shape block prefabs for later editor/runtime use.
+covered by each validated CBE exit. Both editor and play-test block views use the framework
+footprint-mesh generator through one CBE-owned visual profile and scene-lifetime cache. CBE owns
+color/material application; the
+logical footprint remains authoritative.
 
 Unity 6000.3.17f1 compiled the scene against the local framework source. CBE Edit Mode tests
 passed 37/37 and Play Mode tests passed 4/4. The PlayMode bridge uses the existing runtime builder,
