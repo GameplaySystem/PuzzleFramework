@@ -2,13 +2,21 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **CBE board material dependency corrected (2026-09-24):** The imported modular board prefab no
+  longer references DTM's game-specific stencil receiver materials or missing stencil shader.
+  CBE now owns one ordinary URP Lit material each for the cell, grid, and border meshes, using the
+  canonical FBX material GUIDs so every modular piece resolves consistently. The obsolete stencil
+  materials and duplicate extraction copies were removed. A focused asset test walks every prefab
+  renderer and rejects null materials, stencil materials, or `Hidden/InternalErrorShader`.
+  Fresh-project verification passes 39/39 Edit Mode and 6/6 Play Mode tests.
+
 - **Standalone gameplay composition verified (2026-09-24):**
   `ColorBlockEscapeGameplay.unity` selects authored JSON and uses the same CBE-owned runtime
   composition host as editor play-test. A fresh runtime session owns construction and outcomes;
   the host builds the imported modular board, exits and generated footprint meshes, wires the
   existing drag/capture adapter, frames the camera, displays timer/result/restart controls, and
   reconstructs all mutable state on restart. Scene composition contains no duplicate movement,
-  exit, timer or outcome rules. CBE passes 38/38 Edit Mode and 6/6 Play Mode tests, including scene
+  exit, timer or outcome rules. CBE passes 39/39 Edit Mode and 6/6 Play Mode tests, including scene
   boot, level construction, modular-board configuration, movement, capture, outcome, and restart.
   Hands-on drag feel and HUD/visual acceptance remain; chipper presentation has not started.
 
@@ -26,8 +34,9 @@
   uses `B/M/O/E/S` mode shortcuts, `0-9` color shortcuts, mouse-wheel shape cycling over the
   board, and contextual right-click erase in block/exit placement modes. One obstacle mode
   toggles `Active <-> Blocked`; the data model still reads Inactive cells for existing payload
-  compatibility. The configured DTM modular cell prefab plus its four meshes and two materials
-  are imported into CBE and used by both authoring and authored play-test board views. Validated
+  compatibility. The configured DTM modular cell prefab plus its four meshes are imported into
+  CBE; CBE supplies its own non-stencil URP cell, grid, and border materials. The board is used by
+  authoring, authored play-test, and standalone gameplay views. Validated
   exit spans suppress only the corresponding visual wall halves. The later unified footprint-mesh
   checkpoint supersedes the placeholder block visuals. A hands-on ergonomics and visual-alignment
   pass remains open.

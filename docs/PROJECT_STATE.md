@@ -23,7 +23,7 @@ progressive occupancy release, timer/outcome rules, and one runtime-composition 
 editor play-test and `ColorBlockEscapeGameplay.unity`. The standalone scene selects authored JSON,
 builds modular board/exits/generated block views, wires input and outcomes, shows a basic HUD, and
 reconstructs a fresh session on restart. CBE pins framework revision
-`e2cc9cc925653f6310c0d0f01342e351b44bb6e4` and passes 38/38 Edit Mode and 6/6 Play Mode tests.
+`e2cc9cc925653f6310c0d0f01342e351b44bb6e4` and passes 39/39 Edit Mode and 6/6 Play Mode tests.
 Chipper presentation remains open. The day-2/day-4/day-6 checkpoints remain planning integration
 targets rather than wall-clock constraints.
 
@@ -62,9 +62,11 @@ The authored play-test now displays remaining time and outcome and can restart i
 runtime level. CBE compiled and passed 36/36 Edit Mode and 3/3 Play Mode tests for this layer.
 The CBE authoring workflow has since been simplified to keyboard-selected `B/M/O/E/S` modes,
 `0-9` color slots, mouse-wheel shape cycling, contextual right-click erase, and one Active/Blocked
-obstacle toggle. The configured DTM modular board cell prefab and its direct mesh/material
-dependencies are now present in CBE and drive the authoring and play-test board visuals; validated
-exit spans suppress their corresponding wall halves without changing board topology. The new
+obstacle toggle. The configured DTM modular board cell prefab and its direct mesh dependencies are
+present in CBE, while CBE supplies ordinary URP Lit cell, grid, and border materials. DTM's
+game-specific stencil receiver materials are not imported. The prefab drives authoring, play-test,
+and standalone gameplay board visuals; validated exit spans suppress their corresponding wall
+halves without changing board topology. The new
 framework `FootprintMeshGenerator` converts hole-free connected footprints into one extruded,
 beveled mesh with no internal cell faces. A settings-aware, explicitly disposed cache reuses meshes
 across CBE editor and runtime views; CBE retains depth/bevel/color/material ownership and remains
