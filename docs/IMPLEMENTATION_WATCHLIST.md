@@ -2,15 +2,25 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **Unified footprint block visuals verified (2026-09-24):** PuzzleFramework now owns exposed-edge
+  contour extraction, extrusion, top/bottom perimeter beveling, anchor-aware local geometry,
+  diagnostics, and an explicit-lifetime mesh cache. CBE supplies its visual profile and material,
+  and both authoring and runtime views reuse the same generated mesh; dragging does not regenerate
+  geometry. Required rectangles, L/T/S/Z and stair footprints pass focused tests. V1 intentionally
+  rejects holes, disconnected contours, and diagonal-touch topology; CBE logs and renders a simple
+  fallback rather than changing authoritative footprint data. Plan-view corners remain mitered.
+  CBE passes 38/38 Edit Mode and 4/4 Play Mode tests against framework revision
+  `e2cc9cc925653f6310c0d0f01342e351b44bb6e4`. Chipper presentation remains separate.
+
 - **CBE authoring input and board-visual simplification verified (2026-09-21):** The editor now
   uses `B/M/O/E/S` mode shortcuts, `0-9` color shortcuts, mouse-wheel shape cycling over the
   board, and contextual right-click erase in block/exit placement modes. One obstacle mode
   toggles `Active <-> Blocked`; the data model still reads Inactive cells for existing payload
   compatibility. The configured DTM modular cell prefab plus its four meshes and two materials
   are imported into CBE and used by both authoring and authored play-test board views. Validated
-  exit spans suppress only the corresponding visual wall halves. Block visuals remain generated
-  placeholders until the owner supplies the planned basic-shape prefabs. CBE passes 37/37 Edit
-  Mode and 4/4 Play Mode tests; a hands-on ergonomics and visual-alignment pass remains open.
+  exit spans suppress only the corresponding visual wall halves. The later unified footprint-mesh
+  checkpoint supersedes the placeholder block visuals. A hands-on ergonomics and visual-alignment
+  pass remains open.
 
 - **Timer/outcome checkpoint verified:** CBE now creates a fresh outcome session from each
   authored play-test level, using the framework countdown timer and game-state lifecycle. It

@@ -70,10 +70,16 @@ The CBE authoring workflow has since been simplified to keyboard-selected `B/M/O
 `0-9` color slots, mouse-wheel shape cycling, contextual right-click erase, and one Active/Blocked
 obstacle toggle. The configured DTM modular board cell prefab and its direct mesh/material
 dependencies are now present in CBE and drive the authoring and play-test board visuals; validated
-exit spans suppress their corresponding wall halves without changing board topology. Block views
-remain generated placeholders until the owner supplies basic-shape prefabs. CBE compiles and
-passes 37/37 Edit Mode and 4/4 Play Mode tests for the updated editor slice. Stop before chipper
-presentation. See
+exit spans suppress their corresponding wall halves without changing board topology. The new
+framework `FootprintMeshGenerator` converts hole-free connected footprints into one extruded,
+beveled mesh with no internal cell faces. A settings-aware, explicitly disposed cache reuses meshes
+across CBE editor and runtime views; CBE retains depth/bevel/color/material ownership and remains
+pinned to published framework revision `e2cc9cc925653f6310c0d0f01342e351b44bb6e4`.
+Framework footprint-mesh tests pass 14/14; the broad framework run is 66/67 with only the previously
+tracked catalog assertion error. CBE passes 38/38 Edit Mode and 4/4 Play Mode tests against the
+published package. Hole, disconnected, and diagonal-touch contours remain an explicit first-slice
+mesh limitation and use a logged presentation fallback without changing gameplay. Stop before
+chipper presentation. See
 [IMPLEMENTATION_WATCHLIST.md](IMPLEMENTATION_WATCHLIST.md).
 
 Return to Drop The Man only for a critical bug, a shared-framework regression affecting it, or
