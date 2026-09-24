@@ -2,6 +2,16 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **Standalone gameplay composition verified (2026-09-24):**
+  `ColorBlockEscapeGameplay.unity` selects authored JSON and uses the same CBE-owned runtime
+  composition host as editor play-test. A fresh runtime session owns construction and outcomes;
+  the host builds the imported modular board, exits and generated footprint meshes, wires the
+  existing drag/capture adapter, frames the camera, displays timer/result/restart controls, and
+  reconstructs all mutable state on restart. Scene composition contains no duplicate movement,
+  exit, timer or outcome rules. CBE passes 38/38 Edit Mode and 6/6 Play Mode tests, including scene
+  boot, level construction, modular-board configuration, movement, capture, outcome, and restart.
+  Hands-on drag feel and HUD/visual acceptance remain; chipper presentation has not started.
+
 - **Unified footprint block visuals verified (2026-09-24):** PuzzleFramework now owns exposed-edge
   contour extraction, extrusion, top/bottom perimeter beveling, anchor-aware local geometry,
   diagnostics, and an explicit-lifetime mesh cache. CBE supplies its visual profile and material,
@@ -97,7 +107,7 @@
   decides outcomes; the plain fixture stays isolated from exits and outcome rules. Neither
   path plays chipper effects. The fixture validates pointer-to-view
   subcell motion automatically; subjective drag feel should also be checked in the dedicated
-  `PlainMovementCheckpoint` scene before the eventual gameplay scene is finalized.
+  `PlainMovementCheckpoint` fixture and the standalone gameplay scene before presentation work.
 
 The owner has approved the Color Block Escape MVP rules and six implementation clarifications.
 The [requirements](ColorBlockEscapeMVPRequirements.md),
@@ -131,8 +141,8 @@ concrete causes if necessary work takes longer.
   before proposing a scope/schedule change; do not silently copy shared code into CBE.
 - **Resolved shared movement gap:** The rule-free swept geometry, structural/occupancy clearance
   and atomic footprint transfer now live in PuzzleFramework and are used by CBE plain movement.
-  Exit capture still must reconcile the dragged pose to canonical occupancy before progressive
-  release; that remains the next CBE movement layer.
+  CBE exit capture reconciles accepted movement through collision-safe transfer, reserves the
+  required outbound corridor, and then releases occupancy progressively during outward travel.
 - **Presentation boundary:** CBE project already includes DOTween. Logic must remain independent;
   pooled fragments must kill/reset tweens before reuse. Simple generated block/gate visuals are
   sufficient, so the optional FBX pack is no longer a prototype prerequisite.

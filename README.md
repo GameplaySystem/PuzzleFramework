@@ -145,8 +145,9 @@ technology.
 - **Framework package:** active and consumed from Git by two Unity prototypes.
 - **Drop The Man:** current systems-showcase MVP complete; final UI, art polish, and device
   acceptance deferred.
-- **Color Block Escape:** movement, shared editor adoption, exit capture, and timer/outcome
-  checkpoints complete; block prefab integration and chipper presentation remain in progress.
+- **Color Block Escape:** movement, shared editor adoption, generated footprint meshes, exit
+  capture, timer/outcome, and standalone gameplay composition complete; chipper presentation
+  remains in progress.
 - **Validation:** focused framework movement and authoring tests pass; broader validation details
   remain in the project documentation.
 

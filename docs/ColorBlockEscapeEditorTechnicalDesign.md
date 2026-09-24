@@ -177,6 +177,11 @@ does not write progression or silently save. A failed runtime build displays the
 errors and leaves the editor usable. This bridge is CBE-owned; the framework core only supplies
 the authored snapshot and generic validation entry points.
 
+The editor controller delegates that detached snapshot to the same CBE runtime-composition host
+used by the standalone gameplay scene. It does not separately assemble the outcome, block views,
+drag adapter, exit capture, or restart sequence. Editor-only responsibilities are hiding/restoring
+the authoring preview and retaining selection while the shared runtime host exists.
+
 ## Migration and verification sequence
 
 1. Extend the existing `LevelAuthoringCore` into a live session and add only the small tool/view

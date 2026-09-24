@@ -56,6 +56,14 @@ views. Failed construction discards its unpublished session. Restart/play-test b
 callbacks from an old session must not mutate it. Rendered obstacles and walls are derived from
 authored structure and exit masks, never saved as world-space placements.
 
+The standalone gameplay scene and editor play-test share one CBE runtime-composition host. A
+game-owned runtime session creates `ColorBlockEscapeRuntimeLevel` and
+`ColorBlockEscapeOutcomeSession` from a detached `LevelDefinition`. The host builds board, exit,
+and generated block views, wires `PlainBlockDragAdapter`, frames the camera, exposes basic HUD
+state, and rebuilds a fresh session for restart. The gameplay scene selects authored JSON assets;
+the editor supplies an in-memory authored snapshot to the same host. Scene composition must not
+reimplement movement, exit admission, occupancy, timer, or outcome rules.
+
 For an irregular outline, the start edge cell must be Active, the neighboring cell in the exit
 direction must be Inactive or outside rectangular bounds, and every edge in the width run must have
 the same orientation and line. To exclude openings into an enclosed hole, determine whether the

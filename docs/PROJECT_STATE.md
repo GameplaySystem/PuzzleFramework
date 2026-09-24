@@ -14,24 +14,18 @@ The 2026-09-20 [Color Block Escape MVP requirements](ColorBlockEscapeMVPRequirem
 [editor design](ColorBlockEscapeEditorTechnicalDesign.md) are the approved baseline. The Color
 Block Escape Unity project has since been created.
 
-Implementation is underway. The first framework slice adds shared swept-footprint
-geometry, board-plane pointer projection, structural/occupancy clearance, atomic footprint
-transfer, and a small generic authoring core. Focused Unity Edit Mode tests for the movement and
-authoring primitives pass. Drop The Man pins the published framework revision and compiles;
-its 27 existing Edit Mode tests pass, with one focused editor
-regression test also passing. Color Block Escape parses its opaque payload and constructs
-validated board/block/exit state. Its plain on-board movement checkpoint now uses the shared
-sweep, clearance, pointer projection, snap and occupancy-transfer primitives. The dedicated
-movement fixture scene and focused CBE Edit Mode and Play Mode tests verify continuous subcell
-motion, collision, release and view movement. The CBE editor checkpoint now has a dedicated
-Play-mode authoring scene over the live `LevelAuthoringCore`, with block/cell/exit/timer tools,
-reject-on-conflict structural edits, staged JSON save/load, and an isolated plain-movement
-play-test handoff. CBE pins published framework revision
-`c485272d5e0b9764d67fe1b07a5e9af6429623f7`; Unity compiled the editor scene, and CBE
-passed 21/21 Edit Mode and 2/2 Play Mode tests at the editor checkpoint. Exit capture and
-timer/outcome behavior are now implemented through that authored-level play-test path. Chipper
-presentation remains open. The day-2/day-4/day-6 checkpoints remain the integration
-targets, not completed milestones.
+Implementation is underway. PuzzleFramework now supplies the shared swept-footprint movement,
+board-plane projection, structural/occupancy clearance, atomic transfer, live authoring core,
+modular board presentation, and generated footprint meshes used by Color Block Escape. Drop The
+Man and CBE both consume the shared editor foundation with their distinct anchor and structural
+edit policies. CBE now has validated JSON construction, continuous movement, exit capture,
+progressive occupancy release, timer/outcome rules, and one runtime-composition host shared by
+editor play-test and `ColorBlockEscapeGameplay.unity`. The standalone scene selects authored JSON,
+builds modular board/exits/generated block views, wires input and outcomes, shows a basic HUD, and
+reconstructs a fresh session on restart. CBE pins framework revision
+`e2cc9cc925653f6310c0d0f01342e351b44bb6e4` and passes 38/38 Edit Mode and 6/6 Play Mode tests.
+Chipper presentation remains open. The day-2/day-4/day-6 checkpoints remain planning integration
+targets rather than wall-clock constraints.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines
@@ -481,10 +475,11 @@ The Color Block Escape Unity repository exists with a pinned framework package a
 Implementation is authorized within those boundaries. Reference behavior
 for oversized doors, exact footprints and “no valid matching doors” remains unverified and does
 not block the chosen MVP simplifications. The original framework drag remains destination-only;
-new shared sweep/clearance, atomic transfer and authoring-core primitives are published, and
-Drop The Man consumes them. The CBE plain-movement and shared editor adoption checkpoints are
-implemented; exit capture, timer/outcome and chipper behavior remain. Seven days is a planning benchmark for disciplined scope, not a
-real-time deadline; framework ownership and verification take precedence.
+new shared sweep/clearance, atomic transfer, authoring-core, and footprint-mesh primitives are
+published, and both prototypes consume their applicable parts. CBE movement, shared editor,
+exit capture, timer/outcome, generated block view, and standalone gameplay composition checkpoints
+are implemented. Chipper presentation remains. Seven days is a planning benchmark for disciplined
+scope, not a real-time deadline; framework ownership and verification take precedence.
 
 ## Preserved Drop The Man Delivery History
 
@@ -641,15 +636,15 @@ and the material-only real-hole check passed Game-view validation.
 
 # Next Steps
 
-1. Record the approved six clarifications in the framework system specs and implement the
-   framework-owned movement, occupancy, pointer and editor slices with focused tests.
-2. Treat the three reference-game research items as unverified until direct evidence is captured;
-   proceed with the deliberate MVP rules where specified. Simple assembled Unity visuals are the
-   baseline; `tetra_pack.fbx` is optional later polish.
-3. Implement narrow reusable sweep, structural clearance, occupancy transfer and authoring
-   behavior in PuzzleFramework, publish/pin the verified framework revision, and make both
-   Drop The Man and Color Block Escape consume the shared parts they need. Build CBE-specific exit, outcome,
-   content and presentation rules in its module. Avoid speculative generalization and polish.
+1. Perform a hands-on pass in `ColorBlockEscapeGameplay.unity` for drag feel, HUD readability,
+   generated block appearance, exit alignment, and restart behavior; automated coverage does not
+   replace subjective interaction acceptance.
+2. Implement the approved CBE-owned chipper/voxel presentation on top of accepted gameplay events.
+   Keep exit success and outcomes independent from animation, and reset pooled fragment tweens on
+   reuse.
+3. Treat the three reference-game research items as unverified until direct evidence is captured;
+   continue using the deliberate MVP rules where specified. `tetra_pack.fbx` remains optional
+   later polish rather than a runtime prerequisite.
 4. Preserve Drop The Man's pinned regression baseline. Follow the framework-first package workflow
    if either consumer adopts a new framework revision. The catalog assertion issue remains open;
    historical focused test results are not proof of a green full suite.
