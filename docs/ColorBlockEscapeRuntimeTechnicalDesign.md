@@ -64,6 +64,14 @@ state, and rebuilds a fresh session for restart. The gameplay scene selects auth
 the editor supplies an in-memory authored snapshot to the same host. Scene composition must not
 reimplement movement, exit admission, occupancy, timer, or outcome rules.
 
+CBE's explicit world-layout contract maps logical grid X to Unity world X and logical grid Y to
+Unity world Z. Unity world Y is visual height only. Runtime and authoring use the same
+corner-anchored `GridWorldLayout`, so movement, exit directions, pointer projection, generated
+meshes, and modular board visuals cannot silently disagree about axes. The CBE host owns a
+perspective camera look with an initial 60-degree X pitch. It delegates resolution/aspect-aware
+distance calculation to the framework perspective-board positioner, which fits the complete
+padded logical rectangle without acquiring CBE camera policy.
+
 For an irregular outline, the start edge cell must be Active, the neighboring cell in the exit
 direction must be Inactive or outside rectangular bounds, and every edge in the width run must have
 the same orientation and line. To exclude openings into an enclosed hole, determine whether the
@@ -125,6 +133,9 @@ continuous pose translates the whole set. For Top/Bottom exits, projected span i
 `max(offset.x) - min(offset.x) + 1`; for Left/Right it is the equivalent Y span. This is the
 complete bounding projection, so internal gaps do not shrink the required opening. Board layout
 provides world conversion; logic remains in board-local units and is independent of visual scale.
+For CBE's concrete layout, `(boardX, boardY)` converts to `(worldX, 0, worldZ)`. Generated
+footprint extrusion and board-piece thickness extend along positive world Y and never change the
+logical footprint.
 
 ## Gate approach and capture
 

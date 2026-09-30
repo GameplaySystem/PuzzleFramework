@@ -15,7 +15,11 @@ runtime builder before replacing live state. Presets and custom connected offset
 same placement path, with a configurable default 4×4 guard for newly authored footprints.
 The scene offers cell painting, resize, block placement/selection/move/recolor/rotation/erase,
 exterior-edge exit editing, timer settings, JSON save/load and isolated gameplay play-test.
-It uses `GridCellAnchor.Corner`, matching the existing CBE movement unit-square coordinates.
+It uses `GridCellAnchor.Corner`, with grid X mapped to world X, grid Y mapped to world Z, and
+world Y reserved for presentation height. This is the same layout consumed by runtime movement.
+The editor uses CBE's 60-degree perspective look and the shared aspect-aware framework framing
+calculation. Its camera viewport excludes the left authoring panel before fitting the board; the
+runtime play-test restores a full viewport and returning to authoring restores the editor framing.
 
 The primary mode workflow is keyboard-driven rather than a row of clickable mode buttons. CBE
 owns the mnemonic bindings: `B` block placement, `M` block selection/move, `O` obstacle toggle,
@@ -38,10 +42,10 @@ footprint-mesh generator through one CBE-owned visual profile and scene-lifetime
 color/material application; the
 logical footprint remains authoritative.
 
-Unity 6000.3.17f1 compiled the scene against the local framework source. CBE Edit Mode tests
-passed 37/37 and Play Mode tests passed 4/4. The PlayMode bridge uses the existing runtime builder,
+Unity 6000.3.17f1 compiled the scene against the pinned framework package. CBE Edit Mode tests
+passed 44/44 and Play Mode tests passed 6/6. The PlayMode bridge uses the existing runtime builder,
 drag adapter, exit capture and outcome path. A hands-on Game-view pass for UI ergonomics, edge
-highlighting and visual alignment remains open.
+highlighting, angled-camera composition and visual alignment remains open.
 The current codec/runtime builder require at least one block and one exit before save or
 play-test; partial draft export would need a separately approved content-policy decision.
 

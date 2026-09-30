@@ -23,7 +23,7 @@ progressive occupancy release, timer/outcome rules, and one runtime-composition 
 editor play-test and `ColorBlockEscapeGameplay.unity`. The standalone scene selects authored JSON,
 builds modular board/exits/generated block views, wires input and outcomes, shows a basic HUD, and
 reconstructs a fresh session on restart. CBE pins framework revision
-`e2cc9cc925653f6310c0d0f01342e351b44bb6e4`. CBE movement now resolves blocked diagonal input onto
+`94378d44ad49bcab2558e978613651744a75c037`. CBE movement now resolves blocked diagonal input onto
 the safest available axis and uses a tunable shape-aware drag-query inset for exact-width corridors,
 while exact geometry remains authoritative for board bounds, release, occupancy, and exits. It
 passes 43/43 Edit Mode and 6/6 Play Mode tests.
@@ -33,8 +33,11 @@ targets rather than wall-clock constraints.
 Perspective board framing is now also implemented as a shared Presentation System after reuse was
 demonstrated by DTM and CBE. The utility fits a padded logical rectangle at the camera's current
 perspective aspect while preserving game-authored rotation and lens settings, and correctly handles
-both center and corner anchors. Focused Unity verification passes 3/3. DTM adoption and CBE's XZ
-layout plus angled-camera adoption are the next consumer layers.
+both center and corner anchors. Focused Unity verification passes 3/3. DTM delegates its existing
+camera adapter to this utility. CBE now maps grid X/Y to world X/Z, keeps world Y for visual height,
+and uses a game-owned 60-degree perspective look in runtime and editor. CBE camera/view migration
+passes 44/44 Edit Mode and 6/6 Play Mode tests against the pinned package, including a 1000x2000
+portrait framing check.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines
@@ -79,7 +82,7 @@ halves without changing board topology. The new
 framework `FootprintMeshGenerator` converts hole-free connected footprints into one extruded,
 beveled mesh with no internal cell faces. A settings-aware, explicitly disposed cache reuses meshes
 across CBE editor and runtime views; CBE retains depth/bevel/color/material ownership and remains
-pinned to published framework revision `e2cc9cc925653f6310c0d0f01342e351b44bb6e4`.
+pinned to published framework revision `94378d44ad49bcab2558e978613651744a75c037`.
 Framework footprint-mesh tests pass 14/14; the broad framework run is 66/67 with only the previously
 tracked catalog assertion error. CBE passes 38/38 Edit Mode and 4/4 Play Mode tests against the
 published package. Hole, disconnected, and diagonal-touch contours remain an explicit first-slice
@@ -491,7 +494,8 @@ published, and both prototypes consume their applicable parts. CBE movement, sha
 exit capture, timer/outcome, generated block view, and standalone gameplay composition checkpoints
 are implemented. The movement-feel pass adds swept axis sliding and active-query-only narrow-space
 tolerance while preserving exact board, release, occupancy, and exit rules. Chipper presentation
-remains. Seven days is a planning benchmark for disciplined
+remains. CBE now uses an explicit XZ board plane with world-Y height and a 60-degree perspective
+camera whose distance is fitted by the shared aspect-aware framework service. Seven days is a planning benchmark for disciplined
 scope, not a real-time deadline; framework ownership and verification take precedence.
 
 ## Preserved Drop The Man Delivery History
@@ -650,7 +654,8 @@ and the material-only real-hole check passed Game-view validation.
 # Next Steps
 
 1. Perform a hands-on pass in `ColorBlockEscapeGameplay.unity` for drag feel, HUD readability,
-   generated block appearance, exit alignment, and restart behavior; automated coverage does not
+   generated block appearance, exit alignment, 60-degree camera composition at target portrait
+   and landscape aspects, and restart behavior; automated coverage does not
    replace subjective interaction acceptance.
 2. Implement the approved CBE-owned chipper/voxel presentation on top of accepted gameplay events.
    Keep exit success and outcomes independent from animation, and reset pooled fragment tweens on

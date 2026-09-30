@@ -63,6 +63,12 @@ by a small tunable amount (initially `0.08` cell), but exact geometry still cont
 bounds, release/snap, committed occupancy, exit fit, and exit travel. The inset is input tolerance,
 not permission to tunnel, overwrite occupancy, or leave through a closed boundary.
 
+The owner confirmed the CBE world and camera convention on 2026-09-30. Logical grid X maps to
+Unity world X, logical grid Y maps to Unity world Z, and Unity world Y represents vertical visual
+height. Editor and runtime must share that convention. CBE uses an angled perspective view with
+an initial 60-degree X pitch and consumes the framework's aspect-aware perspective board framing;
+it must not return to an XY board or top-down orthographic composition implicitly.
+
 The [MVP requirements](ColorBlockEscapeMVPRequirements.md),
 [runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
 [editor design](ColorBlockEscapeEditorTechnicalDesign.md) contain the reviewable details. They

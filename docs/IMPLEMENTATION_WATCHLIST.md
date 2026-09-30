@@ -2,13 +2,17 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
-- **Shared perspective board framing verified; consumer migration next:** DTM's proven
+- **Shared perspective board framing and both consumer migrations verified:** DTM's proven
   resolution-aware camera-distance calculation now has a game-agnostic PuzzleFramework contract.
   It preserves game-authored rotation and lens settings, fits every padded logical-board corner at
   the live camera aspect, and distinguishes center-anchored DTM layouts from corner-anchored CBE
-  layouts. Focused Unity tests pass 3/3 at portrait aspect for both anchors. DTM must replace its
-  local duplicate and CBE must pin this revision before the CBE XZ/60-degree camera migration is
-  considered complete.
+  layouts. Focused framework Unity tests pass 3/3 at portrait aspect for both anchors. DTM now
+  delegates its existing camera adapter to the shared positioner. CBE pins framework revision
+  `94378d44ad49bcab2558e978613651744a75c037`, maps grid X/Y to world X/Z, reserves world Y for
+  height, and applies its game-owned 60-degree perspective look in both editor and runtime.
+  CBE passes 44/44 Edit Mode and 6/6 Play Mode tests, including a 1000x2000 portrait fit check.
+  Hands-on composition at target device aspect
+  ratios remains a visual acceptance check.
 
 - **CBE edge and narrow-space movement verified:** `PlainBlockMovement` now consumes the existing
   shared shape-aware footprint query with a default `0.08`-cell exposed-edge inset during active

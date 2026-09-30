@@ -43,6 +43,9 @@ version and an actual observed level/action before asserting exact behavior.
 
 ## Board, blocks and colors
 
+- Runtime and authoring map logical grid X to Unity world X and logical grid Y to Unity world Z;
+  Unity world Y is reserved for visual height. The default gameplay/editor view is perspective
+  with an initial 60-degree X pitch and aspect-aware board framing rather than a top-down view.
 - The board data retains explicit Active, Inactive, and Blocked states for payload compatibility
   and irregular-board loading. The V1 CBE editor presents one obstacle toggle: ordinary cells are
   Active, and authored obstacles toggle `Active <-> Blocked`. It does not expose separate Active,
