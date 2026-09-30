@@ -23,7 +23,10 @@ progressive occupancy release, timer/outcome rules, and one runtime-composition 
 editor play-test and `ColorBlockEscapeGameplay.unity`. The standalone scene selects authored JSON,
 builds modular board/exits/generated block views, wires input and outcomes, shows a basic HUD, and
 reconstructs a fresh session on restart. CBE pins framework revision
-`e2cc9cc925653f6310c0d0f01342e351b44bb6e4` and passes 39/39 Edit Mode and 6/6 Play Mode tests.
+`e2cc9cc925653f6310c0d0f01342e351b44bb6e4`. CBE movement now resolves blocked diagonal input onto
+the safest available axis and uses a tunable shape-aware drag-query inset for exact-width corridors,
+while exact geometry remains authoritative for board bounds, release, occupancy, and exits. It
+passes 43/43 Edit Mode and 6/6 Play Mode tests.
 Chipper presentation remains open. The day-2/day-4/day-6 checkpoints remain planning integration
 targets rather than wall-clock constraints.
 
@@ -480,7 +483,9 @@ not block the chosen MVP simplifications. The original framework drag remains de
 new shared sweep/clearance, atomic transfer, authoring-core, and footprint-mesh primitives are
 published, and both prototypes consume their applicable parts. CBE movement, shared editor,
 exit capture, timer/outcome, generated block view, and standalone gameplay composition checkpoints
-are implemented. Chipper presentation remains. Seven days is a planning benchmark for disciplined
+are implemented. The movement-feel pass adds swept axis sliding and active-query-only narrow-space
+tolerance while preserving exact board, release, occupancy, and exit rules. Chipper presentation
+remains. Seven days is a planning benchmark for disciplined
 scope, not a real-time deadline; framework ownership and verification take precedence.
 
 ## Preserved Drop The Man Delivery History

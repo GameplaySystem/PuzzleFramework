@@ -2,6 +2,16 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **CBE edge and narrow-space movement verified:** `PlainBlockMovement` now consumes the existing
+  shared shape-aware footprint query with a default `0.08`-cell exposed-edge inset during active
+  drag only. Blocked diagonal requests evaluate swept horizontal and vertical candidates and keep
+  the greatest safe progress, while the existing last-clear search prevents tunneling. Exact
+  footprint geometry still clamps closed board bounds and governs release, occupancy, exit fit,
+  and exit travel. Focused movement tests pass 10/10; full CBE validation passes 43/43 Edit Mode and
+  6/6 Play Mode. Coverage also verifies that neither axis fallback can tunnel during a fast
+  diagonal sample. Hands-on tuning may adjust the serialized inset within `0..0.45` without
+  changing authored content.
+
 - **CBE board material dependency corrected (2026-09-24):** The imported modular board prefab no
   longer references DTM's game-specific stencil receiver materials or missing stencil shader.
   CBE now owns one ordinary URP Lit material each for the cell, grid, and border meshes, using the

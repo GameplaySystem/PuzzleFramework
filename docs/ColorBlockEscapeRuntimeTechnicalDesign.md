@@ -106,8 +106,17 @@ validate the source set is occupied and the destination set is unique, structura
 from the source, then replace source-minus-destination with destination-minus-source as one
 operation. The caller checks Blocked cells and other placement rules before transfer, preserving
 the occupancy system's existing ownership boundary. Drop The Man's release service and CBE
-should both call it. The caller still owns entity identity, snap policy, and rule eligibility;
-the current package does not yet offer this atomic transfer or a nearest-free search.
+should both call it. The caller still owns entity identity, snap policy, and rule eligibility.
+
+CBE movement resolves feel policy above those shared queries. It first clamps the requested pose
+to exact board bounds and sweeps the direct path. If that path is blocked, it also sweeps
+horizontal-only and vertical-only candidates from the previous accepted pose and selects the
+candidate with the greatest collision-safe progress; a last-clear binary search prevents a fast
+sample from tunneling along any candidate. The active drag query uses `ShapeAwareDragFootprint`
+with a tunable exposed-edge inset (`0.08` cell initially, constrained to `0..0.45`) so minor pointer
+noise does not make an exact-width corridor unusable. Only drag-time structural/occupancy queries
+use that inset. Exact footprint geometry remains authoritative for board bounds, release reachability,
+snap, occupancy transfer, exit alignment/fit, and captured exit travel.
 
 ### Geometry convention
 

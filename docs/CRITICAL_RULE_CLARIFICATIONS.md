@@ -56,6 +56,13 @@ monotonic non-increasing and releases cells progressively until empty. Reserving
 cells at alignment is permitted for irregular footprints; it may temporarily block a cell before
 the visible footprint reaches it. Exit success is independent of timer/outcome and chipper effects.
 
+The later movement-feel clarification adopts the DTM-proven narrow-corridor approach without
+changing CBE's authoritative footprint rules. A diagonal drag blocked on one component may slide
+along a swept, collision-free axis. The actively dragged query may inset exposed footprint edges
+by a small tunable amount (initially `0.08` cell), but exact geometry still controls closed board
+bounds, release/snap, committed occupancy, exit fit, and exit travel. The inset is input tolerance,
+not permission to tunnel, overwrite occupancy, or leave through a closed boundary.
+
 The [MVP requirements](ColorBlockEscapeMVPRequirements.md),
 [runtime design](ColorBlockEscapeRuntimeTechnicalDesign.md), and
 [editor design](ColorBlockEscapeEditorTechnicalDesign.md) contain the reviewable details. They

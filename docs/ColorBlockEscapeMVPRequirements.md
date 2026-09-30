@@ -63,6 +63,14 @@ version and an actual observed level/action before asserting exact behavior.
 - One player-controlled block follows free, continuous board-plane dragging, with footprint-aware
   travel checks between accepted positions. Movement is not cell-by-cell. Other blocks, Blocked
   cells, Inactive space, and closed or invalid wall segments prevent passage.
+- Diagonal pointer input may resolve onto a collision-free horizontal or vertical component when
+  the full diagonal path is blocked, so blocks slide along walls and other footprints instead of
+  sticking at corners. Every resolved component still uses swept validation from the previous
+  accepted pose.
+- The actively dragged collision query may use a small tunable, shape-aware inset on exposed
+  footprint edges (initial value `0.08` cell) to tolerate pointer noise in exact-width corridors.
+  This does not alter authored footprints, board-bound clamping, release snap, committed occupancy,
+  exit fit, or exit travel; those remain exact.
 - The block cannot leave the playable board except through an accepted matching exit. A wrong-color
   exit acts as a solid wall. Exits are entered only from the playable side; movement from outside
   back in is never an admission path.
