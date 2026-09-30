@@ -30,6 +30,12 @@ passes 43/43 Edit Mode and 6/6 Play Mode tests.
 Chipper presentation remains open. The day-2/day-4/day-6 checkpoints remain planning integration
 targets rather than wall-clock constraints.
 
+Perspective board framing is now also implemented as a shared Presentation System after reuse was
+demonstrated by DTM and CBE. The utility fits a padded logical rectangle at the camera's current
+perspective aspect while preserving game-authored rotation and lens settings, and correctly handles
+both center and corner anchors. Focused Unity verification passes 3/3. DTM adoption and CBE's XZ
+layout plus angled-camera adoption are the next consumer layers.
+
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines
 center/corner cell anchors; the live

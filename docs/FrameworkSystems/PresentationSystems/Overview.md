@@ -16,12 +16,15 @@ Related Documents:
 - VisualFeedbackSystem.md
 - ModularBoardVisualSystem.md
 - FootprintMeshGenerationSystem.md
+- PerspectiveBoardCameraFramingSystem.md
 - ../CoreBoardSystems/WallGenerationSystem.md
+- ../CoreBoardSystems/GridSystem.md
 
 Depends On:
 - Gameplay state producers
 - Gameplay event producers
 - ../CoreBoardSystems/WallGenerationSystem.md
+- ../CoreBoardSystems/GridSystem.md
 
 Used By:
 - Drop Away
@@ -76,6 +79,7 @@ This category currently contains:
 2. Visual Feedback System
 3. Modular Board Visual System
 4. Footprint Mesh Generation System
+5. Perspective Board Camera Framing System
 
 `ColorSystem` provides framework-level color identity and presentation mapping.
 
@@ -86,6 +90,9 @@ cell-prefab visual state without deciding what the board means in a particular p
 
 `FootprintMeshGenerationSystem` converts a generic connected grid footprint into one unified,
 anchor-aware extruded presentation mesh without interpreting the entity that owns the footprint.
+
+`PerspectiveBoardCameraFramingSystem` positions an already-oriented perspective camera so the
+padded logical board rectangle fits the active aspect ratio without changing gameplay layout.
 
 These systems cover the current shared presentation needs without mixing gameplay authority with
 visual construction.

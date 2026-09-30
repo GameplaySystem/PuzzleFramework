@@ -17,6 +17,7 @@ Related Documents:
 - ShapeSystem.md
 - WallGenerationSystem.md
 - PathFindingSystem.md
+- ../PresentationSystems/PerspectiveBoardCameraFramingSystem.md
 
 Depends On:
 - None
@@ -27,6 +28,7 @@ Used By:
 - Sky Rush
 - Hole People
 - Bus Jam
+- Perspective Board Camera Framing System
 
 ## Purpose
 
