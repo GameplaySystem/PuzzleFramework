@@ -36,19 +36,23 @@ perspective aspect while preserving game-authored rotation and lens settings, an
 both center and corner anchors. Focused Unity verification passes 3/3. DTM delegates its existing
 camera adapter to this utility. CBE now maps grid X/Y to world X/Z, keeps world Y for visual height,
 and uses a game-owned 60-degree perspective look in runtime and editor. CBE camera/view migration
-passes 45/45 Edit Mode and 6/6 Play Mode tests against the pinned package, including a 1000x2000
+passes 46/46 Edit Mode and 6/6 Play Mode tests against the pinned package, including a 1000x2000
 portrait framing check.
 
 CBE generated blocks now add one CBE-owned, cached structural-outline mesh to the shared generated
 footprint mesh. Flush ribbons follow the actual beveled top and bottom cap perimeters and wrap onto
 both side faces at every convex and concave footprint turn, including the underside geometry. They
-remain within the owning surfaces rather than expanding the silhouette. The outline deliberately
+now share one offset vertical spine at each corner, eliminating the perspective fork caused by
+independently offset side patches, and remain within the owning surfaces rather than expanding the
+silhouette. The outline deliberately
 omits internal cell seams, cap triangulation, straight subdivisions, and bevel-segment rings. The
 outline is presentation-only and reuses PuzzleFramework boundary topology without changing logical
 movement, occupancy, picking, exits, or authored data. Focused generation/view tests pass in the
-45/45 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy. A
+46/46 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy. A
 camera-rendered check at the user's current 70-degree scene angle confirms that the earlier
 cuboid-bar tabs and heavy overlapping corner wedges are removed.
+The remaining diagonal-edge jagging is a rendering-quality issue: both CBE URP assets currently
+use one-sample rendering and the gameplay camera has anti-aliasing disabled.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines

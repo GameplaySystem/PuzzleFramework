@@ -5,18 +5,23 @@
 - **CBE structural block outlines refined and verified (2026-10-13):** The initial cuboid-bar
   implementation covered the requested edges but produced visible silhouette tabs and thick
   overlapping corner wedges in the gameplay camera. The corrected design uses flush cap ribbons
-  and paired side-face ribbons at each real corner. It still covers the complete top and bottom
+  and paired side-face ribbons at each real corner. A later close inspection exposed a remaining
+  fork where those two side ribbons used separate surface-offset positions; the final join now
+  gives both ribbons one shared offset vertical spine. It still covers the complete top and bottom
   beveled-cap perimeters plus vertical edges at every convex and concave footprint corner, but
   must stay within the owning surfaces rather than reading as a separate wire cage. The mesh
   does not expose triangulation diagonals, internal cell seams, straight lattice subdivisions,
   or bevel-segment rings. Both editor and runtime block views consume the same outline cache and
-  the outline has no collider or gameplay authority. Disposable-project verification passes 45/45
+  the outline has no collider or gameplay authority. Disposable-project verification passes 46/46
   Edit Mode and 6/6 Play Mode tests against the committed 60-degree gameplay scene. A disposable
   camera render at the current 70-degree scene angle confirms the ribbons no longer create the
   observed tabs or heavy corner wedges. The user's
   current uncommitted scene uses 70 degrees, so the unchanged 60-degree camera assertion fails in
   that dirty scene until the scene or test expectation is intentionally reconciled. Owner review
   should determine whether the thinner default width needs further tuning at target resolution.
+  Diagonal strokes remain visibly aliased because `PC_RPAsset` and `Mobile_RPAsset` both use
+  one-sample rendering (`m_MSAA: 1`) and the gameplay camera has anti-aliasing disabled. Changing
+  those project-wide render settings requires an explicit performance/quality decision.
 
 - **Shared perspective board framing and both consumer migrations verified:** DTM's proven
   resolution-aware camera-distance calculation now has a game-agnostic PuzzleFramework contract.

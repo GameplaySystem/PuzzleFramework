@@ -226,6 +226,8 @@ data. Unsupported multi-contour footprints fall back visually without changing g
 CBE also derives one cached structural-outline mesh from the framework's authoritative exposed
 edges and boundary-vertex classifications. Flush surface ribbons mark the complete top perimeter,
 complete bottom perimeter, and both side faces meeting at every convex or concave vertical edge.
+The two side ribbons at a corner share one offset vertical spine; independently offset side
+patches are forbidden because perspective exposes a slit or fork between them.
 The ribbons stay within the cap contour and sit only a small offset above their owning surfaces;
 they must not expand the visible block silhouette into protruding bars or heavy corner wedges. The
 outline does not draw cap-triangulation diagonals, internal cell seams, straight contour
