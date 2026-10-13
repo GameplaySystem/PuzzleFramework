@@ -40,12 +40,15 @@ passes 45/45 Edit Mode and 6/6 Play Mode tests against the pinned package, inclu
 portrait framing check.
 
 CBE generated blocks now add one CBE-owned, cached structural-outline mesh to the shared generated
-footprint mesh. It follows the actual beveled top and bottom cap perimeters and adds vertical edges
-at every convex and concave footprint turn, including the underside geometry. It deliberately
+footprint mesh. Flush ribbons follow the actual beveled top and bottom cap perimeters and wrap onto
+both side faces at every convex and concave footprint turn, including the underside geometry. They
+remain within the owning surfaces rather than expanding the silhouette. The outline deliberately
 omits internal cell seams, cap triangulation, straight subdivisions, and bevel-segment rings. The
 outline is presentation-only and reuses PuzzleFramework boundary topology without changing logical
 movement, occupancy, picking, exits, or authored data. Focused generation/view tests pass in the
-45/45 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy.
+45/45 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy. A
+camera-rendered check at the user's current 70-degree scene angle confirms that the earlier
+cuboid-bar tabs and heavy overlapping corner wedges are removed.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines

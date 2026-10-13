@@ -224,10 +224,13 @@ Generation is presentation-only and cannot affect occupancy, movement, exit admi
 data. Unsupported multi-contour footprints fall back visually without changing gameplay state.
 
 CBE also derives one cached structural-outline mesh from the framework's authoritative exposed
-edges and boundary-vertex classifications. The outline marks the complete top perimeter, complete
-bottom perimeter, and every vertical extrusion edge at convex or concave footprint corners. It
-does not draw cap-triangulation diagonals, internal cell seams, straight contour subdivisions, or
-bevel-segment rings, because those are mesh-construction details rather than readable block edges.
+edges and boundary-vertex classifications. Flush surface ribbons mark the complete top perimeter,
+complete bottom perimeter, and both side faces meeting at every convex or concave vertical edge.
+The ribbons stay within the cap contour and sit only a small offset above their owning surfaces;
+they must not expand the visible block silhouette into protruding bars or heavy corner wedges. The
+outline does not draw cap-triangulation diagonals, internal cell seams, straight contour
+subdivisions, or bevel-segment rings, because those are mesh-construction details rather than
+readable block edges.
 The outline is CBE-owned presentation: its width, surface offset, and color live in the CBE visual
 profile and it has no role in logical collision, picking, occupancy, or exit admission.
 

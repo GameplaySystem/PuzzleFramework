@@ -2,16 +2,21 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
-- **CBE structural block outlines verified (2026-10-13):** CBE now generates one cached dark
-  outline mesh per equivalent footprint/settings combination. The mesh covers the complete top and
-  bottom beveled-cap perimeters plus vertical edges at every convex and concave footprint corner;
-  it does not expose triangulation diagonals, internal cell seams, straight lattice subdivisions,
+- **CBE structural block outlines refined and verified (2026-10-13):** The initial cuboid-bar
+  implementation covered the requested edges but produced visible silhouette tabs and thick
+  overlapping corner wedges in the gameplay camera. The corrected design uses flush cap ribbons
+  and paired side-face ribbons at each real corner. It still covers the complete top and bottom
+  beveled-cap perimeters plus vertical edges at every convex and concave footprint corner, but
+  must stay within the owning surfaces rather than reading as a separate wire cage. The mesh
+  does not expose triangulation diagonals, internal cell seams, straight lattice subdivisions,
   or bevel-segment rings. Both editor and runtime block views consume the same outline cache and
   the outline has no collider or gameplay authority. Disposable-project verification passes 45/45
-  Edit Mode and 6/6 Play Mode tests against the committed 60-degree gameplay scene. The user's
+  Edit Mode and 6/6 Play Mode tests against the committed 60-degree gameplay scene. A disposable
+  camera render at the current 70-degree scene angle confirms the ribbons no longer create the
+  observed tabs or heavy corner wedges. The user's
   current uncommitted scene uses 70 degrees, so the unchanged 60-degree camera assertion fails in
-  that dirty scene until the scene or test expectation is intentionally reconciled. A hands-on
-  visual pass should tune outline width/color if needed at target mobile resolution.
+  that dirty scene until the scene or test expectation is intentionally reconciled. Owner review
+  should determine whether the thinner default width needs further tuning at target resolution.
 
 - **Shared perspective board framing and both consumer migrations verified:** DTM's proven
   resolution-aware camera-distance calculation now has a game-agnostic PuzzleFramework contract.
