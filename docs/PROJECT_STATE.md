@@ -23,7 +23,7 @@ progressive occupancy release, timer/outcome rules, and one runtime-composition 
 editor play-test and `ColorBlockEscapeGameplay.unity`. The standalone scene selects authored JSON,
 builds modular board/exits/generated block views, wires input and outcomes, shows a basic HUD, and
 reconstructs a fresh session on restart. CBE pins framework revision
-`94378d44ad49bcab2558e978613651744a75c037`. CBE movement now resolves blocked diagonal input onto
+`5c0d5ec8755497931e044ae51066cf1a54967d80`. CBE movement now resolves blocked diagonal input onto
 the safest available axis and uses a tunable shape-aware drag-query inset for exact-width corridors,
 while exact geometry remains authoritative for board bounds, release, occupancy, and exits. It
 passes 43/43 Edit Mode and 6/6 Play Mode tests.
@@ -39,28 +39,24 @@ and uses a game-owned 60-degree perspective look in runtime and editor. CBE came
 passes 46/46 Edit Mode and 6/6 Play Mode tests against the pinned package, including a 1000x2000
 portrait framing check.
 
-CBE generated blocks now add one CBE-owned, cached structural-outline mesh to the shared generated
-footprint mesh. Flush ribbons follow the actual beveled top and bottom cap perimeters and wrap onto
-both side faces at every convex and concave footprint turn, including the underside geometry. They
-now share one offset vertical spine at each corner, eliminating the perspective fork caused by
-independently offset side patches, and remain within the owning surfaces rather than expanding the
-silhouette. The outline deliberately
-omits internal cell seams, cap triangulation, straight subdivisions, and bevel-segment rings. The
-outline is presentation-only and reuses PuzzleFramework boundary topology without changing logical
-movement, occupancy, picking, exits, or authored data. Focused generation/view tests pass in the
-46/46 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy. A
-camera-rendered check at the user's current 70-degree scene angle confirms that the earlier
-cuboid-bar tabs and heavy overlapping corner wedges are removed. CBE now uses 4x MSAA in its PC
-URP asset and 2x MSAA in its Mobile URP asset to smooth diagonal polygon edges; the gameplay camera
-already permits MSAA. Post-process camera anti-aliasing remains disabled.
+CBE generated blocks now use the shared footprint generator's physical edge topology instead of a
+second offset outline mesh. The generic `FootprintMeshGenerator` supports opt-in plan-view corner
+chamfers and a two-submesh layout: caps and flat wall spans remain in the main region, while the
+actual top/bottom bevel bands and vertical corner chamfers form the edge region. CBE renders those
+regions through one `MeshRenderer` with a body material and a CBE-owned dark edge material. This
+keeps the edge treatment inside the block silhouette and removes the gaps, forks, corner wedges,
+and z-fighting inherent in the superseded ribbon approach. It also covers underside bevels while
+omitting internal cell seams and triangulation diagonals. The mesh remains presentation-only and
+does not affect movement, occupancy, picking, exits, or authored data. Existing framework consumers
+retain the original unified sharp-corner mode unless they opt into the new settings.
 
-The approved Blender-style edge refinement has completed its framework layer. The generic
-`FootprintMeshGenerator` now supports opt-in plan-view corner chamfers and an opt-in two-submesh
-layout: caps/flat walls remain in the main region while top/bottom bevels and vertical corner
-chamfers occupy the edge region. Existing consumers retain the original unified sharp-corner mode
-unless they request the new settings. All 16/16 focused footprint-mesh tests pass; the broad
-framework run is 71/72 with only the previously recorded unrelated NUnit property assertion in
-`LevelCatalogBuilderTests` failing. CBE adoption is the next dependent step.
+All 16/16 focused framework footprint-mesh tests pass. The broad framework run is 71/72 with only
+the previously recorded unrelated NUnit property assertion in `LevelCatalogBuilderTests` failing.
+CBE adoption passes 46/46 Edit Mode and 6/6 Play Mode tests against the committed 60-degree gameplay
+scene. A disposable camera render covering rectangular and concave L footprints confirms that the
+dark regions read as joined physical bevel/corner surfaces rather than floating line geometry. CBE
+continues to use 4x MSAA in its PC URP asset and 2x MSAA in its Mobile URP asset to smooth polygon
+edges; the gameplay camera permits MSAA and post-process camera anti-aliasing remains disabled.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines
@@ -105,7 +101,7 @@ halves without changing board topology. The new
 framework `FootprintMeshGenerator` converts hole-free connected footprints into one extruded,
 beveled mesh with no internal cell faces. A settings-aware, explicitly disposed cache reuses meshes
 across CBE editor and runtime views; CBE retains depth/bevel/color/material ownership and remains
-pinned to published framework revision `94378d44ad49bcab2558e978613651744a75c037`.
+pinned to published framework revision `5c0d5ec8755497931e044ae51066cf1a54967d80`.
 Framework footprint-mesh tests pass 14/14; the broad framework run is 66/67 with only the previously
 tracked catalog assertion error. CBE passes 38/38 Edit Mode and 4/4 Play Mode tests against the
 published package. Hole, disconnected, and diagonal-touch contours remain an explicit first-slice

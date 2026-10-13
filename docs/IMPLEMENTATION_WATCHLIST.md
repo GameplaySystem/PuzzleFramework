@@ -2,37 +2,23 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
-- **Physical footprint edge surfaces implemented in PuzzleFramework; CBE migration pending
-  (2026-10-13):** The surface-ribbon approach cannot read like authored beveled geometry because
-  it overlays coplanar face patches and requires offsets at perpendicular joins. The approved
-  replacement adds opt-in plan-view corner chamfers and generic main/edge submesh partitioning to
-  `FootprintMeshGenerator`. Existing settings remain backward compatible. The framework assigns no
-  materials or game meaning; CBE will use the edge region for its dark bevel material. Focused
-  footprint verification passes 16/16. The broad run is 71/72; the sole failure is the existing
-  unrelated `LevelCatalogBuilderTests.Build_ReportsSequenceGapsWithoutRejectingCatalog` NUnit
-  `Property Count was not found` assertion.
-
-- **CBE structural block outlines refined and verified (2026-10-13):** The initial cuboid-bar
-  implementation covered the requested edges but produced visible silhouette tabs and thick
-  overlapping corner wedges in the gameplay camera. The corrected design uses flush cap ribbons
-  and paired side-face ribbons at each real corner. A later close inspection exposed a remaining
-  fork where those two side ribbons used separate surface-offset positions; the final join now
-  gives both ribbons one shared offset vertical spine. It still covers the complete top and bottom
-  beveled-cap perimeters plus vertical edges at every convex and concave footprint corner, but
-  must stay within the owning surfaces rather than reading as a separate wire cage. The mesh
-  does not expose triangulation diagonals, internal cell seams, straight lattice subdivisions,
-  or bevel-segment rings. Both editor and runtime block views consume the same outline cache and
-  the outline has no collider or gameplay authority. Disposable-project verification passes 46/46
-  Edit Mode and 6/6 Play Mode tests against the committed 60-degree gameplay scene. A disposable
-  camera render at the current 70-degree scene angle confirms the ribbons no longer create the
-  observed tabs or heavy corner wedges. The user's
-  current uncommitted scene uses 70 degrees, so the unchanged 60-degree camera assertion fails in
-  that dirty scene until the scene or test expectation is intentionally reconciled. Owner review
-  should determine whether the thinner default width needs further tuning at target resolution.
-  With owner approval, CBE now uses 4x MSAA in `PC_RPAsset` and 2x MSAA in `Mobile_RPAsset`; the
-  gameplay camera already allows MSAA. This resolves the known one-sample diagonal aliasing while
-  keeping the mobile setting below the PC quality target. Camera post-process anti-aliasing remains
-  disabled and can be evaluated separately only if target-device captures still justify its cost.
+- **Physical footprint edge surfaces adopted and verified in CBE (2026-10-14):** The previous
+  surface-ribbon approach was replaced because coplanar face patches and per-face offsets could not
+  form clean perpendicular joins. `FootprintMeshGenerator` now provides opt-in plan-view corner
+  chamfers and generic main/edge submesh partitioning. CBE consumes that partition through one mesh
+  and one renderer, applying its body material to caps/flat walls and its dark edge material to the
+  actual top/bottom bevel bands and vertical corner chamfers. The removed outline child had no
+  gameplay authority, and the replacement remains presentation-only. Existing framework consumers
+  remain backward compatible. Focused framework verification passes 16/16; the broad run is 71/72
+  with only the existing unrelated
+  `LevelCatalogBuilderTests.Build_ReportsSequenceGapsWithoutRejectingCatalog` NUnit
+  `Property Count was not found` assertion. Disposable CBE verification passes 46/46 Edit Mode and
+  6/6 Play Mode tests against the committed 60-degree scene. A disposable rendered inspection of
+  rectangular and concave L blocks confirms joined physical edge surfaces without the old tabs,
+  forks, heavy corner wedges, or surface-offset gaps. Edge thickness currently follows CBE's bevel
+  width; introduce a separate visual band control only if target-device review demonstrates a need.
+  CBE continues to use 4x MSAA in `PC_RPAsset` and 2x MSAA in `Mobile_RPAsset`; post-process camera
+  anti-aliasing remains disabled.
 
 - **Shared perspective board framing and both consumer migrations verified:** DTM's proven
   resolution-aware camera-distance calculation now has a game-agnostic PuzzleFramework contract.
@@ -40,7 +26,7 @@
   the live camera aspect, and distinguishes center-anchored DTM layouts from corner-anchored CBE
   layouts. Focused framework Unity tests pass 3/3 at portrait aspect for both anchors. DTM now
   delegates its existing camera adapter to the shared positioner. CBE pins framework revision
-  `94378d44ad49bcab2558e978613651744a75c037`, maps grid X/Y to world X/Z, reserves world Y for
+  `5c0d5ec8755497931e044ae51066cf1a54967d80`, maps grid X/Y to world X/Z, reserves world Y for
   height, and applies its game-owned 60-degree perspective look in both editor and runtime.
   CBE passes 44/44 Edit Mode and 6/6 Play Mode tests, including a 1000x2000 portrait fit check.
   Hands-on composition at target device aspect
