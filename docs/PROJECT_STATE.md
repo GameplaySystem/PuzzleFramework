@@ -36,8 +36,16 @@ perspective aspect while preserving game-authored rotation and lens settings, an
 both center and corner anchors. Focused Unity verification passes 3/3. DTM delegates its existing
 camera adapter to this utility. CBE now maps grid X/Y to world X/Z, keeps world Y for visual height,
 and uses a game-owned 60-degree perspective look in runtime and editor. CBE camera/view migration
-passes 44/44 Edit Mode and 6/6 Play Mode tests against the pinned package, including a 1000x2000
+passes 45/45 Edit Mode and 6/6 Play Mode tests against the pinned package, including a 1000x2000
 portrait framing check.
+
+CBE generated blocks now add one CBE-owned, cached structural-outline mesh to the shared generated
+footprint mesh. It follows the actual beveled top and bottom cap perimeters and adds vertical edges
+at every convex and concave footprint turn, including the underside geometry. It deliberately
+omits internal cell seams, cap triangulation, straight subdivisions, and bevel-segment rings. The
+outline is presentation-only and reuses PuzzleFramework boundary topology without changing logical
+movement, occupancy, picking, exits, or authored data. Focused generation/view tests pass in the
+45/45 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines

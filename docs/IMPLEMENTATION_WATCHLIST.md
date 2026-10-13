@@ -2,6 +2,17 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **CBE structural block outlines verified (2026-10-13):** CBE now generates one cached dark
+  outline mesh per equivalent footprint/settings combination. The mesh covers the complete top and
+  bottom beveled-cap perimeters plus vertical edges at every convex and concave footprint corner;
+  it does not expose triangulation diagonals, internal cell seams, straight lattice subdivisions,
+  or bevel-segment rings. Both editor and runtime block views consume the same outline cache and
+  the outline has no collider or gameplay authority. Disposable-project verification passes 45/45
+  Edit Mode and 6/6 Play Mode tests against the committed 60-degree gameplay scene. The user's
+  current uncommitted scene uses 70 degrees, so the unchanged 60-degree camera assertion fails in
+  that dirty scene until the scene or test expectation is intentionally reconciled. A hands-on
+  visual pass should tune outline width/color if needed at target mobile resolution.
+
 - **Shared perspective board framing and both consumer migrations verified:** DTM's proven
   resolution-aware camera-distance calculation now has a game-agnostic PuzzleFramework contract.
   It preserves game-authored rotation and lens settings, fits every padded logical-board corner at
@@ -125,13 +136,13 @@
   a resized board with a warning. CBE's approved rule rejects invalidating structural edits.
   Preserve the DTM behavior and keep the CBE rejection in the shared core's CBE usage; do not
   force one resize policy on both games.
-- **DOTween binaries resolved; cache caveat:** The three tracked CBE DOTween DLLs were restored
-  exactly from Git. They are still required by DOTween modules and stayed present after Unity
-  reimport; the deletion trigger remains unknown. The CBE Unity `Library` also had dozens of
-  missing package DLLs and stale import state. It was moved intact to a backup outside the repo,
-  then Unity rebuilt a clean cache; original-project compile, CBE tests and framework movement
-  tests passed. If binaries disappear again, investigate local environmental cleanup rather than
-  treating the deletions as intended source changes.
+- **DOTween binaries recurred after earlier restoration:** The three tracked CBE DOTween editor
+  DLL/XML assets were restored exactly from Git and survived the earlier clean-cache verification,
+  but the four tracked files (`DOTweenUpgradeManager.dll`, its XML, and both metas) are deleted
+  again in the current CBE working tree. The outline task did not touch them, and a disposable
+  project still compiles/tests without those editor upgrade files. Investigate the local deletion
+  trigger and restore them before including the next CBE source checkpoint; do not treat their
+  disappearance as an intended dependency removal.
 - **Movement fixture boundary:** The dedicated plain-drag fixture uses fixed authored offsets and
   blocks all boundaries, including openings; the authored-level play-test path now admits exits
   and releases occupancy progressively. The authored-level path now runs the countdown and
