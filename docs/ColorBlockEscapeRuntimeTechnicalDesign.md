@@ -4,7 +4,7 @@ Date: 2026-09-20
 Status: Approved by owner on 2026-09-20, including the six approval clarifications.
 Requirements: [Color Block Escape MVP](ColorBlockEscapeMVPRequirements.md).
 Baseline: [framework architecture](FrameworkArchitecture.md) and
-[implementation preflight](ColorBlockJamArchitecturePreflight.md).
+[approved CBE requirements](ColorBlockEscapeMVPRequirements.md).
 
 ## Problem, assumptions and boundaries
 

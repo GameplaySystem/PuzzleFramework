@@ -6,9 +6,9 @@ Product: Color Block Escape, the portfolio prototype. Reference: Rollic Games' C
 
 ## Authority and scope
 
-The owner supplied the product rules below on 2026-09-20. They supersede conflicting proposals in
-[the earlier preflight](ColorBlockJamArchitecturePreflight.md). The reference game is evidence, not
-the authority for this prototype. An unverified reference detail does not displace a chosen MVP rule.
+The owner supplied the product rules below on 2026-09-20. They are authoritative for this prototype.
+The reference game is evidence, not the authority for this prototype. An unverified reference detail
+does not displace a chosen MVP rule.
 
 The seven-development-day goal is a planning benchmark for scope and sequencing, not a hard
 calendar deadline or a reason to monitor wall-clock time during implementation. Necessary shared

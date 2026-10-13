@@ -187,8 +187,8 @@ Phase 2 is complete when:
 Current status (2026-09-17): active architecture/design phase. The owner has declared Drop The Man
 development-complete for its current MVP scope and deferred final presentation integration.
 Remaining Drop The Man acceptance/polish notes are retained, not prerequisites for this phase.
-Start with the [architecture preflight](ColorBlockJamArchitecturePreflight.md); implementation
-requires approved Color Block Jam requirements and specs. Phase 3 reuse is not yet proven.
+Implementation requires approved Color Block Escape requirements and technical specs. Phase 3 reuse
+is not yet proven.
 
 ## Goal
 

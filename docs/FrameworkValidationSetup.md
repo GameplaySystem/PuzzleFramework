@@ -21,5 +21,5 @@ This task has documented the missing setup, not created or verified a new test h
 
 Keep local `file:` dependencies out of committed consumer manifests. Normal consumers install
 the full-SHA Git dependency according to the [dependency workflow](Workflow/FrameworkPackageDependencyWorkflow.md).
-The [watchlist](IMPLEMENTATION_WATCHLIST.md) records an existing catalog-test assertion failure;
-historical focused test passes must not be described as a clean full-suite result.
+Historical focused test passes must not be described as a clean full-suite result; verify the
+current test suite before making validation claims.

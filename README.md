@@ -181,6 +181,4 @@ package and validation host.
 
 - [Framework architecture](docs/FrameworkArchitecture.md)
 - [System specifications](docs/FrameworkSystems)
-- [Project state](docs/PROJECT_STATE.md)
-- [Implementation watchlist](docs/IMPLEMENTATION_WATCHLIST.md)
 - [Framework package workflow](docs/Workflow/FrameworkPackageDependencyWorkflow.md)

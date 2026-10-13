@@ -17,7 +17,6 @@ It summarizes:
 
 The repository source of truth remains:
 
-* `docs/PROJECT_STATE.md`
 * `docs/FrameworkSystems/**`
 
 ---

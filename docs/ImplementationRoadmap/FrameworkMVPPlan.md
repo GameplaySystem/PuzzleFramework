@@ -5,8 +5,8 @@
 The owner has declared Drop The Man development-complete for the current MVP scope. Its basic
 loop is closed; final presentation/UI integration and remaining acceptance work are deferred.
 This document remains the first-prototype implementation baseline, not the active task queue.
-The active phase is the [Color Block Jam architecture preflight](../ColorBlockJamArchitecturePreflight.md).
-That report proposes the next slice but does not approve new systems or implementation.
+The active phase is the approved Color Block Escape requirements and technical design set. Those
+documents define the next slice; this baseline does not approve unrelated new systems.
 
 ## Purpose
 

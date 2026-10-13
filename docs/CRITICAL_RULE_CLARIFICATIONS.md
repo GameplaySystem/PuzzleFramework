@@ -14,7 +14,6 @@ This document is not a replacement for:
 
 * framework architecture docs
 * prototype rule docs
-* `docs/IMPLEMENTATION_WATCHLIST.md`
 
 Its job is narrower:
 
@@ -102,10 +101,9 @@ geometry; Color Block Jam must define its own visual mapping. Framework topology
 Concave with explicit diagonal-touch diagnostics. The implemented modular profile's unsupported
 diagonal case must not be silently treated as supported.
 
-Affected documentation: [Color Block Jam preflight](ColorBlockJamArchitecturePreflight.md),
-[project state](PROJECT_STATE.md), [watchlist](IMPLEMENTATION_WATCHLIST.md). Future module rule specs
-must resolve the open questions before implementation. Existing Drop The Man rule docs remain its
-maintenance baseline; this clarification does not change its gameplay.
+Affected documentation: the Color Block Escape requirements and technical design documents. Future
+module rule specs must resolve the open questions before implementation. Existing Drop The Man rule
+docs remain its maintenance baseline; this clarification does not change its gameplay.
 
 ### Replay Navigation Versus Saved Progress (2026-09-03)
 
@@ -158,7 +156,6 @@ Affected docs:
 
 * `PuzzleFramework/docs/FrameworkArchitecture.md`
 * `PuzzleFramework/docs/ImplementationRoadmap/FrameworkMVPPlan.md`
-* `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
 * `DropAwayPrototype/docs/DropTheManMVPRules.md`
 * `DropAwayPrototype/docs/DropTheManMVPGameModuleRequirements.md`
 * `DropAwayPrototype/docs/DropTheManCollectionPresentationTimingDesign.md`
@@ -206,7 +203,6 @@ Implementation caution:
 Affected docs:
 
 * `PuzzleFramework/docs/ImplementationRoadmap/FrameworkMVPPlan.md`
-* `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
 * `DropAwayPrototype/docs/DropTheManMVPRules.md`
 * `DropAwayPrototype/docs/DropTheManMVPGameModuleRequirements.md`
 
@@ -247,7 +243,6 @@ Implementation caution:
 
 Affected docs:
 
-* `PuzzleFramework/docs/IMPLEMENTATION_WATCHLIST.md`
 * `DropAwayPrototype/docs/DropTheManMVPRules.md`
 * `DropAwayPrototype/docs/DropTheManMVPGameModuleRequirements.md`
 * `DropAwayPrototype/docs/DropTheManMovementAndCollectionRules.md`
