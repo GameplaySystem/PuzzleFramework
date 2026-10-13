@@ -235,14 +235,37 @@ The CBE URP quality assets provide multisample edge smoothing for this geometry:
 4x MSAA and the Mobile asset uses 2x MSAA. The gameplay camera must continue allowing MSAA. These
 settings smooth rendered polygon edges without changing outline topology or gameplay authority.
 
-The chipper consumes an accepted-exit presentation request. It may subdivide each footprint cell
-into pooled fragments, stagger movement and scatter/rotate them with DOTween. The existing CBE
-Unity project already contains DOTween; no new package install is part of this design. Each pool
-checkout resets transform/material/visibility, and each return kills or stops prior tweens and
-clears callbacks. Configuration includes every parameter listed in the requirements document.
-Pool exhaustion should degrade presentation (skip/reduce fragments), never block gameplay exit.
-Result UI delay and post-result fragment visibility are presentation policy. A missing/failed
-animation cannot prevent a locked win or permanently retain gameplay occupancy.
+The chipper observes the accepted block's existing `Exiting` lifecycle and accepted exit ID; it
+does not emit a second acceptance fact. At the start of controlled outward travel, the intact
+renderer temporarily uses a CBE-owned clipping shader supplied with the static world-space exit
+plane and outward normal. The shader discards only the volume that has crossed outside. The source
+mesh is neither fractured nor rebuilt, and clipping does not participate in occupancy, collision,
+exit admission, or completion.
+
+Fragment layout subdivides every occupied footprint cell uniformly in both footprint-plane axes
+and across configurable depth layers. It retains each sample's local position and computes the
+outward travel at which that sample center crosses the exit plane. Samples are ordered by this
+threshold and emitted at most once as `OutwardTravelCells` advances, so front volume converts
+before trailing volume for Top, Bottom, Left, and Right exits without depending on gameplay-cell
+release callbacks. Fragment cubes use the standard Unity cube mesh, a tunable inter-fragment gap,
+and a bounded CBE-owned pool. Pool exhaustion logs and skips excess presentation samples without
+changing gameplay state.
+
+Pooled fragments use seeded variation and DOTween to follow a controlled forward, sideways, and
+parabolic vertical trajectory while rotating. Shrink and alpha fade begin only at their configured
+normalized travel times. Each pool checkout resets transform, scale, color/alpha, active state, and
+tween ownership; each return kills the tween, clears callbacks/property blocks, and deactivates the
+object. The configuration exposes subdivision, depth layers, gap, duration/stagger variation,
+trajectory/scatter/arc, rotation, disappearance, pool limits, post-effect result delay, and maximum
+result wait. No Rigidbody participates.
+
+The outcome session remains authoritative and may enter Won or Lost while fragments are active. A
+separate presentation gate observes the committed terminal state: it waits for active chipper
+effects, then applies the configured post-effect delay before revealing terminal HUD content. A
+maximum wait measured from outcome commitment opens the gate even if a tween or pool callback is
+broken. Restart or level rebuild resets the gate and presenter, kills all active fragment tweens,
+returns pooled objects, and invalidates the discarded runtime root. Presentation completion never
+changes `GameState`, timer state, occupancy, exit busy state, or block lifecycle.
 
 ## Verification gates and delivery risk
 
