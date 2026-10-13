@@ -43,6 +43,8 @@ PuzzleFramework owns:
 - one-contour validation;
 - anchor-aware local coordinate generation;
 - extrusion and configurable outer bevel rings;
+- optional plan-view corner chamfers for real vertical edge surfaces;
+- optional main/edge surface submesh partitioning without assigning materials;
 - cap triangulation, normals, tangents, bounds, and diagnostics;
 - equivalent-footprint mesh caching with explicit cache lifetime.
 
@@ -66,9 +68,14 @@ The generator accepts:
 - bevel width;
 - positive bevel segment count;
 - `GridCellAnchor.Center` or `GridCellAnchor.Corner`.
+- optional non-negative plan-view corner bevel width;
+- unified surfaces or separated main/edge submeshes.
 
 It returns a `FootprintMeshGenerationResult` containing either one mesh plus diagnostic counts or a
-failure reason. Invalid input does not publish a partial mesh.
+failure reason. Unified mode preserves the original one-submesh contract. Separated mode places
+caps and flat wall spans in submesh 0, and top/bottom bevel strips plus vertical corner chamfers in
+submesh 1. The framework does not assign meaning or materials to either region. Invalid input does
+not publish a partial mesh.
 
 The generated mesh uses local XY for the footprint plane and local Z for extrusion. Its local
 origin follows the same convention as `GridWorldLayout.GridToWorldPosition(origin)`:
@@ -84,11 +91,14 @@ The full mesh depth is centered around local Z zero.
 2. Orient those edges counter-clockwise with occupied space on the left.
 3. Stitch them into one simple exterior contour and remove collinear points.
 4. Reject ambiguous diagonal-touch topology or multiple contours.
-5. Build bottom-bevel, side, and top-bevel contour rings.
-6. Offset each bevel ring inward from the original contour.
-7. Connect neighboring rings with outward-facing quads.
-8. Ear-clip the inset top contour and mirror it for the bottom cap.
-9. Recalculate normals, tangents, and bounds on the completed mesh.
+5. When requested, replace each plan-view turn with a bounded chamfer segment and retain whether
+   each resulting contour span is a flat wall or corner surface.
+6. Build bottom-bevel, side, and top-bevel contour rings.
+7. Offset each bevel ring inward from the resulting outer contour.
+8. Connect neighboring rings with outward-facing quads and route triangles to their requested
+   surface region.
+9. Ear-clip the inset top contour and mirror it for the bottom cap.
+10. Recalculate normals, tangents, and bounds on the completed mesh.
 
 Internal cell edges never enter the exterior contour, so they create no side faces or bevels.
 Cap triangles tessellate one polygonal surface; triangle edges are not separate surfaces.
@@ -103,9 +113,9 @@ The initial generator accepts one edge-connected, hole-free contour. It rejects:
 - bevel values that collapse a one-cell corridor or the extrusion depth;
 - an inward offset that becomes degenerate or self-intersecting.
 
-The current bevel rounds the top/bottom perimeter profile. Plan-view polygon corners remain
-mitered; fully rounded XY corners would require corner-join geometry with changing contour vertex
-counts and are not part of this first slice.
+Plan-view corner beveling uses one chamfer face per turn. Multi-segment rounded plan-view corners
+remain deferred; they would require a more general corner-arc contract and are not needed for the
+current consumers.
 
 These limits cover the current Color Block Escape presets and ordinary hole-free custom
 polyominoes. They avoid introducing a general-purpose polygon modeling library before a concrete
@@ -125,15 +135,16 @@ Mesh generation may allocate temporary topology, contour, ring, vertex, and inde
 This is acceptable at view-construction or editor-refresh boundaries. It is not intended for
 per-frame regeneration.
 
-Bevel segment count increases ring count linearly. For a contour with `n` vertices and `s` bevel
-segments, the current ring strip contains `2s + 2` rings, and its triangle count is:
+Bevel segment count increases ring count linearly. For the final render contour vertex count `n`
+and bevel segment count `s`, the ring strip contains `2s + 2` rings, and its triangle count is:
 
 ```text
 2(n - 2) + 2n(2s + 1)
 ```
 
 The game should choose the smallest segment count that produces the intended silhouette on target
-hardware.
+hardware. A non-zero plan-view corner bevel replaces each original turn with two contour vertices,
+so callers should account for that predictable increase during construction-time generation.
 
 ## Final Design Rule
 

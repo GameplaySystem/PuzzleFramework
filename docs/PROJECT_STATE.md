@@ -54,6 +54,14 @@ cuboid-bar tabs and heavy overlapping corner wedges are removed. CBE now uses 4x
 URP asset and 2x MSAA in its Mobile URP asset to smooth diagonal polygon edges; the gameplay camera
 already permits MSAA. Post-process camera anti-aliasing remains disabled.
 
+The approved Blender-style edge refinement has completed its framework layer. The generic
+`FootprintMeshGenerator` now supports opt-in plan-view corner chamfers and an opt-in two-submesh
+layout: caps/flat walls remain in the main region while top/bottom bevels and vertical corner
+chamfers occupy the edge region. Existing consumers retain the original unified sharp-corner mode
+unless they request the new settings. All 16/16 focused footprint-mesh tests pass; the broad
+framework run is 71/72 with only the previously recorded unrelated NUnit property assertion in
+`LevelCatalogBuilderTests` failing. CBE adoption is the next dependent step.
+
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines
 center/corner cell anchors; the live

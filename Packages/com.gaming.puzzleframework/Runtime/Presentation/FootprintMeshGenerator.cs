@@ -45,23 +45,26 @@ namespace PuzzleFramework.Presentation
                     out failure))
                 return FootprintMeshGenerationResult.Failed(failure);
 
-            List<Vector2> contour = ScaleAndAnchor(latticeContour, settings);
-            if (!IsCounterClockwise(contour) || !IsSimplePolygon(contour))
+            List<Vector2> sourceContour = ScaleAndAnchor(latticeContour, settings);
+            if (!IsCounterClockwise(sourceContour) || !IsSimplePolygon(sourceContour))
             {
                 return FootprintMeshGenerationResult.Failed(
                     "Footprint exterior contour is not a simple counter-clockwise polygon.");
             }
+            if (!TryBuildRenderContour(sourceContour, settings.CornerBevelWidth,
+                    out RenderContour contour, out failure))
+                return FootprintMeshGenerationResult.Failed(failure);
 
-            if (!TryBuildRings(contour, settings, out List<ContourRing> rings, out failure))
+            if (!TryBuildRings(contour.Points, settings, out List<ContourRing> rings, out failure))
                 return FootprintMeshGenerationResult.Failed(failure);
 
             List<Vector2> capContour = rings[0].Points;
             if (!TryTriangulate(capContour, out List<int> capTriangles, out failure))
                 return FootprintMeshGenerationResult.Failed(failure);
 
-            Mesh mesh = BuildMesh(rings, capTriangles, settings);
+            Mesh mesh = BuildMesh(rings, capTriangles, contour.CornerSegments, settings);
             return FootprintMeshGenerationResult.Successful(
-                mesh, contour.Count, rings.Count);
+                mesh, contour.Points.Count, rings.Count);
         }
 
         private static bool TryValidateSettings(
@@ -70,6 +73,8 @@ namespace PuzzleFramework.Presentation
         {
             if (!Enum.IsDefined(typeof(GridCellAnchor), settings.CellAnchor))
                 return Fail("Footprint mesh cell anchor is invalid.", out failure);
+            if (!Enum.IsDefined(typeof(FootprintMeshSurfaceLayout), settings.SurfaceLayout))
+                return Fail("Footprint mesh surface layout is invalid.", out failure);
             if (!IsFinitePositive(settings.CellSize.x) ||
                 !IsFinitePositive(settings.CellSize.y))
                 return Fail("Footprint mesh cell size must be finite and positive.", out failure);
@@ -84,6 +89,13 @@ namespace PuzzleFramework.Presentation
                 return Fail("Bevel width must stay below half of the smallest cell dimension.", out failure);
             if (settings.BevelWidth * 2f >= settings.ExtrusionDepth - GeometryEpsilon)
                 return Fail("Bevel width must stay below half of the extrusion depth.", out failure);
+            if (!IsFinite(settings.CornerBevelWidth) || settings.CornerBevelWidth < 0f)
+                return Fail("Corner bevel width must be finite and non-negative.", out failure);
+            if (settings.CornerBevelWidth * 2f >=
+                Mathf.Min(settings.CellSize.x, settings.CellSize.y) - GeometryEpsilon)
+                return Fail(
+                    "Corner bevel width must stay below half of the smallest cell dimension.",
+                    out failure);
 
             failure = string.Empty;
             return true;
@@ -228,6 +240,61 @@ namespace PuzzleFramework.Presentation
                     (latticeContour[i].y + anchorOffset) * settings.CellSize.y));
             }
             return result;
+        }
+
+        private static bool TryBuildRenderContour(
+            IReadOnlyList<Vector2> source,
+            float cornerBevelWidth,
+            out RenderContour contour,
+            out string failure)
+        {
+            List<Vector2> points = new();
+            List<bool> cornerSegments = new();
+            if (cornerBevelWidth <= GeometryEpsilon)
+            {
+                points.AddRange(source);
+                for (int i = 0; i < points.Count; i++) cornerSegments.Add(false);
+                contour = new RenderContour(points, cornerSegments);
+                failure = string.Empty;
+                return true;
+            }
+
+            points.Capacity = source.Count * 2;
+            cornerSegments.Capacity = source.Count * 2;
+            for (int i = 0; i < source.Count; i++)
+            {
+                Vector2 previous = source[(i - 1 + source.Count) % source.Count];
+                Vector2 current = source[i];
+                Vector2 next = source[(i + 1) % source.Count];
+                Vector2 incoming = current - previous;
+                Vector2 outgoing = next - current;
+                float incomingLength = incoming.magnitude;
+                float outgoingLength = outgoing.magnitude;
+                if (cornerBevelWidth * 2f >=
+                    Mathf.Min(incomingLength, outgoingLength) - GeometryEpsilon)
+                {
+                    contour = default;
+                    return Fail(
+                        "Corner bevel width collapses an exterior contour span.", out failure);
+                }
+
+                points.Add(current - incoming / incomingLength * cornerBevelWidth);
+                points.Add(current + outgoing / outgoingLength * cornerBevelWidth);
+                cornerSegments.Add(true);
+                cornerSegments.Add(false);
+            }
+
+            if (!IsCounterClockwise(points) || !IsSimplePolygon(points))
+            {
+                contour = default;
+                return Fail(
+                    "Corner-beveled footprint contour became degenerate or self-intersecting.",
+                    out failure);
+            }
+
+            contour = new RenderContour(points, cornerSegments);
+            failure = string.Empty;
+            return true;
         }
 
         private static bool TryBuildRings(
@@ -376,14 +443,20 @@ namespace PuzzleFramework.Presentation
         private static Mesh BuildMesh(
             IReadOnlyList<ContourRing> rings,
             IReadOnlyList<int> capTriangles,
+            IReadOnlyList<bool> cornerSegments,
             FootprintMeshSettings settings)
         {
             int contourCount = rings[0].Points.Count;
             int ringVertexCount = contourCount * rings.Count;
             List<Vector3> vertices = new(ringVertexCount + contourCount * 2);
             List<Vector2> uvs = new(vertices.Capacity);
-            List<int> triangles = new(
+            List<int> mainTriangles = new(
                 (rings.Count - 1) * contourCount * 6 + capTriangles.Count * 2);
+            List<int> edgeTriangles = new((rings.Count - 2) * contourCount * 6);
+            bool separateEdgeSurfaces =
+                settings.SurfaceLayout == FootprintMeshSurfaceLayout.SeparateEdgeSurfaces;
+            int wallBandIndex = settings.BevelWidth <= GeometryEpsilon
+                ? 0 : settings.BevelSegments;
 
             for (int ringIndex = 0; ringIndex < rings.Count; ringIndex++)
             {
@@ -401,15 +474,20 @@ namespace PuzzleFramework.Presentation
             {
                 int lower = ringIndex * contourCount;
                 int upper = (ringIndex + 1) * contourCount;
+                bool bevelBand = ringIndex != wallBandIndex;
                 for (int i = 0; i < contourCount; i++)
                 {
                     int next = (i + 1) % contourCount;
-                    triangles.Add(lower + i);
-                    triangles.Add(lower + next);
-                    triangles.Add(upper + next);
-                    triangles.Add(lower + i);
-                    triangles.Add(upper + next);
-                    triangles.Add(upper + i);
+                    List<int> target = separateEdgeSurfaces &&
+                                       (bevelBand || cornerSegments[i])
+                        ? edgeTriangles
+                        : mainTriangles;
+                    target.Add(lower + i);
+                    target.Add(lower + next);
+                    target.Add(upper + next);
+                    target.Add(lower + i);
+                    target.Add(upper + next);
+                    target.Add(upper + i);
                 }
             }
 
@@ -422,12 +500,12 @@ namespace PuzzleFramework.Presentation
                 int a = capTriangles[i];
                 int b = capTriangles[i + 1];
                 int c = capTriangles[i + 2];
-                triangles.Add(bottomStart + a);
-                triangles.Add(bottomStart + c);
-                triangles.Add(bottomStart + b);
-                triangles.Add(topStart + a);
-                triangles.Add(topStart + b);
-                triangles.Add(topStart + c);
+                mainTriangles.Add(bottomStart + a);
+                mainTriangles.Add(bottomStart + c);
+                mainTriangles.Add(bottomStart + b);
+                mainTriangles.Add(topStart + a);
+                mainTriangles.Add(topStart + b);
+                mainTriangles.Add(topStart + c);
             }
 
             Mesh mesh = new()
@@ -439,7 +517,9 @@ namespace PuzzleFramework.Presentation
             };
             mesh.SetVertices(vertices);
             mesh.SetUVs(0, uvs);
-            mesh.SetTriangles(triangles, 0, true);
+            mesh.subMeshCount = separateEdgeSurfaces ? 2 : 1;
+            mesh.SetTriangles(mainTriangles, 0, true);
+            if (separateEdgeSurfaces) mesh.SetTriangles(edgeTriangles, 1, true);
             mesh.RecalculateNormals();
             mesh.RecalculateTangents();
             mesh.RecalculateBounds();
@@ -534,6 +614,18 @@ namespace PuzzleFramework.Presentation
 
             public List<Vector2> Points { get; }
             public float Z { get; }
+        }
+
+        private readonly struct RenderContour
+        {
+            public RenderContour(List<Vector2> points, List<bool> cornerSegments)
+            {
+                Points = points;
+                CornerSegments = cornerSegments;
+            }
+
+            public List<Vector2> Points { get; }
+            public List<bool> CornerSegments { get; }
         }
     }
 }

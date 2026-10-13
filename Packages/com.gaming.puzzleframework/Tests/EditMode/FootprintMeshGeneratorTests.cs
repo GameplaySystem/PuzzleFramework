@@ -97,6 +97,49 @@ namespace PuzzleFramework.Tests.EditMode
         }
 
         [Test]
+        public void SeparatedEdgeSurfaces_ArePhysicalBevelAndCornerGeometry()
+        {
+            FootprintMeshGenerationResult result = Generate(
+                new[] { new GridCoordinate(0, 0) },
+                new FootprintMeshSettings(Vector2.one, 0.24f, 0.04f, 2,
+                    GridCellAnchor.Corner, 0.04f,
+                    FootprintMeshSurfaceLayout.SeparateEdgeSurfaces));
+
+            Assert.That(result.Success, Is.True, result.FailureReason);
+            Assert.That(result.HasSeparateEdgeSurfaces, Is.True);
+            Assert.That(result.Mesh.subMeshCount, Is.EqualTo(2));
+            Assert.That(result.ContourVertexCount, Is.EqualTo(8));
+            Assert.That(result.Mesh.GetTriangles(0).Length / 3, Is.EqualTo(20));
+            Assert.That(result.Mesh.GetTriangles(1).Length / 3, Is.EqualTo(72));
+            AssertVector(result.Mesh.bounds.min, new Vector3(0f, 0f, -0.12f));
+            AssertVector(result.Mesh.bounds.max, new Vector3(1f, 1f, 0.12f));
+        }
+
+        [Test]
+        public void CornerBevel_SupportsConcaveIrregularFootprintAndRejectsCollapse()
+        {
+            GridCoordinate[] lShape =
+            {
+                new(0, 0), new(0, 1), new(1, 0)
+            };
+            FootprintMeshGenerationResult supported = Generate(lShape,
+                new FootprintMeshSettings(Vector2.one, 0.24f, 0.04f, 2,
+                    GridCellAnchor.Corner, 0.04f,
+                    FootprintMeshSurfaceLayout.SeparateEdgeSurfaces));
+            FootprintMeshGenerationResult collapsed = _generator.Generate(
+                new ShapeFootprint(lShape),
+                new FootprintMeshSettings(Vector2.one, 0.24f, 0.04f, 2,
+                    GridCellAnchor.Corner, 0.5f,
+                    FootprintMeshSurfaceLayout.SeparateEdgeSurfaces));
+
+            Assert.That(supported.Success, Is.True, supported.FailureReason);
+            Assert.That(supported.ContourVertexCount, Is.EqualTo(12));
+            Assert.That(supported.HasSeparateEdgeSurfaces, Is.True);
+            Assert.That(collapsed.Success, Is.False);
+            StringAssert.Contains("Corner bevel width", collapsed.FailureReason);
+        }
+
+        [Test]
         public void EquivalentOffsetOrdering_ReusesCachedMeshButSettingsDoNot()
         {
             using FootprintMeshCache cache = new();

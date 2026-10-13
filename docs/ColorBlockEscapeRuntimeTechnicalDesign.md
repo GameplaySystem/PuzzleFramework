@@ -223,18 +223,14 @@ the same cache entry, and dragging only moves the view transform; it never rebui
 Generation is presentation-only and cannot affect occupancy, movement, exit admission, or level
 data. Unsupported multi-contour footprints fall back visually without changing gameplay state.
 
-CBE also derives one cached structural-outline mesh from the framework's authoritative exposed
-edges and boundary-vertex classifications. Flush surface ribbons mark the complete top perimeter,
-complete bottom perimeter, and both side faces meeting at every convex or concave vertical edge.
-The two side ribbons at a corner share one offset vertical spine; independently offset side
-patches are forbidden because perspective exposes a slit or fork between them.
-The ribbons stay within the cap contour and sit only a small offset above their owning surfaces;
-they must not expand the visible block silhouette into protruding bars or heavy corner wedges. The
-outline does not draw cap-triangulation diagonals, internal cell seams, straight contour
-subdivisions, or bevel-segment rings, because those are mesh-construction details rather than
-readable block edges.
-The outline is CBE-owned presentation: its width, surface offset, and color live in the CBE visual
-profile and it has no role in logical collision, picking, occupancy, or exit admission.
+CBE requests the framework footprint mesh's optional separated edge surfaces and plan-view corner
+chamfers. One mesh and one renderer use the block color on caps and flat wall spans, and the CBE
+edge color on the actual top/bottom bevel surfaces and vertical corner chamfers. No coplanar or
+surface-offset outline mesh is permitted: the dark region must be part of the block's physical
+presentation topology so perpendicular faces meet without wedges, forks, or z-fighting. CBE owns
+the material/color choice while PuzzleFramework owns only the generic surface partition and mesh
+geometry. The presentation mesh has no role in logical collision, picking, occupancy, or exit
+admission.
 The CBE URP quality assets provide multisample edge smoothing for this geometry: the PC asset uses
 4x MSAA and the Mobile asset uses 2x MSAA. The gameplay camera must continue allowing MSAA. These
 settings smooth rendered polygon edges without changing outline topology or gameplay authority.

@@ -2,6 +2,16 @@
 
 ## Color Block Escape Requirements And Design Review (2026-09-20)
 
+- **Physical footprint edge surfaces implemented in PuzzleFramework; CBE migration pending
+  (2026-10-13):** The surface-ribbon approach cannot read like authored beveled geometry because
+  it overlays coplanar face patches and requires offsets at perpendicular joins. The approved
+  replacement adds opt-in plan-view corner chamfers and generic main/edge submesh partitioning to
+  `FootprintMeshGenerator`. Existing settings remain backward compatible. The framework assigns no
+  materials or game meaning; CBE will use the edge region for its dark bevel material. Focused
+  footprint verification passes 16/16. The broad run is 71/72; the sole failure is the existing
+  unrelated `LevelCatalogBuilderTests.Build_ReportsSequenceGapsWithoutRejectingCatalog` NUnit
+  `Property Count was not found` assertion.
+
 - **CBE structural block outlines refined and verified (2026-10-13):** The initial cuboid-bar
   implementation covered the requested edges but produced visible silhouette tabs and thick
   overlapping corner wedges in the gameplay camera. The corrected design uses flush cap ribbons
