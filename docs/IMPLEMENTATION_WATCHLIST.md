@@ -19,9 +19,10 @@
   current uncommitted scene uses 70 degrees, so the unchanged 60-degree camera assertion fails in
   that dirty scene until the scene or test expectation is intentionally reconciled. Owner review
   should determine whether the thinner default width needs further tuning at target resolution.
-  Diagonal strokes remain visibly aliased because `PC_RPAsset` and `Mobile_RPAsset` both use
-  one-sample rendering (`m_MSAA: 1`) and the gameplay camera has anti-aliasing disabled. Changing
-  those project-wide render settings requires an explicit performance/quality decision.
+  With owner approval, CBE now uses 4x MSAA in `PC_RPAsset` and 2x MSAA in `Mobile_RPAsset`; the
+  gameplay camera already allows MSAA. This resolves the known one-sample diagonal aliasing while
+  keeping the mobile setting below the PC quality target. Camera post-process anti-aliasing remains
+  disabled and can be evaluated separately only if target-device captures still justify its cost.
 
 - **Shared perspective board framing and both consumer migrations verified:** DTM's proven
   resolution-aware camera-distance calculation now has a game-agnostic PuzzleFramework contract.

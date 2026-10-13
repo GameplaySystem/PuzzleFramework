@@ -50,9 +50,9 @@ outline is presentation-only and reuses PuzzleFramework boundary topology withou
 movement, occupancy, picking, exits, or authored data. Focused generation/view tests pass in the
 46/46 Edit Mode suite; the 6/6 Play Mode baseline also passes in a disposable project copy. A
 camera-rendered check at the user's current 70-degree scene angle confirms that the earlier
-cuboid-bar tabs and heavy overlapping corner wedges are removed.
-The remaining diagonal-edge jagging is a rendering-quality issue: both CBE URP assets currently
-use one-sample rendering and the gameplay camera has anti-aliasing disabled.
+cuboid-bar tabs and heavy overlapping corner wedges are removed. CBE now uses 4x MSAA in its PC
+URP asset and 2x MSAA in its Mobile URP asset to smooth diagonal polygon edges; the gameplay camera
+already permits MSAA. Post-process camera anti-aliasing remains disabled.
 
 The revised editor architecture is approved. Its first framework layer is implemented and
 verified in a disposable Unity 6000.3.17f1 host: `GridWorldLayout` explicitly defines

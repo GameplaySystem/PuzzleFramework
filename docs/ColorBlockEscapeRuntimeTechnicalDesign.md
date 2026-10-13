@@ -235,6 +235,9 @@ subdivisions, or bevel-segment rings, because those are mesh-construction detail
 readable block edges.
 The outline is CBE-owned presentation: its width, surface offset, and color live in the CBE visual
 profile and it has no role in logical collision, picking, occupancy, or exit admission.
+The CBE URP quality assets provide multisample edge smoothing for this geometry: the PC asset uses
+4x MSAA and the Mobile asset uses 2x MSAA. The gameplay camera must continue allowing MSAA. These
+settings smooth rendered polygon edges without changing outline topology or gameplay authority.
 
 The chipper consumes an accepted-exit presentation request. It may subdivide each footprint cell
 into pooled fragments, stagger movement and scatter/rotate them with DOTween. The existing CBE
